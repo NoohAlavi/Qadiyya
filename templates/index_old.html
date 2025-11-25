@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Manṭiq</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #333;
+            padding: 8px;
+            font-size: 22px;
+            font-family: sans-serif;
+        }
+
+        th {
+            background-color: rgb(218, 218, 255);
+        }
+
+        td.indent {
+            padding-left: 20px;
+        }
+
+        button {
+            font-size: 24px;
+            background-color: limegreen;
+        }
+
+        h1 {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-align: left;
+        }
+
+        h2 {
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .num {
+            color: blue;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <img src="{{ url_for('static', filename='favicon.ico') }}" style="width: 40px; height: 40px;" />
+        <h1 style="margin: 0;">manṭiq</h1>
+    </div>
+
+    <h2>#1. High-Level Argument</h2>
+    <table>
+        <tr>
+            <th> # </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for row in rows %}
+        <tr>
+            <td class="num">{{ row.number }}</td>
+            <td>{{ row.barebones }}</td>
+            <td>{{ row.written }}</td>
+            <td>{{ row.ptype }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Add Premise to Main Arg. -->
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+        <button>(+) Add Premise</button>
+    </div>
+
+    <!-- Sub-Arguments -->
+    {% for sub_arg in sub_args %}
+
+    <br><br><br>
+
+    <h2>#{{ sub_arg[0] }}. Sub-Argument for <strong class="num">{{ sub_arg[1].number }}</strong></h2>
+
+    <table>
+        <tr>
+            <th> # </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for node in sub_arg[1].premises %}
+        <tr>
+            <td class="num">{{ node.number }}</td>
+            <td>{{ node.barebones_form }}</td>
+            <td>{{ node.written_premise }}</td>
+            <td>{{ node.premise_type.name.replace('_',' ').title() if node.premise_type else "" }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td class="num">{{ sub_arg[1].number }}</td>
+            <td>{{ sub_arg[1].barebones_form }}</td>
+            <td>Therefore: {{ sub_arg[1].written_premise }}</td>
+            <td> </td>
+        </tr>
+    </table>
+
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+        <button>(+) Add Premise</button>
+    </div>
+
+    {% endfor %}
+
+</body>
+
+<footer style="text-align: right">
+    <br><br><br><br><br><br>
+    <p>Nooh Alavi (نوح بن أحمد كاشف العلوي) 2025</p>
+</footer>
+
+</html>

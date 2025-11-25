@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>qaḍiyya</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='qadiyya_favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+
+    <div id='top'>
+        <h1>qaḍiyya | قضية</h1>
+        <!-- <img src="{{ url_for('static', filename='qadiyya_favicon.ico') }}" style="width: 30px; height: 30px;" /> -->
+    </div>
+
+    <h1 id='basmala'>﷽</h1>
+</head>
+
+<body>
+
+    {% for argument in argument_chart %}
+
+    <!-- Header of each argument -->
+    <h2>#{{ argument['level'] }}. {{ argument['title'] }}</h2>
+
+    <!-- Argument chart -->
+    <table>
+        <tr>
+            <th> # </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        {% for row in argument['rows'] %}
+        <tr>
+            <td class="num">{{ row.number }}</td>
+            <td contenteditable="true">{{ row.barebones }}</td>
+
+            <!-- Written premise: editable only for premises or main argument -->
+            {% if row.premise_type or (argument.level == 1) %}
+            <td contenteditable="true">{{ row.written_premise }}</td>
+            {% else %}
+            <!-- Conclusion row: not editable for conclusions of sub-arguments-->
+            <td>{{ row.written_premise }}</td>
+            {% endif %}
+
+            <!-- Only show premise type for premises, not for conclusions -->
+            {% if row.premise_type %}
+            <td>
+                <select>
+                    {% for pt in premise_types %}
+                    <option value="{{ pt }}" {% if row.premise_type==pt %}selected{% endif %}>
+                        {{ pt }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </td>
+
+            <td class='delete'>
+                <form action="{{ url_for('delete_premise') }}" method="post" style="display:inline;">
+                    <input type="hidden" name="premise_num" value="{{ row.number }}">
+                    <button type="submit" class="delete">❌</button>
+                    <!-- 🗑️❌ -->
+                </form>
+            </td>
+            {% else %}
+            <td></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Add Premise Button -->
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+        <form action="{{ url_for('add_premise') }}" method="post">
+            <input type="hidden" name="arg_num" value="{{ argument['rows'][-1]['number']}}">
+            <button class="addPremise" type="submit"> (+) Add Premise </button>
+        </form>
+    </div>
+
+    <br><br><br>
+
+    {% endfor %}
+
+</body>
+
+<footer style="text-align: right">
+    <br><br><br><br><br><br>
+    <p>Nooh Alavi (نوح بن أحمد كاشف العلوي) 2025</p>
+</footer>
+
+</html>

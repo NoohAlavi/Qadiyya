@@ -1,0 +1,103 @@
+:root {
+  --font-size: 18px;
+}
+
+h1 {
+    font-family: 'Georgia', 'Times New Roman', Times, serif;
+    font-size: 14px;
+    margin: 0;
+}
+
+#basmala {
+    text-align: center;
+    color: #00AA55;
+    font-family:'Amiri', 'Times New Roman', Times, serif;
+    font-size: 32px;
+    margin: 40px;
+}
+
+#top {
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+
+    /* Make it static on the right-side */
+    position: fixed;
+    justify-content: flex-end;
+    right: 0;
+    margin: 0 12px;
+    padding: 4px;
+
+    background-color: #00AA55;
+    border-radius: 15px;
+}
+
+h2 {
+    text-align: center;
+    font-family: 'Georgia', 'Times New Roman', Times, serif;
+    margin: 40px;
+    margin-bottom: 30px;
+}
+
+/* Argument Tables  */
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 20px auto;
+}
+
+th, td {
+    border: 1px solid #333;
+    padding: 8px;
+    font-size: var(--font-size);
+    font-family: sans-serif;
+}
+
+th {
+    background-color: rgb(218, 218, 255);
+}
+
+td.indent {
+    padding-left: 20px;
+}
+
+select {
+    font-size: var(--font-size);
+    font-family: sans-serif;
+    border: none;
+}
+
+.num {
+    color: blue;
+    font-family: 'Georgia', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+/* Delete button */
+.delete {
+    font-size: 14px;
+    background-color: white;
+    border: none;
+}
+
+.delete:hover {
+    font-size: 15px;
+}
+
+
+/* Add Premise Button */
+button.addPremise {
+    font-size: 16px;
+    background-color: #00AA55;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+button.addPremise:hover {
+    font-size: 16.5px;
+    background-color: #00c060;
+}
+
+/* Footer */
+/* footer {
+    background-color: peachpuff;
+} */
