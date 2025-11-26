@@ -1,14 +1,17 @@
+# بسم الله الرحمن الرحيم
 <image src="static/qadiyya_icon.png"/>
 
 # Qaḍiyya | قضية
 **Qaḍiyya** is an interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format **inspired by the traditional science of Islamic logic [*manṭiq*]**.
 
-**Named after the Arabic *manṭiqī* term for the proposition** (i.e. a statement that can either be true or false, used to construct rational arguments), Qaḍiyya's purpose is to make the structure of complex reasoning visible. **Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts; letting users see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
+**Named after the Arabic *manṭiqī* term for the proposition** (i.e. a statement that can either be true or false, used to construct rational arguments), Qaḍiyya's purpose is to make the structure of complex reasoning visible. 
+
+**Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts; letting users see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
 
 ### 💡 Inspiration behind Qaḍiyya
 Qaḍiyya grew out of my own studies in the traditional Islamic sciences of logic [*manṭiq*], Avicennan Neoplatonism [*falsafa*], and dialectical theology [*kalām*]—especially during lessons with my teacher [Shaykh Hamza Karamali](https://hamzakaramali.com/), where we <u>regularly</u> build these detailed charts by hand, translating the rigorous philosophical arguments of luminaries like Athīr al-Dīn al-Abharī and Saʿd al-Dīn al-Taftāzānī in their works like the *Isagoge*, *Hidāyat al-ḥikma*, and *Sharḥ al-ʿaqāʾid al-nasafiyya*. 
 
-The chart format used in Qaḍiyya is not something I invented—**it is the exact structure taught to us by Shaykh Hamza in his courses**, reflecting the disciplined, hierarchical reasoning of classical *manṭiq* and *kalām*.
+The chart format used in Qaḍiyya is not something I invented—**it is the exact structure taught to us by Shaykh Hamza in [his courses](https://whyislamistrue.com/kalam)**, reflecting the disciplined, hierarchical reasoning of classical *manṭiq* and *kalām*.
 
 <image src="static/screenshot.png"/>
 
