@@ -1,0 +1,26 @@
+h1 {
+    text-align: center;
+    color: #00AA55;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 32px;
+    margin: 40px;
+
+    -webkit-text-stroke-color: black;
+    -webkit-text-stroke-width: 1px;
+}
+
+button {
+    width: 25%;
+    margin: 5px;
+    padding: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+    border-radius: 12px;
+    font-size: 13.5px;
+}
+
+button:hover {
+    width: 26%;
+    font-size: 14px;
+    background-color: whitesmoke;
+}
