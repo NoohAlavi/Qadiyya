@@ -8,7 +8,7 @@ app = Flask(__name__)
 mymap = MantiqMap()
 root_node = Node("", "")
 mymap.set_root(root_node)
-mymap.set_title("the  Impossibility  of Prime-Matter Without Physical Form ")
+# mymap.set_title("the  Impossibility  of Prime-Matter Without Physical Form ")
 
 @app.route("/add_premise", methods=["POST"])
 def add_premise():
@@ -58,7 +58,7 @@ def update_proposition_type():
     
     return redirect(url_for("editor"))
 
-@app.route("/argument-editor")
+@app.route("/editor")
 def editor():    
     return render_template("index.html", argument_chart=mymap.get_chart_representation(), premise_types=mymap.get_premise_types_list())
 
