@@ -8,12 +8,13 @@ app = Flask(__name__)
 mymap = MantiqMap()
 root_node = Node("", "")
 mymap.set_root(root_node)
+mymap.set_title("the  Impossibility  of Prime-Matter Without Physical Form ")
 
 @app.route("/add_premise", methods=["POST"])
 def add_premise():
     arg_num = request.form.get("arg_num")[1:] or 0
     mymap.add_subpremise(arg_num, '', '', PremiseType.SELF_EVIDENT)
-    return redirect(url_for("home"))
+    return redirect(url_for("editor"))
 
 @app.route("/delete_premise", methods=["POST"])
 def delete_premise():
@@ -21,7 +22,7 @@ def delete_premise():
     if premise_num:
         mymap.delete_premise(premise_num)
     
-    return redirect(url_for("home"))
+    return redirect(url_for("editor"))
 
 @app.route("/update_premise", methods=["POST"])
 def update_premise():
@@ -39,7 +40,7 @@ def update_premise():
         elif field == 'written_premise':
             premise.written_premise = new_value
 
-    return redirect(url_for("home"))
+    return redirect(url_for("editor"))
 
 @app.route("/update_proposition_type", methods=['POST'])
 def update_proposition_type():
@@ -55,11 +56,15 @@ def update_proposition_type():
         if proposition_type == PremiseType.INFERENTIAL:
             mymap.add_subpremise(premise_number[1:], "", "", PremiseType.SELF_EVIDENT)
     
-    return redirect(url_for("home"))
+    return redirect(url_for("editor"))
+
+@app.route("/argument-editor")
+def editor():    
+    return render_template("index.html", argument_chart=mymap.get_chart_representation(), premise_types=mymap.get_premise_types_list())
 
 @app.route("/")
-def home():    
-    return render_template("index.html", argument_chart=mymap.get_chart_representation(), premise_types=mymap.get_premise_types_list())
+def home():
+    return render_template("home.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

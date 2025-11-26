@@ -2,25 +2,25 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>qaḍiyya</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='qadiyya_favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
     <div id='top'>
-        <h1>qaḍiyya | قضية</h1>
-        <!-- <img src="{{ url_for('static', filename='qadiyya_favicon.ico') }}" style="width: 30px; height: 30px;" /> -->
-    </div>
-
-    <h1 id='basmala'>﷽</h1>
+        <a id="logo" href="/">qaḍiyya | قضية</a>
+    </div>    
 </head>
 
 <body>
+    <h1 id='basmala'>﷽</h1>
 
     {% for argument in argument_chart %}
 
     <!-- Header of each argument -->
-    <h2>#{{ argument['level'] }}. {{ argument['title'] }}</h2>
+    <h2>{{ argument['title'] }}</h2>
 
     <!-- Argument chart -->
     <table>
