@@ -4,8 +4,10 @@ class MantiqMap:
     
     #Constructor
     def __init__(self, root=None):
-        self.root = root
         self.title = ""
+        
+        if root:
+            self.set_root(root)
 
     # Public methods
     def set_root(self, root):
@@ -105,7 +107,7 @@ class MantiqMap:
                     subt_rows.append({
                         "number": premise.number,
                         "barebones": ' ',
-                        "written_premise": "Therefore: " + premise.written_premise
+                        "written_premise": "Therefore, " + premise.written_premise[:1].lower() + premise.written_premise[1:]
                     })
 
                     charts.append({

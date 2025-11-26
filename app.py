@@ -32,7 +32,9 @@ def update_premise():
     new_value = data['value']
 
     # Find the premise node by number
+    print(f"{premise_number=}, {mymap.root=}")
     premise = mymap.find_node_by_number(mymap.root, premise_number)
+    print(premise)
 
     if premise:
         if field == 'barebones':
@@ -57,6 +59,17 @@ def update_proposition_type():
             mymap.add_subpremise(premise_number[1:], "", "", PremiseType.SELF_EVIDENT)
     
     return redirect(url_for("editor"))
+
+@app.route("/create_new_argument", methods=['POST'])
+def create_new_arg():
+    global mymap
+    global root
+    
+    root = Node()
+    mymap = MantiqMap(root)
+    mymap.set_title(request.get_json()['title'])
+    
+    return jsonify({"redirect": url_for("editor")})
 
 @app.route("/editor")
 def editor():    

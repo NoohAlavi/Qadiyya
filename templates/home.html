@@ -7,18 +7,30 @@
     <title>qaḍiyya</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='qadiyya_favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-
-    <div id='top'>
-        <!-- <a id="logo" href="/">qaḍiyya | قضية</a> -->
-    </div>
+    <script src="{{ url_for('static', filename='home.js') }}"></script>
 </head>
 
 <body>
-    <h1>qaḍiyya | قضية</h1>
+    <div id='appTitle'>
+        <!-- <img src="{{ url_for('static', filename='qadiyya_icon.png') }}"/> -->
+        <h1>qaḍiyya | قضية</h1>
+    </div>
     <div style="display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
-        <button onclick="document.location='/editor'">Open Project</button>
-        <button onclick="document.location='/editor'">New Project</button>
+        <button onclick="openProject()" id="openProject">Open Project</button>
+        <button onclick="newProject()" id="newProject">New Project</button>
+    </div>
+
+    <div class="form-popup" id="myForm">
+        <form class="form-container">
+            <h2>New Argument</h2>
+            <p>WARNING: this will <u>delete</u> the current argument. <strong>This cannot be undone.</strong></p>
+
+            <label for="name"><b>Argument Title</b></label>
+            <input type="text" placeholder="What is the argument trying to prove?" id="title" required>
+
+            <button type="submit" class="btn" onclick="createNewProject(event)">Create</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        </form>
     </div>
     <!-- <a href="/argument-editor">Go to argument editor</a> -->
 </body>
