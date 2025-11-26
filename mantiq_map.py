@@ -104,7 +104,7 @@ class MantiqMap:
                     # Reiterate the premise being proven
                     subt_rows.append({
                         "number": premise.number,
-                        "barebones": premise.barebones_form,
+                        "barebones": ' ',
                         "written_premise": "Therefore: " + premise.written_premise
                     })
 
@@ -144,6 +144,9 @@ class MantiqMap:
             assign_sub(premise)
             
     def find_node_by_number(self, node: Node, number: str) -> Node | None:
+        if node.is_root and str(number) in ["0", ""]:
+            return node
+        
         if getattr(node, "number", None) == number:
             return node
         
@@ -157,16 +160,8 @@ class MantiqMap:
         return None
     
     def format_premise_type(self, premise_type: PremiseType) -> str:
-        # premise_types = {
-        #     PremiseType.INFERENTIAL: "Inferential [naẓariyyāt]",
-        #     PremiseType.SELF_EVIDENT: "Self-Evident [awwaliyyāt]",
-        #     PremiseType.OBSERVATIONAL: "Observational [mushāhadāt]",
-        #     PremiseType.EMPERICALLY_OBSERVED: "Empirically Observed [ḥissiyyāt]",
-        #     PremiseType.INTROSPECTIVELY_OBSERVED: "Introspectively Observed [wijdāniyyāt]",
-        #     PremiseType.TESTED: "Tested [mujarrabāt]",
-        #     PremiseType.INTUITED: "Intuited [ḥadsiyyāt]",
-        #     PremiseType.MASS_TESTIFIED: "Mass-Transmitted [mutawātirāt]",
-        #     PremiseType.SUBCONSCIOUSLY_INFERRED: "Subconsciously-Inferred [fiṭriyyāt]"
-        # }
         return premise_type.name.replace('_', ' ').title()
-        # return premise_types[premise_types]
+        
+    def parse_premise_type(self, label: str) -> PremiseType:
+        enum_key = label.replace(' ', '_').upper()
+        return PremiseType[enum_key]

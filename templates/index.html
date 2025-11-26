@@ -5,6 +5,7 @@
     <title>qaḍiyya</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='qadiyya_favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
     <div id='top'>
         <h1>qaḍiyya | قضية</h1>
@@ -33,11 +34,11 @@
         {% for row in argument['rows'] %}
         <tr>
             <td class="num">{{ row.number }}</td>
-            <td contenteditable="true">{{ row.barebones }}</td>
+            <td contenteditable="true" class="barebones">{{ row.barebones }}</td>
 
             <!-- Written premise: editable only for premises or main argument -->
             {% if row.premise_type or (argument.level == 1) %}
-            <td contenteditable="true">{{ row.written_premise }}</td>
+            <td contenteditable="true" class="written_premise">{{ row.written_premise }}</td>
             {% else %}
             <!-- Conclusion row: not editable for conclusions of sub-arguments-->
             <td>{{ row.written_premise }}</td>
