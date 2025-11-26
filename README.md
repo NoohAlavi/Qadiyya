@@ -1,6 +1,6 @@
 <image src="static/qadiyya_icon.png"/>
 
-# Qaḍiyya
+# Qaḍiyya | قضية
 
 **Qaḍiyya** is an interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format **inspired by the traditional science of Islamic logic [*manṭiq*]**.
 
