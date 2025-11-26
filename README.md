@@ -3,12 +3,16 @@
 # Qaḍiyya | قضية
 **Qaḍiyya** is an interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format **inspired by the traditional science of Islamic logic [*manṭiq*]**.
 
-**Named after the *manṭiqī* term for the proposition**, Qaḍiyya's purpose is to make the structure of complex reasoning visible. **Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts; letting users see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
+**Named after the Arabic *manṭiqī* term for the proposition** (i.e. a statement that can either be true or false, used to construct rational arguments), Qaḍiyya's purpose is to make the structure of complex reasoning visible. **Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts; letting users see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
 
 ### 💡 Inspiration behind Qaḍiyya
 Qaḍiyya grew out of my own studies in the traditional Islamic sciences of logic [*manṭiq*], Avicennan Neoplatonism [*falsafa*], and dialectical theology [*kalām*]—especially during lessons with my teacher [Shaykh Hamza Karamali](https://hamzakaramali.com/), where we <u>regularly</u> build these detailed charts by hand, translating the rigorous philosophical arguments of luminaries like Athīr al-Dīn al-Abharī and Saʿd al-Dīn al-Taftāzānī in their works like the *Isagoge*, *Hidāyat al-ḥikma*, and *Sharḥ al-ʿaqāʾid al-nasafiyya*. 
 
 The chart format used in Qaḍiyya is not something I invented—**it is the exact structure taught to us by Shaykh Hamza in his courses**, reflecting the disciplined, hierarchical reasoning of classical *manṭiq* and *kalām*.
+
+<image src="static/screenshot.png"/>
+
+<small>*Pictured above: a demonstration of **Qaḍiyya** using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism*</small>
 
 These charts are incredibly powerful tools: they force the student to break a proof into its smallest propositions, see exactly how each statement supports the next, and understand the inner architecture of reasoning in a way that textual explanations alone can’t provide. Not only that, but each proposition is classified as either "inferential" [*naẓarī*], meaning it requires another argument to establish, or "non-inferential" [*ḍarūrī*], meaning it does not. With the help of these charts, the student can take each argument back to its non-inferential premises, and understand where the arguments can rationally be critiqued and where they cannot.
 
