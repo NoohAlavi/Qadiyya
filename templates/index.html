@@ -11,7 +11,7 @@
 
     <div id='top'>
         <a id="logo" href="/">qaḍiyya | قضية</a>
-    </div>    
+    </div>
 </head>
 
 <body>
@@ -34,7 +34,11 @@
         {% for row in argument['rows'] %}
         <tr>
             <td class="num">{{ row.number }}</td>
-            <td contenteditable="true" class="barebones">{{ row.barebones }}</td>
+            {% if row.premise_type or (argument.level == 1) %}
+                <td contenteditable="true" class="barebones">{{ row.barebones }}</td>
+            {% else %}
+                <td contenteditable="true" class="barebones_2">1{{ row.barebones }}</td>
+            {% endif %}
 
             <!-- Written premise: editable only for premises or main argument -->
             {% if row.premise_type or (argument.level == 1) %}

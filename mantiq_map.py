@@ -106,7 +106,7 @@ class MantiqMap:
                     # Reiterate the premise being proven
                     subt_rows.append({
                         "number": premise.number,
-                        "barebones": ' ',
+                        "barebones": premise.barebones_form_2,
                         "written_premise": "Therefore, " + premise.written_premise[:1].lower() + premise.written_premise[1:]
                     })
 

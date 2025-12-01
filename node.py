@@ -22,6 +22,7 @@ class Node:
         self.is_root = False
 
         self.barebones_form = barebones_form
+        self.barebones_form_2 = ''
         self.written_premise = written_premise
         self.premise_type = premise_type
         self.premises = []

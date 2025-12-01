@@ -34,13 +34,14 @@ def update_premise():
     # Find the premise node by number
     print(f"{premise_number=}, {mymap.root=}")
     premise = mymap.find_node_by_number(mymap.root, premise_number)
-    print(premise)
 
     if premise:
-        if field == 'barebones':
-            premise.barebones_form = new_value
-        elif field == 'written_premise':
+        if field == 'written_premise':
             premise.written_premise = new_value
+        elif field == 'barebones':
+            premise.barebones_form = new_value
+        elif field == 'barebones_2':
+            premise.barebones_form_2 = new_value
 
     return redirect(url_for("editor"))
 
