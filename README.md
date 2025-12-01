@@ -2,7 +2,7 @@
 <image src="static/qadiyya_icon.png"/>
 
 # Qaḍiyya | قضية
-**Qaḍiyya** is an interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format **inspired by the traditional science of Islamic logic [*manṭiq*]**.
+**Qaḍiyya** is a **work-in-progress** interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format **inspired by the traditional science of Islamic logic [*manṭiq*]**.
 
 **Named after the Arabic *manṭiqī* term for the proposition** (i.e. a statement that can either be true or false, used to construct rational arguments), Qaḍiyya's purpose is to make the structure of complex reasoning visible. 
 
