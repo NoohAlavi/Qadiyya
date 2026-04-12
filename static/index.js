@@ -1,3 +1,17 @@
+// Restore scroll position after reload
+document.addEventListener('DOMContentLoaded', () => {
+    const savedScroll = sessionStorage.getItem('scrollY');
+    if (savedScroll !== null) {
+        window.scrollTo(0, parseInt(savedScroll));
+        sessionStorage.removeItem('scrollY');
+    }
+});
+
+function reloadWithScroll() {
+    sessionStorage.setItem('scrollY', window.scrollY);
+    window.location.reload();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // Editable text cells
@@ -30,10 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ number: premiseNumber, field: fieldType, value: newText })
             });
 
-            // update old value so next blur works correctly
+            // update old value so next blur works correctly — no reload needed
             e.target.dataset.oldValue = newText;
+        });
+    });
 
-            window.location.reload();
+    // Save scroll position before add/delete form submissions
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', () => {
+            sessionStorage.setItem('scrollY', window.scrollY);
         });
     });
 
@@ -51,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const premiseNumber = e.target.closest('tr').querySelector('.num').innerText || 0;
 
-            await fetch('/update_proposition_type', {
+            const res = await fetch('/update_proposition_type', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ value: newValue, number: premiseNumber })
@@ -60,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // update old value
             e.target.dataset.oldValue = newValue;
 
-            window.location.reload();
+            // only reload if the change was structural (e.g. switched to INFERENTIAL)
+            const data = await res.json();
+            if (data.reload) reloadWithScroll();
         });
     });
 

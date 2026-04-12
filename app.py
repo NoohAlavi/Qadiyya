@@ -41,7 +41,7 @@ def update_premise():
         elif field == 'barebones_child':
             premise.barebones["child"] = new_value
 
-    return redirect(url_for("editor"))
+    return jsonify({"ok": True})
 
 @app.route("/update_proposition_type", methods=['POST'])
 def update_proposition_type():
@@ -51,13 +51,15 @@ def update_proposition_type():
     
     premise = mymap.find_node_by_number(mymap.root, premise_number)
     
+    needs_reload = False
     if premise:
         premise.premise_type = proposition_type
         
         if proposition_type == PremiseType.INFERENTIAL:
             mymap.add_subpremise(premise_number[1:], "", "", PremiseType.SELF_EVIDENT)
+            needs_reload = True
     
-    return redirect(url_for("editor"))
+    return jsonify({"reload": needs_reload})
 
 @app.route("/create_new_argument", methods=['POST'])
 def create_new_arg():
