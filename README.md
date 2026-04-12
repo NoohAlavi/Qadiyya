@@ -1,5 +1,4 @@
-# بسم الله الرحمن الرحيم
-
+<p align="center">بسم الله الرحمن الرحيم</p>
 
 <h1>
   <img src="static/qadiyya_icon.png" width="40" style="vertical-align:middle"> Qaḍiyya | قضية
