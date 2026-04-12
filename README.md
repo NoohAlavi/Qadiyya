@@ -8,6 +8,16 @@
   <img src="static/qadiyya_icon.png" width="40" style="vertical-align:middle" alt="Qaḍiyya Logo"> Qaḍiyya | قضية
 </h1>
 
+<details>
+  <summary><b>📂 Click to expand Table of Contents</b></summary>
+  
+  1. [💡 Inspiration Behind Qaḍiyya](#-inspiration-behind-qaḍiyya)
+  2. [🧠 Project Goals](#-project-goals)
+  3. [📦 Current Features](#-current-features)
+  4. [🏗️ Tech Stack & Architecture](#️-tech-stack--architecture)
+</details>
+<br/>
+
 **Qaḍiyya** is a **work-in-progress** interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format **inspired by the traditional science of Islamic logic [*manṭiq*]**.
 
 <img src="static/screenshot_home.png" alt="Screenshot of Qaḍiyya's homepage"/>
@@ -18,7 +28,7 @@
 
 **Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts; letting users see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
 
-### 💡 Inspiration behind Qaḍiyya
+## 💡 Inspiration behind Qaḍiyya
 Qaḍiyya grew out of my own studies in the traditional Islamic sciences of Classical Logic [*manṭiq*], Avicennan-Neoplatonic Philosophy [*falsafa*], and Dialectical Theology [*kalām*]—especially during lessons with my teacher [Shaykh Hamza Karamali](https://hamzakaramali.com/), where we <u>regularly</u> build these detailed charts by hand, translating the rigorous philosophical arguments of luminaries like [Athīr al-Dīn al-Abharī](https://en.wikipedia.org/wiki/Athir_al-Din_al-Abhari) and [Saʿd al-Dīn al-Taftāzānī](https://en.wikipedia.org/wiki/Al-Taftazani) in their works like the *Isagoge*, *Hidāyat al-ḥikma*, and *Sharḥ al-ʿaqāʾid al-nasafiyya*. 
 
 The chart format used in Qaḍiyya is not something I invented—**it is the exact structure taught to us by Shaykh Hamza in [his courses](https://whyislamistrue.com/kalam)**, reflecting the disciplined, hierarchical reasoning of classical *manṭiq* and *kalām*.
