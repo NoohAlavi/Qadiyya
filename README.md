@@ -1,4 +1,4 @@
-<p align="center">بسم الله الرحمن الرحيم</p>
+<p align="center"><strong>بسم الله الرحمن الرحيم</strong><p>
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Work--in--Progress-orange">
   <img src="https://img.shields.io/badge/Built%20with-Flask-green">
