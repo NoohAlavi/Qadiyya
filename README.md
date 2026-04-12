@@ -9,7 +9,7 @@
 
 <image src="static/screenshot_home.png"/>
 
-<small>*Pictured above: a screenshot of **Qaḍiyya**'s homepage</small>
+<small>*Pictured above: a screenshot of **Qaḍiyya**'s homepage*</small>
 
 **Named after the Arabic *manṭiqī* term for the proposition** (i.e. a statement that can either be true or false, used to construct rational arguments), Qaḍiyya's purpose is to make the structure of complex reasoning visible. 
 
