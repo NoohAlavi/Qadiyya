@@ -1,12 +1,16 @@
 <p align="center">بسم الله الرحمن الرحيم</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Work--in--Progress-orange">
+  <img src="https://img.shields.io/badge/Built%20with-Flask-green">
+</p>
 
 <h1>
-  <img src="static/qadiyya_icon.png" width="40" style="vertical-align:middle"> Qaḍiyya | قضية
+  <img src="static/qadiyya_icon.png" width="40" style="vertical-align:middle" alt="Qaḍiyya Logo"> Qaḍiyya | قضية
 </h1>
 
 **Qaḍiyya** is a **work-in-progress** interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format **inspired by the traditional science of Islamic logic [*manṭiq*]**.
 
-<image src="static/screenshot_home.png"/>
+<img src="static/screenshot_home.png" alt="Screenshot of Qaḍiyya's homepage"/>
 
 <small>*Pictured above: a screenshot of **Qaḍiyya**'s homepage*</small>
 
@@ -19,7 +23,7 @@ Qaḍiyya grew out of my own studies in the traditional Islamic sciences of Clas
 
 The chart format used in Qaḍiyya is not something I invented—**it is the exact structure taught to us by Shaykh Hamza in [his courses](https://whyislamistrue.com/kalam)**, reflecting the disciplined, hierarchical reasoning of classical *manṭiq* and *kalām*.
 
-<image src="static/screenshot_editor.png"/>
+<img src="static/screenshot_editor.png" alt="A demonstration of Qaḍiyya using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism" />
 
 <small>*Pictured above: a demonstration of **Qaḍiyya** using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism*</small>
 
@@ -50,9 +54,9 @@ This tool helps make arguments outwardly clear by:
 **The goal is to clarify reasoning, not automate it.**
 
 ### 2. Bring *manṭiq*-style discipline to modern argument mapping
-Modern argument-mapping apps exist, but almost none capture the hierarchical rigor of classical manṭiq and kalām.
+Modern argument-mapping apps exist, but none capture the hierarchical rigor of classical *manṭiq* and *kalām*.
 
-Qaḍiyya is designed to assist the student in practicing that discipline—not to replace it.
+Qaḍiyya is designed to assist the student in practicing that discipline—<u>not</u> to replace it.
 
 It supports:
 
@@ -116,23 +120,23 @@ The codebase is structured for future enhancements that support deeper study, in
 **All expansions maintain the same principle: the tool *assists* thinking; it does <u>not</u> replace it!**
 
 ## 📦 Current Features
-- Add premises or sub-premises dynamically
+- **Dynamic Argument Construction** – Add premises or nested sub-premises with a single click, allowing for unlimited depth in logical proofs.
+- **Recursive Deletion Logic** – Deleting a parent premise automatically and cleanly removes all associated sub-arguments, maintaining the integrity of the logic tree.
+- **Intelligent Auto-Renumbering** – Real-time numbering updates (e.g., P1, P2, P3) ensure that the structural hierarchy remains clear even as the argument is reorganized.
+- **Premise Classification** – Integrated dropdowns to categorize statements by their epistemic type (e.g., inferential [*naẓarī*] vs. non-inferential [*ḍarūrī*]), a core requirement of classical Islamic logic [*manṭiq*].
+- **Hierarchical Visualization** – A clean, responsive UI specifically designed to display the "inner architecture" of an argument at a glance.
+- **Modular Backend Architecture** – A Flask-based system designed for scalability, separating the logic of argument traversal from the front-end rendering.
 
-- Delete premises recursively
+## 🏗️ Tech Stack & Architecture
+- **Framework:** **Python (Flask)** — The backbone of the application, managing routing and the complex backend logic required for structured argument mapping.
+- **Frontend:** **Vanilla JS / HTML5 / CSS3** — Built without heavy external frameworks to ensure a fast, lightweight, and highly responsive user experience. 
+- **Templating:** **Jinja2** — Utilized modular macros to handle the recursive rendering of argument components, keeping the codebase DRY and maintainable.
 
-- Automatic argument & premise numbering
+</br>
 
-- Dropdown menu for setting premise type
+- **Core Logic:** **Recursive Tree Traversal** — Custom recursive algorithms manage the hierarchical data structure, ensuring that premise relationships and numbering remain consistent across all levels of nesting.
+- **Data Integrity:** **Parent-Child Relationship Model** — The system is structured to preserve the logical flow from non-inferential facts to their inferential conclusions.
 
-- Clean UI for visualizing nested structure
+</br>
 
-- Flask backend with modular code
-
-- Jinja templates for dynamic rendering
-
-## 🏗️ Tech Stack
-- Python (Flask) — backend + routing
-
-- HTML/CSS/JS — frontend UI
-
-- Jinja2 — dynamic rendering
+**And Divine facilitation is from God Alone | وبالله التوفيق**
