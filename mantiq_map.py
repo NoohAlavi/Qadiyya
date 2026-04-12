@@ -60,14 +60,16 @@ class MantiqMap:
         for p in self.root.premises:
             high_level_rows.append({
                 "number": p.number,
-                "barebones": p.barebones_form,
+                "barebones": p.barebones["parent"],  # parent perspective
+                "barebones_key": "parent",
                 "written_premise": p.written_premise,
                 "premise_type": self.format_premise_type(p.premise_type)
             })
             
         high_level_rows.append({
             "number": "C",
-            "barebones": self.root.barebones_form,
+            "barebones": self.root.barebones["parent"],
+            "barebones_key": "parent",
             "written_premise": self.root.written_premise
         })
 
@@ -85,14 +87,17 @@ class MantiqMap:
                     for child in premise.premises:
                         subt_rows.append({
                             "number": child.number,
-                            "barebones": child.barebones_form,
+                            "barebones": child.barebones["parent"],  # child's own parent perspective
+                            "barebones_key": "parent",
                             "written_premise": child.written_premise,
                             "premise_type": self.format_premise_type(child.premise_type)
                         })
 
+                    # Conclusion row: uses barebones["child"] — editable barebones, non-editable written premise
                     subt_rows.append({
                         "number": premise.number,
-                        "barebones": getattr(premise, 'barebones_form_2', premise.barebones_form),
+                        "barebones": premise.barebones["child"],  # child perspective
+                        "barebones_key": "child",
                         "written_premise": "Therefore, " + premise.written_premise[:1].lower() + premise.written_premise[1:]
                     })
 
@@ -111,22 +116,16 @@ class MantiqMap:
     
     # Helper methods
     def assign_numbers(self):
-        """
-        FIXED: Numbers direct premises of a node first, then recurses.
-        This ensures High-Level Argument rows are always sequential (P1, P2...).
-        """
         if not self.root:
             return
             
         self._counter = 1
 
         def process_level(node):
-            # 1. Assign numbers to all immediate premises of this node
             for premise in node.premises:
                 premise.number = f"P{self._counter}"
                 self._counter += 1
             
-            # 2. Now recurse into those premises to number their sub-arguments
             for premise in node.premises:
                 process_level(premise)
 

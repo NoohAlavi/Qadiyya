@@ -34,21 +34,28 @@
         {% for row in argument['rows'] %}
         <tr>
             <td class="num">{{ row.number }}</td>
-            {% if row.premise_type or (argument.level == 1) %}
-                <td contenteditable="true" class="barebones">{{ row.barebones }}</td>
+
+            {% if row.premise_type %}
+                <!-- Regular premise row: barebones from parent perspective, editable -->
+                <td contenteditable="true"
+                    class="barebones"
+                    data-barebones-key="parent">{{ row.barebones }}</td>
+                <td contenteditable="true" class="written_premise">{{ row.written_premise }}</td>
+            {% elif argument.level == 1 %}
+                <!-- Conclusion row of the high-level argument: editable barebones, editable written premise -->
+                <td contenteditable="true"
+                    class="barebones"
+                    data-barebones-key="parent">{{ row.barebones }}</td>
+                <td contenteditable="true" class="written_premise">{{ row.written_premise }}</td>
             {% else %}
-                <td contenteditable="true" class="barebones_2">1{{ row.barebones }}</td>
+                <!-- Conclusion row of a sub-argument: editable barebones (child key), non-editable written premise -->
+                <td contenteditable="true"
+                    class="barebones"
+                    data-barebones-key="child">{{ row.barebones }}</td>
+                <td>{{ row.written_premise }}</td>
             {% endif %}
 
-            <!-- Written premise: editable only for premises or main argument -->
-            {% if row.premise_type or (argument.level == 1) %}
-            <td contenteditable="true" class="written_premise">{{ row.written_premise }}</td>
-            {% else %}
-            <!-- Conclusion row: not editable for conclusions of sub-arguments-->
-            <td>{{ row.written_premise }}</td>
-            {% endif %}
-
-            <!-- Only show premise type for premises, not for conclusions -->
+            <!-- Only show premise type dropdown and delete button for premises, not conclusions -->
             {% if row.premise_type %}
             <td>
                 <select>
@@ -64,7 +71,6 @@
                 <form action="{{ url_for('delete_premise') }}" method="post" style="display:inline;">
                     <input type="hidden" name="premise_num" value="{{ row.number }}">
                     <button type="submit" class="delete">❌</button>
-                    <!-- 🗑️❌ -->
                 </form>
             </td>
             {% else %}

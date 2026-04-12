@@ -8,7 +8,6 @@ app = Flask(__name__)
 mymap = MantiqMap()
 root_node = Node("", "")
 mymap.set_root(root_node)
-# mymap.set_title("the  Impossibility  of Prime-Matter Without Physical Form ")
 
 @app.route("/add_premise", methods=["POST"])
 def add_premise():
@@ -28,20 +27,19 @@ def delete_premise():
 def update_premise():
     data = request.get_json()
     premise_number = data['number'] if data['number'] else 0
-    field = data['field']  # 'barebones' or 'written_premise'
+    field = data['field']        # 'barebones_parent', 'barebones_child', or 'written_premise'
     new_value = data['value']
 
-    # Find the premise node by number
     print(f"{premise_number=}, {mymap.root=}")
     premise = mymap.find_node_by_number(mymap.root, premise_number)
 
     if premise:
         if field == 'written_premise':
             premise.written_premise = new_value
-        elif field == 'barebones':
-            premise.barebones_form = new_value
-        elif field == 'barebones_2':
-            premise.barebones_form_2 = new_value
+        elif field == 'barebones_parent':
+            premise.barebones["parent"] = new_value
+        elif field == 'barebones_child':
+            premise.barebones["child"] = new_value
 
     return redirect(url_for("editor"))
 

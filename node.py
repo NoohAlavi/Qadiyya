@@ -21,8 +21,14 @@ class Node:
         ):
         self.is_root = False
 
-        self.barebones_form = barebones_form
-        self.barebones_form_2 = ''
+        # barebones is a dict with two keys:
+        # "parent" — how this premise appears in the parent table
+        # "child"  — how this premise appears as the conclusion of its own sub-argument table
+        self.barebones = {
+            "parent": barebones_form,
+            "child": ""
+        }
+
         self.written_premise = written_premise
         self.premise_type = premise_type
         self.premises = []
@@ -41,8 +47,7 @@ class Node:
 
         num = "C" if self.is_root else self.number 
         ptype = f"({self.premise_type.name})" if self.premise_type else ""
-        print(f"{indent}- [{num}]: {self.barebones_form} | '{self.written_premise}' {'' if self.is_root else ptype}")
-
+        print(f"{indent}- [{num}]: {self.barebones['parent']} | '{self.written_premise}' {'' if self.is_root else ptype}")
 
         for node in self.premises:
             node.recursive_display(level + 1)

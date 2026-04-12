@@ -13,7 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (newText === oldText) return;
 
             const premiseNumber = e.target.closest('tr').querySelector('.num').innerText || 0;
-            const fieldType = e.target.classList.contains('barebones') ? 'barebones' : 'written_premise';
+
+            let fieldType;
+            if (e.target.classList.contains('barebones')) {
+                const key = e.target.dataset.barebonesKey; // "parent" or "child"
+                fieldType = key === 'child' ? 'barebones_child' : 'barebones_parent';
+            } else {
+                fieldType = 'written_premise';
+            }
 
             console.log(`Updating ${fieldType} for premise ${premiseNumber}: ${newText}`);
 
