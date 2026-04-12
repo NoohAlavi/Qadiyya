@@ -21,11 +21,11 @@
 </details>
 <br/>
 
-**Qaḍiyya** is a **work-in-progress** interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format **inspired by the traditional science of Islamic logic [*manṭiq*]**.
+**Qaḍiyya** is a work-in-progress interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format—**inspired by the traditional science of Islamic logic [*manṭiq*]**.
 
-**Named after the Arabic *manṭiqī* term for the proposition** (i.e. a statement that can either be true or false, used to construct rational arguments), Qaḍiyya's purpose is to make the structure of complex reasoning visible. 
+Named after the Arabic *manṭiqī* term for a proposition—a statement that can be true or false—Qaḍiyya is designed to **make the structure of complex reasoning visible**.
 
-**Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts; letting users see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
+**Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts, allowing them to see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
 
 <img src="static/screenshot_home.png" alt="Screenshot of Qaḍiyya's homepage"/>
 
