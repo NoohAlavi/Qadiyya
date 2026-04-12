@@ -1,104 +1,356 @@
-/* #appTitle {
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+SC:wght@400;600&display=swap');
+
+
+:root {
+  --parchment:     #f5f0e8;
+  --parchment-mid: #ede6d6;
+  --ink:           #1a1410;
+  --ink-soft:      #3d3228;
+  --gold:          #b8860b;
+  --gold-light:    #d4a843;
+  --gold-faint:    #f0e4b8;
+  --emerald:       #1a5c3a;
+  --emerald-mid:   #2a7a50;
+  --emerald-light: #00AA55;
+  --emerald-faint: #e8f5ee;
+  --border:        #c8b89a;
+  --border-dark:   #9a8060;
+  --shadow:        rgba(26, 20, 16, 0.15);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background-color: var(--parchment);
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow: hidden;
+}
+
+/* ── Decorative background ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%,   rgba(184,134,11,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 100% 100%, rgba(26,92,58,0.07)  0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 0%   80%,  rgba(184,134,11,0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Corner ornaments ── */
+body::after {
+  content: '❧';
+  position: fixed;
+  bottom: 32px;
+  right: 40px;
+  font-size: 28px;
+  color: var(--gold);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Main layout ── */
+.home-wrapper {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 40px 20px;
+}
+
+/* ── Decorative rule ── */
+.ornamental-rule {
   display: flex;
   align-items: center;
-  gap: 12px;
-} */
+  gap: 16px;
+  width: 480px;
+  max-width: 90vw;
+  margin-bottom: 12px;
+}
+.ornamental-rule::before,
+.ornamental-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+.ornamental-rule span {
+  color: var(--gold);
+  font-size: 18px;
+  opacity: 0.8;
+}
 
-h1 {
+/* ── Basmala ── */
+.home-basmala {
+  font-family: 'Amiri', serif;
+  font-size: 30px;
+  color: var(--emerald);
   text-align: center;
-  color: #00AA55;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-size: 80px;
-  margin: 40px;
-
-  -webkit-text-stroke-color: #000000;
-  -webkit-text-stroke-width: 1px;
+  margin-bottom: 32px;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.1s forwards;
 }
 
-button#openProject,
-button#newProject {
-  width: 35%;
-  margin: 5px;
-  padding: 50px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-
-  border-radius: 12px;
-  font-size: 20px;
+/* ── Title block ── */
+.home-title-block {
+  text-align: center;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.25s forwards;
 }
 
-button#openProject:hover,
-button#newProject:hover {
-  width: 36%;
-  font-size: 20.5px;
-  background-color: whitesmoke;
+.home-title {
+  font-family: 'Cormorant SC', serif;
+  font-size: clamp(42px, 7vw, 72px);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  margin-bottom: 8px;
 }
 
+.home-title-arabic {
+  font-family: 'Amiri', serif;
+  font-size: clamp(22px, 3.5vw, 36px);
+  color: var(--gold);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-top: 6px;
+}
+
+.home-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-soft);
+  opacity: 0.75;
+  letter-spacing: 0.08em;
+  margin-top: 14px;
+}
+
+/* ── Divider ── */
+.home-divider {
+  width: 320px;
+  max-width: 80vw;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border-dark), transparent);
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.4s forwards;
+}
+
+/* ── Buttons ── */
+.home-buttons {
+  display: flex;
+  gap: 20px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.55s forwards;
+}
+
+.home-btn {
+  position: relative;
+  padding: 18px 44px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.home-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.home-btn-primary {
+  background-color: var(--emerald);
+  color: var(--parchment);
+  box-shadow: 0 2px 16px rgba(26,92,58,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.home-btn-primary::before {
+  background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+}
+.home-btn-primary:hover {
+  background-color: var(--emerald-mid);
+  box-shadow: 0 4px 24px rgba(26,92,58,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+.home-btn-primary:hover::before { opacity: 1; }
+
+.home-btn-secondary {
+  background-color: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--border-dark);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.home-btn-secondary:hover {
+  background-color: var(--parchment-mid);
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 4px 16px var(--shadow);
+  transform: translateY(-2px);
+}
+
+/* ── Footer credit ── */
+.home-credit {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Amiri', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-soft);
+  opacity: 0.5;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+/* ── Modal overlay ── */
 .form-popup {
   display: none;
-  /* stays hidden until JS opens it */
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-
-  background: rgba(0, 0, 0, 0.5);
-  /* dark overlay */
-  backdrop-filter: blur(3px);
-  /* optional blur */
-
+  inset: 0;
+  background: rgba(26, 20, 16, 0.55);
+  backdrop-filter: blur(6px);
   justify-content: center;
   align-items: center;
-
   z-index: 999;
 }
 
 .form-container {
-  width: 400px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 10px;
+  width: 460px;
+  max-width: 92vw;
+  background: var(--parchment);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 64px rgba(26,20,16,0.35), 0 0 0 1px rgba(184,134,11,0.15);
+  padding: 40px 40px 32px;
+  position: relative;
+  animation: modalIn 0.3s ease;
 }
 
-/* Full-width input fields */
+/* top gold bar */
+.form-container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
+}
+
+.form-container h2 {
+  font-family: 'Cormorant SC', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.form-container .warning {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: #8b3a3a;
+  margin-bottom: 24px;
+  line-height: 1.5;
+  padding: 10px 14px;
+  background: rgba(139,58,58,0.07);
+  border-left: 3px solid #8b3a3a;
+}
+
+.form-container label {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
 .form-container input[type=text] {
-  width: 90%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type=text]:focus {
-  background-color: #ddd;
+  width: 100%;
+  padding: 12px 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  background: var(--parchment-mid);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--ink);
   outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 28px;
+}
+.form-container input[type=text]:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(184,134,11,0.12);
+}
+.form-container input[type=text]::placeholder {
+  color: var(--border-dark);
+  font-style: italic;
 }
 
-/* Set a style for the submit/login button */
 .form-container .btn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px 20px;
+  width: 100%;
+  padding: 13px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   border: none;
   cursor: pointer;
-  width: 100%;
+  transition: all 0.2s ease;
   margin-bottom: 10px;
-  opacity: 0.8;
 }
 
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
+.form-container .btn-create {
+  background-color: var(--emerald);
+  color: var(--parchment);
+}
+.form-container .btn-create:hover {
+  background-color: var(--emerald-mid);
 }
 
-/* Add some hover effects to buttons */
-.form-container .btn:hover,
-.open-button:hover {
-  opacity: 1;
+.form-container .btn-cancel {
+  background-color: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--border);
+}
+.form-container .btn-cancel:hover {
+  background-color: var(--parchment-mid);
+  border-color: var(--border-dark);
 }
 
-.form-container h2,
-label {
-  font-family: Georgia, 'Times New Roman', Times, serif;
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }

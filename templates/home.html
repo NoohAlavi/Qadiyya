@@ -4,35 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>qaḍiyya</title>
+    <title>qaḍiyya | قضية</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='qadiyya_favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <script src="{{ url_for('static', filename='home.js') }}"></script>
 </head>
 
 <body>
-    <div id='appTitle'>
-        <!-- <img src="{{ url_for('static', filename='qadiyya_icon.png') }}"/> -->
-        <h1>qaḍiyya | قضية</h1>
-    </div>
-    <div style="display: flex; flex-direction: column; align-items: center; margin-top: 10px;">
-        <button onclick="openProject()" id="openProject">Open Project</button>
-        <button onclick="newProject()" id="newProject">New Project</button>
+
+  <main class="home-wrapper">
+
+    <!-- Basmala -->
+    <div class="home-basmala">﷽</div>
+
+    <!-- Ornamental rule -->
+    <div class="ornamental-rule"><span>✦</span></div>
+
+    <!-- Title -->
+    <div class="home-title-block">
+      <h1 class="home-title">
+        Qaḍiyya
+        <span class="home-title-arabic">قضية</span>
+      </h1>
+      <p class="home-subtitle">an interactive tool for classical argument mapping</p>
     </div>
 
-    <div class="form-popup" id="myForm">
-        <form class="form-container">
-            <h2>New Argument</h2>
-            <p>WARNING: this will <u>delete</u> the current argument. <strong>This cannot be undone.</strong></p>
+    <!-- Divider -->
+    <div class="home-divider"></div>
 
-            <label for="name"><b>Argument Title</b></label>
-            <input type="text" placeholder="What is the argument trying to prove?" id="title" required>
-
-            <button type="submit" class="btn" onclick="createNewProject(event)">Create</button>
-            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-        </form>
+    <!-- Buttons -->
+    <div class="home-buttons">
+      <button class="home-btn home-btn-secondary" onclick="openProject()">Open Project</button>
+      <button class="home-btn home-btn-primary"   onclick="newProject()">New Project</button>
     </div>
-    <!-- <a href="/argument-editor">Go to argument editor</a> -->
+
+  </main>
+
+  <!-- Footer credit -->
+  <p class="home-credit">Nooh Alavi (نوح بن أحمد كاشف العلوي) &nbsp;·&nbsp; 2025</p>
+
+  <!-- New Project Modal -->
+  <div class="form-popup" id="myForm">
+    <div class="form-container">
+      <h2>New Argument</h2>
+      <p class="warning">Warning: this will <u>delete</u> the current argument. <strong>This cannot be undone.</strong></p>
+
+      <label for="title">Argument Title</label>
+      <input type="text" placeholder="What is the argument trying to prove?" id="title" required>
+
+      <button class="btn btn-create" onclick="createNewProject(event)">Create Argument</button>
+      <button class="btn btn-cancel" onclick="closeForm()">Cancel</button>
+    </div>
+  </div>
+
 </body>
-
 </html>

@@ -1,102 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>qaḍiyya</title>
+    <title>qaḍiyya | قضية</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='qadiyya_favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <script src="{{ url_for('static', filename='index.js') }}"></script>
-
-    <div id='top'>
-        <a id="logo" href="/">qaḍiyya | قضية</a>
-    </div>
 </head>
 
 <body>
-    <h1 id='basmala'>﷽</h1>
+
+    <!-- Fixed nav bar -->
+    <div id="top">
+        <a id="logo" href="/">Qaḍiyya</a>
+        <span id="logo-arabic">قضية</span>
+    </div>
+
+    <!-- Basmala -->
+    <h1 id="basmala">﷽</h1>
 
     {% for argument in argument_chart %}
 
-    <!-- Header of each argument -->
-    <h2>{{ argument['title'] }}</h2>
+    <!-- Section header -->
+    <h2 class="argument-title {% if argument.level == 1 %}level-1{% endif %}">
+        {{ argument['title'] }}
+    </h2>
 
     <!-- Argument chart -->
     <table>
         <tr>
-            <th> # </th>
+            <th>#</th>
+            <th></th>
             <th></th>
             <th></th>
             <th></th>
         </tr>
 
         {% for row in argument['rows'] %}
+
+        {% if row.premise_type %}
+        <!-- ── Regular premise row ── -->
         <tr>
             <td class="num">{{ row.number }}</td>
-
-            {% if row.premise_type %}
-                <!-- Regular premise row: barebones from parent perspective, editable -->
-                <td contenteditable="true"
-                    class="barebones"
-                    data-barebones-key="parent">{{ row.barebones }}</td>
-                <td contenteditable="true" class="written_premise">{{ row.written_premise }}</td>
-            {% elif argument.level == 1 %}
-                <!-- Conclusion row of the high-level argument: editable barebones, editable written premise -->
-                <td contenteditable="true"
-                    class="barebones"
-                    data-barebones-key="parent">{{ row.barebones }}</td>
-                <td contenteditable="true" class="written_premise">{{ row.written_premise }}</td>
-            {% else %}
-                <!-- Conclusion row of a sub-argument: editable barebones (child key), non-editable written premise -->
-                <td contenteditable="true"
-                    class="barebones"
-                    data-barebones-key="child">{{ row.barebones }}</td>
-                <td>{{ row.written_premise }}</td>
-            {% endif %}
-
-            <!-- Only show premise type dropdown and delete button for premises, not conclusions -->
-            {% if row.premise_type %}
+            <td contenteditable="true"
+                class="barebones"
+                data-barebones-key="parent">{{ row.barebones }}</td>
+            <td contenteditable="true"
+                class="written_premise">{{ row.written_premise }}</td>
             <td>
                 <select>
                     {% for pt in premise_types %}
-                    <option value="{{ pt }}" {% if row.premise_type==pt %}selected{% endif %}>
+                    <option value="{{ pt }}" {% if row.premise_type == pt %}selected{% endif %}>
                         {{ pt }}
                     </option>
                     {% endfor %}
                 </select>
             </td>
-
-            <td class='delete'>
+            <td class="delete">
                 <form action="{{ url_for('delete_premise') }}" method="post" style="display:inline;">
                     <input type="hidden" name="premise_num" value="{{ row.number }}">
-                    <button type="submit" class="delete">❌</button>
+                    <button type="submit" class="delete">✕</button>
                 </form>
             </td>
-            {% else %}
-            <td></td>
-            {% endif %}
         </tr>
+
+        {% elif argument.level == 1 %}
+        <!-- ── Conclusion row of the high-level argument ── -->
+        <tr class="conclusion-row">
+            <td class="num">{{ row.number }}</td>
+            <td contenteditable="true"
+                class="barebones"
+                data-barebones-key="parent">{{ row.barebones }}</td>
+            <td contenteditable="true"
+                class="written_premise">{{ row.written_premise }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        {% else %}
+        <!-- ── Conclusion row of a sub-argument ── -->
+        <tr class="conclusion-row">
+            <td class="num">{{ row.number }}</td>
+            <td contenteditable="true"
+                class="barebones"
+                data-barebones-key="child">{{ row.barebones }}</td>
+            <td>{{ row.written_premise }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% endif %}
+
         {% endfor %}
     </table>
 
     <!-- Add Premise Button -->
-    <div style="display: flex; justify-content: center; margin-top: 10px;">
+    <div class="add-premise-wrapper">
         <form action="{{ url_for('add_premise') }}" method="post">
-            <input type="hidden" name="arg_num" value="{{ argument['rows'][-1]['number']}}">
-            <button class="addPremise" type="submit"> (+) Add Premise </button>
+            <input type="hidden" name="arg_num" value="{{ argument['rows'][-1]['number'] }}">
+            <button class="addPremise" type="submit"><span>+ Add Premise</span></button>
         </form>
     </div>
 
-    <br><br><br>
+    <div class="section-spacer"></div>
 
     {% endfor %}
 
 </body>
 
-<footer style="text-align: right">
-    <br><br><br><br><br><br>
-    <p>Nooh Alavi (نوح بن أحمد كاشف العلوي) 2025</p>
+<footer>
+    <p>Nooh Alavi &nbsp;(نوح بن أحمد كاشف العلوي) &nbsp;·&nbsp; 2025</p>
 </footer>
 
 </html>

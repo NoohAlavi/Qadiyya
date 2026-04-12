@@ -1,107 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+SC:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+
 :root {
-  --font-size: 18px;
+  --parchment:      #f5f0e8;
+  --parchment-mid:  #ede6d6;
+  --parchment-dark: #e0d5c0;
+  --ink:            #1a1410;
+  --ink-soft:       #3d3228;
+  --ink-muted:      #6b5d50;
+  --gold:           #b8860b;
+  --gold-light:     #d4a843;
+  --gold-faint:     #f7edcc;
+  --emerald:        #1a5c3a;
+  --emerald-mid:    #2a7a50;
+  --emerald-light:  #00AA55;
+  --emerald-faint:  #eaf5ef;
+  --border:         #c8b89a;
+  --border-dark:    #9a8060;
+  --conclusion-bg:  #f0ebe0;
+  --shadow-sm:      rgba(26, 20, 16, 0.08);
+  --shadow-md:      rgba(26, 20, 16, 0.15);
+  --font-size:      16px;
+  --sidebar-w:      220px;
 }
 
-#logo {
-    font-family: 'Georgia', 'Times New Roman', Times, serif;
-    font-size: 18px;
-    margin: 0;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
+html {
+  scroll-behavior: smooth;
 }
 
-#basmala {
-    text-align: center;
-    color: #00AA55;
-    font-family:'Amiri', 'Times New Roman', Times, serif;
-    font-size: 32px;
-    margin: 40px;
+body {
+  background-color: var(--parchment);
+  color: var(--ink);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--font-size);
+  min-height: 100vh;
 }
 
+/* ── Subtle parchment texture overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 0%,   rgba(184,134,11,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 100% 100%, rgba(26,92,58,0.04)  0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════
+   TOP NAV BAR
+══════════════════════════════════════ */
 #top {
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  z-index: 100;
 
-    /* Make it static on the right-side */
-    position: fixed;
-    justify-content: flex-end;
-    right: 0;
-    margin: 0 12px;
-    padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
 
-    background-color: #00AA55;
-    border-radius: 15px;
+  background-color: var(--emerald);
+  border-bottom: 2px solid var(--gold);
+  box-shadow: 0 2px 16px rgba(26,92,58,0.3);
 }
 
-h2 {
-    text-align: center;
-    font-family: 'Georgia', 'Times New Roman', Times, serif;
-    margin: 40px;
-    margin-bottom: 30px;
+/* left: logo */
+#logo {
+  font-family: 'Cormorant SC', serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--parchment);
+  text-decoration: none;
+  opacity: 0.95;
+  transition: opacity 0.2s;
+}
+#logo:hover { opacity: 1; }
+
+/* right: logo arabic */
+#logo-arabic {
+  font-family: 'Amiri', serif;
+  font-size: 17px;
+  color: var(--gold-light);
+  opacity: 0.85;
+  letter-spacing: 0.04em;
 }
 
-/* Argument Tables  */
+/* ══════════════════════════════════════
+   MAIN CONTENT AREA
+══════════════════════════════════════ */
+body > h1#basmala,
+body > h2,
+body > table,
+body > div,
+body > br {
+  position: relative;
+  z-index: 1;
+}
+
+/* Push content below fixed navbar */
+body {
+  padding-top: 72px;
+  padding-bottom: 80px;
+}
+
+/* ══════════════════════════════════════
+   BASMALA
+══════════════════════════════════════ */
+#basmala {
+  text-align: center;
+  font-family: 'Amiri', serif;
+  font-size: 34px;
+  color: var(--emerald);
+  margin: 16px auto 40px;
+  letter-spacing: 0.02em;
+}
+
+/* ══════════════════════════════════════
+   ARGUMENT SECTION HEADERS
+══════════════════════════════════════ */
+h2.argument-title {
+  text-align: center;
+  font-family: 'Cormorant SC', serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 48px auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 80%;
+  max-width: 900px;
+}
+
+h2.argument-title::before,
+h2.argument-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border-dark));
+}
+h2.argument-title::after {
+  background: linear-gradient(to left, transparent, var(--border-dark));
+}
+
+/* level-1 (main) title gets gold treatment */
+h2.argument-title.level-1 {
+  color: var(--emerald);
+  font-size: 16px;
+}
+h2.argument-title.level-1::before,
+h2.argument-title.level-1::after {
+  background: linear-gradient(to right, transparent, var(--gold));
+}
+h2.argument-title.level-1::after {
+  background: linear-gradient(to left, transparent, var(--gold));
+}
+
+/* ══════════════════════════════════════
+   TABLES
+══════════════════════════════════════ */
 table {
-    border-collapse: collapse;
-    width: 80%;
-    margin: 20px auto;
+  border-collapse: collapse;
+  width: 80%;
+  max-width: 960px;
+  margin: 0 auto 12px;
+  box-shadow: 0 2px 16px var(--shadow-sm), 0 0 0 1px var(--border);
+  background: white;
 }
 
-th, td {
-    border: 1px solid #333;
-    padding: 8px;
-    font-size: var(--font-size);
-    font-family: sans-serif;
+/* Header row */
+thead tr, table > tr:first-child {
+  background: linear-gradient(to bottom, var(--emerald), #174f32);
 }
 
 th {
-    background-color: rgb(218, 218, 255);
+  padding: 11px 12px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--parchment);
+  border: none;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  text-align: left;
+}
+th:first-child { text-align: center; width: 52px; }
+th:last-child  { border-right: none; }
+
+/* Body rows */
+td {
+  padding: 10px 14px;
+  font-size: var(--font-size);
+  font-family: 'EB Garamond', Georgia, serif;
+  border: 1px solid var(--border);
+  vertical-align: middle;
+  line-height: 1.5;
+  transition: background 0.15s;
 }
 
-td.indent {
-    padding-left: 20px;
+tr:nth-child(even) td { background-color: rgba(237, 230, 214, 0.35); }
+tr:nth-child(odd)  td { background-color: white; }
+
+/* Conclusion row styling */
+tr.conclusion-row td {
+  background-color: var(--conclusion-bg) !important;
+  font-style: italic;
+  color: var(--ink-soft);
+  border-top: 2px solid var(--border-dark);
 }
 
+/* Hover on editable cells */
+td[contenteditable="true"]:hover {
+  background-color: var(--gold-faint) !important;
+  cursor: text;
+}
+td[contenteditable="true"]:focus {
+  background-color: var(--gold-faint) !important;
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+
+/* Premise number */
+td.num {
+  text-align: center;
+  width: 52px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--emerald);
+  letter-spacing: 0.05em;
+}
+
+tr.conclusion-row td.num {
+  color: var(--gold);
+}
+
+/* Barebones column */
+td.barebones {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--ink-soft);
+  width: 160px;
+  min-width: 100px;
+}
+
+/* Written premise column */
+td.written_premise {
+  color: var(--ink);
+}
+
+/* ── Dropdown ── */
 select {
-    font-size: var(--font-size);
-    font-family: sans-serif;
-    border: none;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 14px;
+  color: var(--ink-soft);
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  padding: 2px 0;
+}
+select:hover { color: var(--emerald); }
+select:focus { color: var(--emerald); }
+
+/* ── Delete button ── */
+td.delete {
+  width: 40px;
+  text-align: center;
+  border-left: 1px solid var(--border);
+  padding: 4px;
 }
 
-.num {
-    color: blue;
-    font-family: 'Georgia', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+button.delete {
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.2s, transform 0.15s;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+button.delete:hover {
+  opacity: 1;
+  transform: scale(1.15);
+  background: rgba(139,58,58,0.08);
 }
 
-/* Delete button */
-.delete {
-    font-size: 14px;
-    background-color: white;
-    border: none;
+/* ══════════════════════════════════════
+   ADD PREMISE BUTTON
+══════════════════════════════════════ */
+.add-premise-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 10px auto 0;
+  width: 80%;
+  max-width: 960px;
 }
 
-.delete:hover {
-    font-size: 15px;
-}
-
-
-/* Add Premise Button */
 button.addPremise {
-    font-size: 16px;
-    background-color: #00AA55;
-    border-radius: 12px;
-    padding: 10px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--emerald);
+  background: transparent;
+  border: 1.5px solid var(--emerald);
+  border-radius: 0;
+  padding: 9px 28px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+button.addPremise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--emerald);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+  z-index: 0;
+}
+button.addPremise span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s ease;
+}
+button.addPremise:hover::before { transform: scaleX(1); }
+button.addPremise:hover span    { color: var(--parchment); }
+
+/* ══════════════════════════════════════
+   SECTION SPACER
+══════════════════════════════════════ */
+.section-spacer {
+  width: 80%;
+  max-width: 960px;
+  margin: 32px auto;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
 }
 
-button.addPremise:hover {
-    font-size: 16.5px;
-    background-color: #00c060;
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 24px;
+  font-family: 'Amiri', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-muted);
+  opacity: 0.6;
+  letter-spacing: 0.03em;
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
 }
-
-/* Footer */
-/* footer {
-    background-color: peachpuff;
-} */
