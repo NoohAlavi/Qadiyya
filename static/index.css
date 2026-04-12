@@ -276,6 +276,12 @@ select {
 select:hover { color: var(--emerald); }
 select:focus { color: var(--emerald); }
 
+/* ── Premise type dropdown cell — never truncate ── */
+td:has(select) {
+  min-width: 175px;
+  white-space: nowrap;
+}
+
 /* ── Delete button ── */
 td.delete {
   width: 40px;
