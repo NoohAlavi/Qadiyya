@@ -1,11 +1,14 @@
 <p align="center"><strong>بسم الله الرحمن الرحيم</strong><p>
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Work--in--Progress-orange">
-  <img src="https://img.shields.io/badge/Built%20with-Flask-green">
+  <img src="https://img.shields.io/badge/Status-Work--in--Progress-orange" alt="Status">
+  <img src="https://img.shields.io/badge/Language-Python-blue" alt="Python">
+  <img src="https://img.shields.io/badge/Built%20with-Flask-green" alt="Flask">
+  <img src="https://img.shields.io/badge/License-MIT-blue" alt="MIT License">
+  <img src="https://img.shields.io/badge/Maintained%3F-Yes-green.svg" alt="Maintained">
 </p>
 
 <h1>
-  <img src="static/qadiyya_icon.png" width="40" style="vertical-align:middle" alt="Qaḍiyya Logo"> Qaḍiyya | قضية
+  <img src="static/qadiyya_icon.png" width="40" style="vertical-align:middle" alt="Qaḍiyya Logo">&nbsp; Qaḍiyya | قضية
 </h1>
 
 <details>
