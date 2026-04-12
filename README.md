@@ -36,7 +36,8 @@ Qaḍiyya grew out of my own studies in the traditional Islamic sciences of Clas
 
 The chart format used in Qaḍiyya is not something I invented—**it is the exact structure taught to us by Shaykh Hamza in [his courses](https://whyislamistrue.com/kalam)**, reflecting the disciplined, hierarchical reasoning of classical *manṭiq* and *kalām*.
 
-<img src="static/screenshot_editor.png" alt="A demonstration of Qaḍiyya using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism" />
+<img src="static/screenshot_editor_1.png" alt="A demonstration of Qaḍiyya using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism, part 1" />
+<img src="static/screenshot_editor_2.png" alt="A demonstration of Qaḍiyya using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism, part 2" />
 
 <small>*Pictured above: a demonstration of **Qaḍiyya** using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism*</small>
 
