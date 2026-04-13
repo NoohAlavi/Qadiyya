@@ -122,12 +122,31 @@
         </button>
         <div id="export-menu">
             <a onclick="exportPDF()">📄 &nbsp;Export as PDF (Recommended!)</a>
-            <a onclick="exportImage()">🖼 &nbsp;Export as PNG Image</a>
+            <a onclick="exportImage()">🖼 &nbsp;Export as Image (PNG)</a>
             <a onclick="exportJSON()">⬇ &nbsp;Download JSON</a>
         </div>
     </div>
 
+    <!-- ── Export Loading Overlay ── -->
+    <div id="export-overlay">
+        <div id="export-overlay-box">
+            <div class="export-spinner"></div>
+            <div id="export-overlay-label">Preparing export…</div>
+            <div id="export-overlay-sub">This may take a few seconds</div>
+        </div>
+    </div>
+
     <script>
+        // ── Export overlay ──────────────────────────────────────
+        function showExportOverlay(label) {
+            document.getElementById('export-overlay-label').textContent = label;
+            document.getElementById('export-overlay').classList.add('visible');
+        }
+
+        function hideExportOverlay() {
+            document.getElementById('export-overlay').classList.remove('visible');
+        }
+
         // ── Export menu ─────────────────────────────────────────
         function toggleExportMenu() {
             document.getElementById('export-menu').classList.toggle('open');
@@ -142,16 +161,24 @@
 
         function exportJSON() {
             document.getElementById('export-menu').classList.remove('open');
+            showExportOverlay('Preparing JSON download…');
+            // JSON is fast — hide overlay once browser triggers the download
+            setTimeout(hideExportOverlay, 1500);
             window.location.href = '/export_json';
         }
 
         function exportImage() {
             document.getElementById('export-menu').classList.remove('open');
+            showExportOverlay('Rendering image…');
+            // Image export takes longer — hide once download is triggered
+            setTimeout(hideExportOverlay, 12000);
             window.location.href = '/export_image';
         }
 
         function exportPDF() {
             document.getElementById('export-menu').classList.remove('open');
+            showExportOverlay('Generating PDF…');
+            setTimeout(hideExportOverlay, 12000);
             window.location.href = '/export_pdf';
         }
     </script>

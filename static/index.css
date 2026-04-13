@@ -380,6 +380,12 @@ footer {
   margin-top: 48px;
 }
 
+/* Empty conclusion cells — no border, blends into background */
+tr.conclusion-row td.empty {
+  border: none;
+  background: transparent !important;
+}
+
 /* ── Nav links ── */
 #nav-links {
   display: flex;
@@ -477,4 +483,65 @@ footer {
 #export-menu a:hover {
   background: var(--gold-faint);
   color: var(--gold);
+}
+
+
+/* ══════════════════════════════════════
+   EXPORT LOADING OVERLAY
+══════════════════════════════════════ */
+#export-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 20, 16, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 500;
+  justify-content: center;
+  align-items: center;
+}
+#export-overlay.visible {
+  display: flex;
+}
+
+#export-overlay-box {
+  background: var(--parchment);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  box-shadow: 0 24px 64px rgba(26,20,16,0.35);
+  padding: 40px 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 260px;
+}
+
+.export-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#export-overlay-label {
+  font-family: 'Cormorant SC', serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+}
+
+#export-overlay-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink-muted);
+  opacity: 0.75;
 }
