@@ -354,3 +354,72 @@ body::after {
   from { opacity: 0; transform: translateY(-16px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+
+/* ══════════════════════════════════════
+   MOBILE RESPONSIVENESS (≤ 768px)
+══════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  html, body {
+    overflow: auto; /* allow scroll on small screens */
+  }
+
+  .home-wrapper {
+    padding: 24px 20px;
+    justify-content: center;
+  }
+
+  .home-basmala {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .home-title {
+    font-size: clamp(32px, 10vw, 52px);
+  }
+
+  .home-title-arabic {
+    font-size: clamp(18px, 6vw, 28px);
+  }
+
+  .home-subtitle {
+    font-size: 13px;
+  }
+
+  .home-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .home-btn {
+    width: 80vw;
+    max-width: 320px;
+    padding: 16px 24px;
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .ornamental-rule {
+    width: 80vw;
+  }
+
+  .home-divider {
+    width: 80vw;
+    margin-bottom: 32px;
+  }
+
+  .home-credit {
+    font-size: 13px;
+    white-space: normal;
+    text-align: center;
+    width: 80%;
+  }
+
+  /* Modal */
+  .form-container {
+    padding: 28px 24px 20px;
+    width: 92vw;
+  }
+}

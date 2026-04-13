@@ -542,3 +542,75 @@ body::after {
   border-color: rgba(184,134,11,0.3);
   background: rgba(184,134,11,0.05);
 }
+
+
+/* ══════════════════════════════════════
+   MOBILE RESPONSIVENESS (≤ 768px)
+══════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── Navbar ── */
+  #top {
+    padding: 0 16px;
+    height: 48px;
+  }
+
+  #logo { font-size: 15px; }
+
+  #nav-links .nav-link,
+  #nav-links .nav-sep {
+    display: none;
+  }
+
+  #logo-arabic { font-size: 15px; }
+
+  /* ── Page layout ── */
+  .arguments-page {
+    padding: 80px 16px 100px;
+  }
+
+  .args-basmala {
+    font-size: 24px;
+  }
+
+  .args-heading h1 {
+    font-size: clamp(20px, 6vw, 28px);
+  }
+
+  /* ── Project cards ── */
+  .project-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .card-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .card-title {
+    font-size: 16px;
+  }
+
+  /* ── New argument button ── */
+  .args-new-btn button {
+    padding: 10px 24px;
+    font-size: 13px;
+  }
+
+  /* ── Modal ── */
+  .form-container {
+    padding: 28px 24px 20px;
+    width: 92vw;
+  }
+
+  /* ── Footer ── */
+  .home-credit {
+    font-size: 13px;
+    white-space: normal;
+    text-align: center;
+    width: 80%;
+  }
+}

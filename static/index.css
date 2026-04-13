@@ -545,3 +545,101 @@ tr.conclusion-row td.empty {
   color: var(--ink-muted);
   opacity: 0.75;
 }
+
+
+/* ══════════════════════════════════════
+   MOBILE RESPONSIVENESS (≤ 768px)
+══════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── Navbar ── */
+  #top {
+    padding: 0 16px;
+    height: 48px;
+  }
+
+  #logo {
+    font-size: 15px;
+  }
+
+  /* Hide nav links on mobile — logo click goes home */
+  #nav-links .nav-link,
+  #nav-links .nav-sep {
+    display: none;
+  }
+
+  /* Keep arabic visible */
+  #logo-arabic {
+    font-size: 15px;
+  }
+
+  /* ── Body ── */
+  body {
+    padding-top: 64px;
+    font-size: 14px;
+  }
+
+  /* ── Basmala ── */
+  #basmala {
+    font-size: 26px;
+    margin: 12px auto 24px;
+  }
+
+  /* ── Argument titles ── */
+  h2.argument-title {
+    font-size: 12px;
+    width: 95%;
+    margin: 32px auto 12px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Tables — allow horizontal scroll ── */
+  table {
+    width: 95%;
+    font-size: 13px;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  td {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  td.barebones {
+    width: 100px;
+    min-width: 80px;
+  }
+
+  td:has(select) {
+    min-width: 130px;
+  }
+
+  /* ── Add premise button ── */
+  .add-premise-wrapper {
+    width: 95%;
+  }
+
+  button.addPremise {
+    font-size: 12px;
+    padding: 8px 20px;
+  }
+
+  /* ── Section spacer ── */
+  .section-spacer {
+    width: 95%;
+  }
+
+  /* ── Floating export button ── */
+  #export-fab {
+    padding: 9px 16px;
+    font-size: 12px;
+  }
+
+  /* ── Export overlay ── */
+  #export-overlay-box {
+    padding: 28px 24px;
+    min-width: 200px;
+  }
+}
