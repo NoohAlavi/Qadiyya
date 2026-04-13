@@ -60,7 +60,7 @@ class MantiqMap:
         for p in self.root.premises:
             high_level_rows.append({
                 "number": p.number,
-                "barebones": p.barebones["parent"],  # parent perspective
+                "barebones": p.barebones["parent"],
                 "barebones_key": "parent",
                 "written_premise": p.written_premise,
                 "premise_type": self.format_premise_type(p.premise_type)
@@ -87,16 +87,15 @@ class MantiqMap:
                     for child in premise.premises:
                         subt_rows.append({
                             "number": child.number,
-                            "barebones": child.barebones["parent"],  # child's own parent perspective
+                            "barebones": child.barebones["parent"],
                             "barebones_key": "parent",
                             "written_premise": child.written_premise,
                             "premise_type": self.format_premise_type(child.premise_type)
                         })
 
-                    # Conclusion row: uses barebones["child"] — editable barebones, non-editable written premise
                     subt_rows.append({
                         "number": premise.number,
-                        "barebones": premise.barebones["child"],  # child perspective
+                        "barebones": premise.barebones["child"],
                         "barebones_key": "child",
                         "written_premise": "Therefore, " + premise.written_premise[:1].lower() + premise.written_premise[1:]
                     })
@@ -113,6 +112,25 @@ class MantiqMap:
     
     def get_premise_types_list(self):
         return [self.format_premise_type(pt) for pt in PremiseType]
+
+    # ── Serialization ──────────────────────────────────────────
+    def to_dict(self) -> dict:
+        return {
+            "title": self.title,
+            "root": self.root.to_dict() if self.root else None
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "MantiqMap":
+        m = cls()
+        m.title = d.get("title", "")
+        root_data = d.get("root")
+        if root_data:
+            root = Node.from_dict(root_data)
+            # Don't call set_root (it re-assigns numbers and sets is_root again);
+            # the serialized data already has numbers and is_root baked in.
+            m.root = root
+        return m
     
     # Helper methods
     def assign_numbers(self):
@@ -125,7 +143,6 @@ class MantiqMap:
             for premise in node.premises:
                 premise.number = f"P{self._counter}"
                 self._counter += 1
-            
             for premise in node.premises:
                 process_level(premise)
 

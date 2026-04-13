@@ -44,10 +44,30 @@ class Node:
         
     def recursive_display(self, level=0):
         indent = "    " * level
-
         num = "C" if self.is_root else self.number 
         ptype = f"({self.premise_type.name})" if self.premise_type else ""
         print(f"{indent}- [{num}]: {self.barebones['parent']} | '{self.written_premise}' {'' if self.is_root else ptype}")
-
         for node in self.premises:
             node.recursive_display(level + 1)
+
+    # ── Serialization ──────────────────────────────────────────
+    def to_dict(self) -> dict:
+        return {
+            "is_root": self.is_root,
+            "barebones": self.barebones,
+            "written_premise": self.written_premise,
+            "premise_type": self.premise_type.name if self.premise_type else None,
+            "number": self.number,
+            "premises": [p.to_dict() for p in self.premises]
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "Node":
+        premise_type = PremiseType[d["premise_type"]] if d.get("premise_type") else None
+        node = cls(premise_type=premise_type)
+        node.is_root = d.get("is_root", False)
+        node.barebones = d.get("barebones", {"parent": "", "child": ""})
+        node.written_premise = d.get("written_premise", "")
+        node.number = d.get("number", None)
+        node.premises = [cls.from_dict(p) for p in d.get("premises", [])]
+        return node
