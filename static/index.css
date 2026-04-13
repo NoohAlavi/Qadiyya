@@ -313,6 +313,134 @@ div.annotations:focus {
   outline-offset: 1px;
 }
 
+/* ── Argument title rename ── */
+h2.argument-title.level-1 {
+  position: relative;
+}
+
+.title-rename-btn {
+  font-size: 14px;
+  color: var(--gold);
+  opacity: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0 4px;
+  margin-left: 8px;
+  transition: opacity 0.2s, transform 0.15s;
+  vertical-align: middle;
+  line-height: 1;
+}
+h2.argument-title.level-1:hover .title-rename-btn {
+  opacity: 0.7;
+}
+.title-rename-btn:hover {
+  opacity: 1 !important;
+  transform: scale(1.15);
+}
+
+/* ── Rename modal ── */
+.rename-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 20, 16, 0.55);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.rename-overlay.visible {
+  display: flex;
+}
+.rename-container {
+  width: 460px;
+  max-width: 92vw;
+  background: var(--parchment);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 64px rgba(26,20,16,0.35), 0 0 0 1px rgba(184,134,11,0.15);
+  padding: 40px 40px 32px;
+  position: relative;
+  animation: modalIn 0.3s ease;
+}
+.rename-container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
+}
+.rename-container h2 {
+  font-family: 'Cormorant SC', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+.rename-container label {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.rename-container input[type=text] {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  background: var(--parchment-mid);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 28px;
+}
+.rename-container input[type=text]:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(184,134,11,0.12);
+}
+.rename-container input[type=text]::placeholder {
+  color: var(--border-dark);
+  font-style: italic;
+}
+.rename-container .btn {
+  width: 100%;
+  padding: 13px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 10px;
+}
+.rename-container .btn-save {
+  background-color: var(--emerald);
+  color: var(--parchment);
+}
+.rename-container .btn-save:hover { background-color: var(--emerald-mid); }
+.rename-container .btn-cancel {
+  background-color: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--border);
+}
+.rename-container .btn-cancel:hover {
+  background-color: var(--parchment-mid);
+  border-color: var(--border-dark);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* ── Delete button ── */
 td.delete {
   width: 40px;

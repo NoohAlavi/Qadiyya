@@ -220,6 +220,21 @@ def rename_project():
     return jsonify({"ok": True})
 
 
+@app.route("/rename_current_project", methods=['POST'])
+def rename_current_project():
+    data = request.get_json()
+    new_title = data.get("title", "")
+
+    user_data = load_user_data()
+    current_id = user_data.get("current_project")
+    if not current_id or current_id not in user_data["projects"]:
+        return jsonify({"error": "No active project"}), 404
+
+    user_data["projects"][current_id]["title"] = new_title
+    save_user_data(user_data)
+    return jsonify({"ok": True})
+
+
 @app.route("/delete_project", methods=['POST'])
 def delete_project():
     data = request.get_json()
