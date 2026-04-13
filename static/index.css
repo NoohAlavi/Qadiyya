@@ -347,6 +347,27 @@ div.annotations:focus {
   display: none;
 }
 
+/* ── Scroll to sub-argument button ── */
+.scroll-to-subarg {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--emerald);
+  opacity: 0.7;
+  padding: 0;
+  margin-top: 6px;
+  display: block;
+  text-align: left;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.scroll-to-subarg:hover {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
 /* ── Delete button ── */
 td.delete {
   width: 40px;

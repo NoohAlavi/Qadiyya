@@ -38,7 +38,7 @@
         {% endif %}
     </h2>
 
-    {% if argument.level > 1 %}<div class="subarg-wrapper">{% endif %}
+    {% if argument.level > 1 %}<div class="subarg-wrapper" id="subarg-{{ argument['rows'][-1]['number'] }}">{% endif %}
 
     <!-- Argument chart -->
     <table>
@@ -73,6 +73,9 @@
                      class="annotations"
                      data-premise-num="{{ row.number }}"
                      placeholder="annotations...">{{ row.annotations }}</div>
+                {% if row.premise_type == 'Inferential' %}
+                <button class="scroll-to-subarg" onclick="scrollToSubarg('{{ row.number }}')">↓ view sub-argument</button>
+                {% endif %}
             </td>
             <td class="delete">
                 <form action="{{ url_for('delete_premise') }}" method="post" style="display:inline;">
@@ -199,6 +202,19 @@
             const isCollapsed = wrapper.classList.toggle('collapsed');
             btn.textContent = isCollapsed ? '▼' : '▲';
             btn.title = isCollapsed ? 'Expand' : 'Collapse';
+        }
+
+        // ── Scroll to sub-argument ──────────────────────────────
+        function scrollToSubarg(premiseNumber) {
+            const target = document.getElementById('subarg-' + premiseNumber);
+            if (!target) return;
+            // If collapsed, expand it first
+            if (target.classList.contains('collapsed')) {
+                target.classList.remove('collapsed');
+                const toggle = target.previousElementSibling.querySelector('.subarg-toggle');
+                if (toggle) { toggle.textContent = '▲'; toggle.title = 'Collapse'; }
+            }
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     </script>
 

@@ -105,9 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // update old value
             e.target.dataset.oldValue = newValue;
 
-            // only reload if the change was structural (e.g. switched to INFERENTIAL)
+            // reload if switching to OR from Inferential (structural change either way)
             const data = await res.json();
-            if (data.reload) reloadWithScroll();
+            if (data.reload || oldValue === 'Inferential') reloadWithScroll();
         });
     });
 
