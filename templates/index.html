@@ -234,7 +234,7 @@
     <script>
         function openRenameTitle() {
             const h2 = document.querySelector('h2.argument-title.level-1');
-            const currentTitle = h2.childNodes[0].textContent.trim();
+            const currentTitle = h2.childNodes[0].textContent.trim().slice(24); // The prefix will always be "High-Level Argument for " and this is what we are getting rid of
             document.getElementById('rename-title-input').value = currentTitle;
             document.getElementById('rename-overlay').classList.add('visible');
             setTimeout(() => document.getElementById('rename-title-input').focus(), 50);
