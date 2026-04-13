@@ -38,9 +38,11 @@
       <p>your saved argument charts</p>
     </div>
 
-    <!-- New argument button -->
+    <!-- New argument + Import buttons -->
     <div class="args-new-btn">
       <button onclick="newProject()"><span>+ New Argument</span></button>
+      <button onclick="document.getElementById('import-input').click()"><span>↑ Import JSON</span></button>
+      <input type="file" id="import-input" accept=".json" style="display:none;" onchange="importJSON(event)">
     </div>
 
     <!-- Project list -->
@@ -156,6 +158,40 @@
       })
       .then(res => res.json())
       .then(data => { window.location.href = data.redirect; });
+    }
+
+    // ── Import JSON ────────────────────────────────────────────
+    function importJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        let data;
+        try {
+          data = JSON.parse(e.target.result);
+        } catch {
+          alert('Invalid file — could not parse JSON. Please upload a Qaḍiyya JSON export.');
+          return;
+        }
+
+        fetch('/import_json', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.redirect) {
+            window.location.href = data.redirect;
+          } else {
+            alert(data.error || 'Invalid file — please upload a Qaḍiyya JSON export.');
+            // Reset the file input so the same file can be tried again
+            document.getElementById('import-input').value = '';
+          }
+        });
+      };
+      reader.readAsText(file);
     }
 
     // ── Project actions ────────────────────────────────────────

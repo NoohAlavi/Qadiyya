@@ -263,6 +263,31 @@ def export_json():
     )
 
 
+@app.route("/import_json", methods=["POST"])
+def import_json():
+    data = request.get_json()
+
+    # Validate structure — must have a root key at minimum
+    if not data or "root" not in data:
+        return jsonify({"error": "Invalid file — please upload a Qaḍiyya JSON export."}), 400
+
+    try:
+        # Try to reconstruct a MantiqMap from the data to catch structural errors
+        mymap = MantiqMap.from_dict(data)
+        if not mymap.root:
+            raise ValueError("No root node found.")
+    except Exception:
+        return jsonify({"error": "Invalid file — please upload a Qaḍiyya JSON export."}), 400
+
+    user_data = load_user_data()
+    project_id = str(uuid.uuid4())
+    user_data["projects"][project_id] = mymap.to_dict()
+    user_data["current_project"] = project_id
+    save_user_data(user_data)
+
+    return jsonify({"redirect": url_for("editor")})
+
+
 def _build_export_html(mymap: MantiqMap) -> str:
     """Render the clean export template to an HTML string."""
     return render_template(

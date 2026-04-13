@@ -162,10 +162,12 @@ body::after {
   letter-spacing: 0.06em;
 }
 
-/* ── New argument button ── */
+/* ── New argument + import buttons ── */
 .args-new-btn {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 40px;
   opacity: 0;
   animation: fadeUp 0.8s ease 0.35s forwards;
