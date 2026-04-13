@@ -1,7 +1,6 @@
 <p align="center"><strong>بسم الله الرحمن الرحيم</strong><p>
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Work--in--Progress-orange" alt="Status">
-  <img src="https://img.shields.io/badge/Language-Python-blue" alt="Python">
   <img src="https://img.shields.io/badge/Built%20with-Flask-green" alt="Flask">
   <a href="https://qadiyya.up.railway.app/">
     <img src="https://img.shields.io/badge/Live%20Demo-Available-brightgreen" alt="Live Demo">
@@ -121,10 +120,6 @@ It is useful for:
 
 ### 5. Be extensible for future sophistication
 The codebase is structured for future enhancements that support deeper study, including but not limited to:
-
-- Export argument charts (PNG/PDF)
-
-- Save/load argument trees
 
 - Convert arguments to modern symbolic notation
 
