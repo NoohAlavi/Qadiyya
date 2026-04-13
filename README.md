@@ -8,7 +8,7 @@
 </p>
 
 <h1>
-  <img src="static/new_icon.png" width="60" style="vertical-align:middle" alt="Qaḍiyya Logo">&nbsp; Qaḍiyya | قضية
+  <img src="static/new_icon.png" width="50" style="vertical-align:middle" alt="Qaḍiyya Logo">&nbsp; Qaḍiyya | قضية
 </h1>
 
 > 🌐 **Try it live:** [qadiyya.up.railway.app](https://qadiyya.up.railway.app/)
