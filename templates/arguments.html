@@ -15,6 +15,8 @@
   <div id="top">
     <a id="logo" href="/">Qaḍiyya</a>
     <nav id="nav-links">
+      <a href="/editor" class="nav-link">Editor</a>
+      <span class="nav-sep">·</span>
       <a href="/arguments" class="nav-link nav-link-active">My Arguments</a>
       <span class="nav-sep">·</span>
       <a href="/" class="nav-link">Home</a>
@@ -73,6 +75,12 @@
               </button>
             {% endif %}
 
+            <button class="card-btn card-btn-rename"
+                    onclick="openRename('{{ project.id }}', '{{ project.title or '' }}')"
+                    title="Rename">
+              ✎
+            </button>
+
             <button class="card-btn card-btn-delete"
                     onclick="deleteProject('{{ project.id }}', '{{ project.title or 'Untitled Argument' }}')"
                     title="Delete">
@@ -102,6 +110,19 @@
 
       <button class="btn btn-create" onclick="createNewProject(event)">Create Argument</button>
       <button class="btn btn-cancel" onclick="closeForm()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Rename Modal -->
+  <div class="form-popup" id="renameForm">
+    <div class="form-container">
+      <h2>Rename Argument</h2>
+
+      <label for="rename-title">New Title</label>
+      <input type="text" placeholder="What is the argument trying to prove?" id="rename-title">
+
+      <button class="btn btn-create" onclick="submitRename(event)">Save</button>
+      <button class="btn btn-cancel" onclick="closeRenameForm()">Cancel</button>
     </div>
   </div>
 
@@ -161,6 +182,47 @@
         else alert(data.error || "Could not delete project.");
       });
     }
+
+    // ── Rename ─────────────────────────────────────────────────
+    let _renameProjectId = null;
+
+    function openRename(projectId, currentTitle) {
+      _renameProjectId = projectId;
+      const input = document.getElementById("rename-title");
+      input.value = currentTitle;
+      document.getElementById("renameForm").style.display = "flex";
+      setTimeout(() => input.focus(), 50);
+    }
+
+    function closeRenameForm() {
+      document.getElementById("renameForm").style.display = "none";
+      _renameProjectId = null;
+    }
+
+    document.getElementById("renameForm").addEventListener("click", function(e) {
+      if (e.target === this) closeRenameForm();
+    });
+
+    function submitRename(event) {
+      event.preventDefault();
+      if (!_renameProjectId) return;
+      const newTitle = document.getElementById("rename-title").value;
+      fetch('/rename_project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project_id: _renameProjectId, title: newTitle })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) { closeRenameForm(); window.location.reload(); }
+        else alert(data.error || "Could not rename project.");
+      });
+    }
+
+    // Close either modal on Escape
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") { closeForm(); closeRenameForm(); }
+    });
   </script>
 
 </body>

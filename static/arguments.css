@@ -527,3 +527,18 @@ body::after {
   opacity: 0.5;
   font-size: 12px;
 }
+
+/* ── Rename button ── */
+.card-btn-rename {
+  color: var(--ink-muted);
+  border-color: transparent;
+  padding: 6px 8px;
+  opacity: 0.4;
+  font-size: 14px;
+}
+.card-btn-rename:hover {
+  opacity: 1;
+  color: var(--gold);
+  border-color: rgba(184,134,11,0.3);
+  background: rgba(184,134,11,0.05);
+}

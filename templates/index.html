@@ -16,6 +16,8 @@
     <div id="top">
         <a id="logo" href="/">Qaḍiyya</a>
         <nav id="nav-links">
+            <a href="/editor" class="nav-link nav-link-active">Editor</a>
+            <span class="nav-sep">·</span>
             <a href="/arguments" class="nav-link">My Arguments</a>
             <span class="nav-sep">·</span>
             <a href="/" class="nav-link">Home</a>
@@ -80,8 +82,8 @@
                 data-barebones-key="parent">{{ row.barebones }}</td>
             <td contenteditable="true"
                 class="written_premise">{{ row.written_premise }}</td>
-            <td class="empty"></td>
-            <td class="empty"></td>
+            <td></td>
+            <td></td>
         </tr>
 
         {% else %}
@@ -92,8 +94,8 @@
                 class="barebones"
                 data-barebones-key="child">{{ row.barebones }}</td>
             <td>{{ row.written_premise }}</td>
-            <td class="empty"></td>
-            <td class="empty"></td>
+            <td></td>
+            <td></td>
         </tr>
         {% endif %}
 
@@ -111,6 +113,48 @@
     <div class="section-spacer"></div>
 
     {% endfor %}
+
+    <!-- ── Floating Export Button ── -->
+    <div id="export-fab-wrapper">
+        <button id="export-fab" onclick="toggleExportMenu()" aria-label="Export">
+            <span class="fab-icon">↑</span>
+            <span class="fab-label">Export</span>
+        </button>
+        <div id="export-menu">
+            <a onclick="exportPDF()">📄 &nbsp;Export as PDF (Recommended!)</a>
+            <a onclick="exportImage()">🖼 &nbsp;Export as PNG Image</a>
+            <a onclick="exportJSON()">⬇ &nbsp;Download JSON</a>
+        </div>
+    </div>
+
+    <script>
+        // ── Export menu ─────────────────────────────────────────
+        function toggleExportMenu() {
+            document.getElementById('export-menu').classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('export-fab-wrapper');
+            if (!wrapper.contains(e.target)) {
+                document.getElementById('export-menu').classList.remove('open');
+            }
+        });
+
+        function exportJSON() {
+            document.getElementById('export-menu').classList.remove('open');
+            window.location.href = '/export_json';
+        }
+
+        function exportImage() {
+            document.getElementById('export-menu').classList.remove('open');
+            window.location.href = '/export_image';
+        }
+
+        function exportPDF() {
+            document.getElementById('export-menu').classList.remove('open');
+            window.location.href = '/export_pdf';
+        }
+    </script>
 
 </body>
 

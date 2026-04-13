@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="{{ url_for('static', filename='export.css') }}">
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="export-header">
+  <div class="export-basmala">﷽</div>
+  <div class="export-ornament">
+    <div class="export-ornament-line"></div>
+    <span class="export-ornament-star">✦</span>
+    <div class="export-ornament-line"></div>
+  </div>
+</div>
+
+<!-- ── Argument sections ── -->
+{% for argument in argument_chart %}
+<div class="export-section">
+
+  <div class="export-section-title {{ 'level-1' if argument.level == 1 else 'level-sub' }}">
+    {{ argument['title'] }}
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Barebones Form</th>
+        <th>Premise</th>
+        <th>Premise Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in argument['rows'] %}
+
+      {% if row.premise_type %}
+      <!-- Regular premise row -->
+      <tr>
+        <td class="num">{{ row.number }}</td>
+        <td class="barebones">{{ row.barebones }}</td>
+        <td class="written_premise">{{ row.written_premise }}</td>
+        <td class="premise-type">{{ row.premise_type }}</td>
+      </tr>
+
+      {% elif argument.level == 1 %}
+      <!-- Conclusion row — high-level argument -->
+      <tr class="conclusion-row">
+        <td class="num">{{ row.number }}</td>
+        <td class="barebones">{{ row.barebones }}</td>
+        <td class="written_premise">{{ row.written_premise }}</td>
+        <td></td>
+      </tr>
+
+      {% else %}
+      <!-- Conclusion row — sub-argument -->
+      <tr class="conclusion-row">
+        <td class="num">{{ row.number }}</td>
+        <td class="barebones">{{ row.barebones }}</td>
+        <td>{{ row.written_premise }}</td>
+        <td></td>
+      </tr>
+      {% endif %}
+
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+{% endfor %}
+
+<!-- ── Footer ── -->
+<div class="export-footer">
+  <div class="export-footer-ornament">
+    <div class="export-footer-ornament-line"></div>
+    <span class="export-footer-ornament-star">❧</span>
+    <div class="export-footer-ornament-line"></div>
+  </div>
+  <div class="export-watermark">
+    <a href="https://github.com/NoohAlavi/Qadiyya/" style="color: #b8860b; text-decoration: none;">
+      Made with Qaḍiyya
+    </a>
+    <span class="export-watermark-arabic">قضية</span>
+  </div>
+</div>
+
+</body>
+</html>
