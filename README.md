@@ -136,24 +136,77 @@ The codebase is structured for future enhancements that support deeper study, in
 **All expansions maintain the same principle: the tool *assists* thinking; it does <u>not</u> replace it!**
 
 ## 📦 Current Features
-- **Save/Load Argument Trees** — Each browser can store a collection of different argument charts, so that one can work on multiple projects at once.
-- **Dynamic Argument Construction** – Add premises or nested sub-premises with a single click, allowing for unlimited depth in logical proofs.
-- **Recursive Deletion Logic** – Deleting a parent premise automatically and cleanly removes all associated sub-arguments, maintaining the integrity of the logic tree.
-- **Intelligent Auto-Renumbering** – Real-time numbering updates (e.g., P1, P2, P3) ensure that the structural hierarchy remains clear even as the argument is reorganized.
-- **Premise Classification** – Integrated dropdowns to categorize statements by their epistemic type (e.g., inferential [*naẓarī*] vs. non-inferential [*ḍarūrī*]), a core requirement of classical Islamic logic [*manṭiq*].
-- **Hierarchical Visualization** – A clean, responsive UI specifically designed to display the "inner architecture" of an argument at a glance.
-- **Export Argument Charts** - Export argument charts as a `.PDF` file or `.PNG` image; or download the raw data as a `.JSON` for backup purposes!
+
+### 🧩 Argument Construction
+- **Dynamic Premise Construction** – Add premises or nested sub-premises with a single click, with unlimited depth in logical proofs.
+- **Recursive Deletion** – Deleting a premise automatically removes all its nested sub-arguments, maintaining the integrity of the logic tree.
+- **Intelligent Auto-Renumbering** – Premise numbers (P1, P2, P3…) update automatically as the argument is reorganized.
+- **Premise Classification** – Integrated dropdowns to categorize each premise by epistemic type: inferential [*naẓarī*] or one of several non-inferential [*ḍarūrī*] categories (self-evident, observational, empirically observed, introspectively observed, tested, intuited, mass-testified, subconsciously inferred).
+- **Dual Barebones Form** – Each premise stores two symbolic shorthand forms: one from the perspective of its parent argument, and one from the perspective of its own sub-argument conclusion. This mirrors the exact structure of classical *manṭiq* charts.
+- **Inferential Sub-argument Generation** – When a premise is marked as inferential, a two-premise sub-argument table is automatically generated beneath it.
+
+### 💾 Project Management
+- **Multi-Project Support** – Create, manage, and switch between multiple argument projects from a dedicated "My Arguments" page.
+
+<img src="static/screenshots/screenshot_arguments.png" alt="Screenshot of Qaḍiyya's My Arguments page"/>
+
+<small>*Pictured above: a screenshot of **Qaḍiyya**'s "My Arguments" page, where all of the user's arguments are saved.*</small>
+
+- **Session-Based Isolation** – Each browser session has its own isolated workspace. Multiple users visiting the app simultaneously will not share or overwrite each other's data.
+- **JSON Persistence** – Each session's projects are serialized and saved to disk as JSON, persisting across page refreshes and server restarts.
+- **Rename & Delete** – Projects can be renamed or deleted directly from the arguments page.
+
+### 📤 Export
+- **Download JSON** – Export the current argument as a `.json` file for backup or future import.
+- **Export as PDF** – Export a properly paginated A4 PDF with the same aesthetic as the image export, suitable for sharing or printing. **This is the recommended method of exporting arguments**.
+- **Export as Image (PNG)** – Export a clean, styled image of the argument with parchment background and full typography.
+
+### 🎨 Design & UX
+- **Manuscript-inspired UI** – Parchment tones, deep ink, emerald green, and gold accents. Typography uses Cormorant SC (titles/labels), EB Garamond (body), and Amiri (Arabic text).
+- **Smart Reloading** – Text edits save silently without a page reload. Only structural changes (adding premises, deleting, or marking inferential) trigger a reload, with scroll position preserved across all reloads.
+- **Floating Export Button** – A fixed bottom-right export button gives access to all three export formats from anywhere in the editor.
+- **Consistent Navigation** – A fixed navigation bar on the editor and arguments pages provides direct links between Editor, My Arguments, and Home.
 - **Modular Backend Architecture** – A Flask-based system designed for scalability, separating the logic of argument traversal from the front-end rendering.
 
 ## 🏗️ Tech Stack & Architecture
-- **Framework:** **Python (Flask)** — The backbone of the application, managing routing and the complex backend logic required for structured argument mapping.
-- **Frontend:** **Vanilla JS / HTML5 / CSS3** — Built without heavy external frameworks to ensure a fast, lightweight, and highly responsive user experience. 
-- **Templating:** **Jinja2** — Utilized modular macros to handle the recursive rendering of argument components, keeping the codebase DRY and maintainable.
 
-</br>
+### Backend
+- **Python (Flask)** — Routing, session management, and all server-side logic.
+- **WeasyPrint** — HTML/CSS-to-PDF rendering for export, with full support for Arabic text and custom fonts.
+- **pdf2image + Pillow** — PDF-to-PNG conversion for image export, with page-margin cropping and vertical page stitching.
 
-- **Core Logic:** **Recursive Tree Traversal** — Custom recursive algorithms manage the hierarchical data structure, ensuring that premise relationships and numbering remain consistent across all levels of nesting.
-- **Data Integrity:** **Parent-Child Relationship Model** — The system is structured to preserve the logical flow from non-inferential facts to their inferential conclusions.
+### Frontend
+- **Vanilla JS / HTML5 / CSS3** — No frontend frameworks. Fast, lightweight, and fully responsive.
+- **Jinja2** — Server-side templating for dynamic argument rendering.
+- **Google Fonts** — Cormorant SC, Cormorant Garamond, EB Garamond, Amiri.
+
+### Data Model
+- **Core Logic: Recursive Tree Traversal** — Custom recursive algorithms manage the hierarchical data structure, ensuring that premise relationships and numbering remain consistent across all levels of nesting. Each `Node` stores a `barebones` dict (`"parent"` and `"child"` symbolic forms), a `written_premise`, a `PremiseType`, and a list of child `Node`s. The root node acts as the argument's conclusion.
+  - **Data Integrity**: Parent-Child Relationship Model — The system is structured to preserve the logical flow from non-inferential facts to their inferential conclusions.
+- **MantiqMap** — Manages the tree: breadth-first numbering, chart representation generation, node lookup, and JSON serialization/deserialization.
+- **Session-keyed JSON files** — One `.json` file per browser session in a `sessions/` directory, containing all of that user's projects and their active project ID.
+
+### Installation
+
+```bash
+# Clone the repository
+$ git clone git@github.com:NoohAlavi/Qadiyya.git
+$ cd Qadiyya
+
+# Install Python dependencies
+$ pip install flask weasyprint pdf2image pillow gunicorn
+
+# Install poppler (required by pdf2image)
+# Ubuntu/Debian:
+$ sudo apt install poppler-utils
+# macOS:
+$ brew install poppler
+
+# Run the app
+$ python app.py
+```
+
+> **Note:** Add `sessions/` to your `.gitignore` to avoid committing user data.
 
 </br>
 
