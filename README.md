@@ -2,7 +2,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Work--in--Progress-orange" alt="Status">
   <img src="https://img.shields.io/badge/Language-Python-blue" alt="Python">
-  <img src="https://img.shields.io/badge/Built%20with-Flask-green" alt="Flask">alt="Maintained">
+  <img src="https://img.shields.io/badge/Built%20with-Flask-green" alt="Flask">
 </p>
 
 <h1>
