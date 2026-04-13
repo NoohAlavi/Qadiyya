@@ -77,6 +77,12 @@
               </button>
             {% endif %}
 
+            <button class="card-btn card-btn-duplicate"
+                    onclick="duplicateProject('{{ project.id }}')"
+                    title="Duplicate">
+              ⧉
+            </button>
+
             <button class="card-btn card-btn-rename"
                     onclick="openRename('{{ project.id }}', '{{ project.title or '' }}')"
                     title="Rename">
@@ -186,7 +192,6 @@
             window.location.href = data.redirect;
           } else {
             alert(data.error || 'Invalid file — please upload a Qaḍiyya JSON export.');
-            // Reset the file input so the same file can be tried again
             document.getElementById('import-input').value = '';
           }
         });
@@ -216,6 +221,19 @@
       .then(data => {
         if (data.ok) window.location.reload();
         else alert(data.error || "Could not delete project.");
+      });
+    }
+
+    function duplicateProject(projectId) {
+      fetch('/duplicate_project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project_id: projectId })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) window.location.reload();
+        else alert(data.error || "Could not duplicate project.");
       });
     }
 

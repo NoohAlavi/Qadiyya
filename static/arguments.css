@@ -545,6 +545,21 @@ body::after {
   background: rgba(184,134,11,0.05);
 }
 
+/* ── Duplicate button ── */
+.card-btn-duplicate {
+  color: var(--ink-muted);
+  border-color: transparent;
+  padding: 6px 8px;
+  opacity: 0.4;
+  font-size: 14px;
+}
+.card-btn-duplicate:hover {
+  opacity: 1;
+  color: var(--emerald);
+  border-color: rgba(26,92,58,0.3);
+  background: rgba(26,92,58,0.05);
+}
+
 
 /* ══════════════════════════════════════
    MOBILE RESPONSIVENESS (≤ 768px)

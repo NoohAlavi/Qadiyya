@@ -235,6 +235,27 @@ def rename_current_project():
     return jsonify({"ok": True})
 
 
+@app.route("/duplicate_project", methods=['POST'])
+def duplicate_project():
+    import copy
+    data = request.get_json()
+    project_id = data.get("project_id")
+
+    user_data = load_user_data()
+    if project_id not in user_data["projects"]:
+        return jsonify({"error": "Project not found"}), 404
+
+    original = user_data["projects"][project_id]
+    duplicate = copy.deepcopy(original)
+    original_title = duplicate.get("title") or "Untitled Argument"
+    duplicate["title"] = original_title + " (Copy)"
+
+    new_id = str(uuid.uuid4())
+    user_data["projects"][new_id] = duplicate
+    save_user_data(user_data)
+    return jsonify({"ok": True})
+
+
 @app.route("/delete_project", methods=['POST'])
 def delete_project():
     data = request.get_json()
@@ -257,7 +278,7 @@ def delete_project():
 
 
 # ══════════════════════════════════════════════════════════════════
-#  ROUTES — EXPORT
+#  ROUTES — EXPORT / IMPORT
 # ══════════════════════════════════════════════════════════════════
 
 @app.route("/export_json")
@@ -282,12 +303,10 @@ def export_json():
 def import_json():
     data = request.get_json()
 
-    # Validate structure — must have a root key at minimum
     if not data or "root" not in data:
         return jsonify({"error": "Invalid file — please upload a Qaḍiyya JSON export."}), 400
 
     try:
-        # Try to reconstruct a MantiqMap from the data to catch structural errors
         mymap = MantiqMap.from_dict(data)
         if not mymap.root:
             raise ValueError("No root node found.")
