@@ -32,9 +32,9 @@ Named after the Arabic *manṭiqī* term for a proposition—a statement that ca
 
 **Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts, allowing them to see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
 
-<img src="static/screenshot_home.png" alt="Screenshot of Qaḍiyya's homepage"/>
+<img src="static/demo.gif" alt="Screenshot of Qaḍiyya's homepage"/>
 
-<small>*Pictured above: a screenshot of **Qaḍiyya**'s homepage*</small>
+<small>*Pictured above: a demo of **Qaḍiyya***</small>
 
 ## 💡 Inspiration behind Qaḍiyya
 Qaḍiyya grew out of my own studies in the traditional Islamic sciences of Classical Logic [*manṭiq*], Avicennan-Neoplatonic Philosophy [*falsafa*], and Dialectical Theology [*kalām*]—especially during lessons with my teacher [Shaykh Hamza Karamali](https://hamzakaramali.com/), where we <u>regularly</u> build these detailed charts by hand, translating the rigorous philosophical arguments of luminaries like [Athīr al-Dīn al-Abharī](https://en.wikipedia.org/wiki/Athir_al-Din_al-Abhari) and [Saʿd al-Dīn al-Taftāzānī](https://en.wikipedia.org/wiki/Al-Taftazani) in their works like the *Isagoge*, *Hidāyat al-ḥikma*, and *Sharḥ al-ʿaqāʾid al-nasafiyya*. 
