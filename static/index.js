@@ -60,6 +60,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Annotations fields
+    document.querySelectorAll('div.annotations').forEach(cell => {
+        cell.dataset.oldValue = cell.innerText;
+
+        cell.addEventListener('blur', async (e) => {
+            const newText = e.target.innerText;
+            const oldText = e.target.dataset.oldValue;
+
+            if (newText === oldText) return;
+
+            const premiseNumber = e.target.dataset.premiseNum;
+
+            await fetch('/update_premise', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ number: premiseNumber, field: 'annotations', value: newText })
+            });
+
+            e.target.dataset.oldValue = newText;
+        });
+    });
+
     // Select dropdowns
     document.querySelectorAll('select').forEach(select => {
         // store initial value

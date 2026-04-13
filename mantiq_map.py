@@ -63,7 +63,8 @@ class MantiqMap:
                 "barebones": p.barebones["parent"],
                 "barebones_key": "parent",
                 "written_premise": p.written_premise,
-                "premise_type": self.format_premise_type(p.premise_type)
+                "premise_type": self.format_premise_type(p.metadata["premise_type"]),
+                "annotations": p.metadata["annotations"]
             })
             
         high_level_rows.append({
@@ -90,7 +91,8 @@ class MantiqMap:
                             "barebones": child.barebones["parent"],
                             "barebones_key": "parent",
                             "written_premise": child.written_premise,
-                            "premise_type": self.format_premise_type(child.premise_type)
+                            "premise_type": self.format_premise_type(child.metadata["premise_type"]),
+                            "annotations": child.metadata["annotations"]
                         })
 
                     subt_rows.append({
@@ -127,8 +129,6 @@ class MantiqMap:
         root_data = d.get("root")
         if root_data:
             root = Node.from_dict(root_data)
-            # Don't call set_root (it re-assigns numbers and sets is_root again);
-            # the serialized data already has numbers and is_root baked in.
             m.root = root
         return m
     

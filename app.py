@@ -140,6 +140,8 @@ def update_premise():
             premise.barebones["parent"] = new_value
         elif field == 'barebones_child':
             premise.barebones["child"] = new_value
+        elif field == 'annotations':
+            premise.metadata["annotations"] = new_value
 
     save_current_map(mymap)
 
@@ -158,7 +160,7 @@ def update_proposition_type():
 
     needs_reload = False
     if premise:
-        premise.premise_type = proposition_type
+        premise.metadata["premise_type"] = proposition_type
         if proposition_type == PremiseType.INFERENTIAL:
             mymap.add_subpremise(premise_number[1:], ". . .", ". . .", PremiseType.SELF_EVIDENT)
             mymap.add_subpremise(premise_number[1:], ". . .", ". . .", PremiseType.SELF_EVIDENT)

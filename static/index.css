@@ -282,6 +282,37 @@ td:has(select) {
   white-space: nowrap;
 }
 
+/* ── Annotations field ── */
+div.annotations {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-muted);
+  margin-top: 6px;
+  padding: 4px 2px;
+  border-top: 1px dashed var(--border);
+  min-height: 18px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  outline: none;
+  transition: background 0.15s;
+}
+div.annotations:empty::before {
+  content: attr(placeholder);
+  color: var(--border-dark);
+  opacity: 0.6;
+  pointer-events: none;
+}
+div.annotations:hover {
+  background-color: var(--gold-faint);
+  cursor: text;
+}
+div.annotations:focus {
+  background-color: var(--gold-faint);
+  outline: 1px solid var(--gold);
+  outline-offset: 1px;
+}
+
 /* ── Delete button ── */
 td.delete {
   width: 40px;

@@ -64,6 +64,10 @@
                     </option>
                     {% endfor %}
                 </select>
+                <div contenteditable="true"
+                     class="annotations"
+                     data-premise-num="{{ row.number }}"
+                     placeholder="annotations...">{{ row.annotations }}</div>
             </td>
             <td class="delete">
                 <form action="{{ url_for('delete_premise') }}" method="post" style="display:inline;">

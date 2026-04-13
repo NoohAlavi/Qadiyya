@@ -182,6 +182,17 @@ td.premise-type {
   min-width: 140px;
 }
 
+td.premise-type .export-annotations {
+  display: block;
+  font-size: 11px;
+  font-style: italic;
+  color: #9a8060;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed #c8b89a;
+  white-space: normal;
+}
+
 /* ── Footer ── */
 .export-footer {
   text-align: center;
@@ -265,7 +276,7 @@ td.premise-type {
         <td class="num">{{ row.number }}</td>
         <td class="barebones">{{ row.barebones }}</td>
         <td class="written_premise">{{ row.written_premise }}</td>
-        <td class="premise-type">{{ row.premise_type }}</td>
+        <td class="premise-type">{{ row.premise_type }}{% if row.annotations %}<span class="export-annotations">{{ row.annotations }}</span>{% endif %}</td>
       </tr>
 
       {% elif argument.level == 1 %}
