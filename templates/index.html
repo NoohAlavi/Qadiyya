@@ -33,10 +33,12 @@
     <!-- Section header -->
     <h2 class="argument-title {% if argument.level == 1 %}level-1{% endif %}">
         {{ argument['title'] }}
-        {% if argument.level == 1 %}
-        <button class="title-rename-btn" onclick="openRenameTitle()" title="Rename argument">✎</button>
+        {% if argument.level > 1 %}
+        <button class="subarg-toggle" onclick="toggleSubarg(this)" title="Collapse">▲</button>
         {% endif %}
     </h2>
+
+    {% if argument.level > 1 %}<div class="subarg-wrapper">{% endif %}
 
     <!-- Argument chart -->
     <table>
@@ -117,6 +119,8 @@
         </form>
     </div>
 
+    {% if argument.level > 1 %}</div>{% endif %}
+
     <div class="section-spacer"></div>
 
     {% endfor %}
@@ -188,59 +192,13 @@
             setTimeout(hideExportOverlay, 12000);
             window.location.href = '/export_pdf';
         }
-    </script>
 
-    <!-- ── Rename Title Modal ── -->
-    <div class="rename-overlay" id="rename-overlay">
-        <div class="rename-container">
-            <h2>Rename Argument</h2>
-            <label for="rename-title-input">Argument Title</label>
-            <input type="text" id="rename-title-input" placeholder="What is the argument trying to prove?">
-            <button class="btn btn-save" onclick="submitRenameTitle(event)">Save</button>
-            <button class="btn btn-cancel" onclick="closeRenameTitle()">Cancel</button>
-        </div>
-    </div>
-
-    <script>
-        // ── Rename title ────────────────────────────────────────
-        function openRenameTitle() {
-            // Pre-fill with current title, stripping the pencil button text
-            const h2 = document.querySelector('h2.argument-title.level-1');
-            const currentTitle = h2.childNodes[0].textContent.trim();
-            document.getElementById('rename-title-input').value = currentTitle;
-            document.getElementById('rename-overlay').classList.add('visible');
-            setTimeout(() => document.getElementById('rename-title-input').focus(), 50);
-        }
-
-        function closeRenameTitle() {
-            document.getElementById('rename-overlay').classList.remove('visible');
-        }
-
-        document.getElementById('rename-overlay').addEventListener('click', function(e) {
-            if (e.target === this) closeRenameTitle();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeRenameTitle();
-        });
-
-        async function submitRenameTitle(e) {
-            e.preventDefault();
-            const newTitle = document.getElementById('rename-title-input').value;
-
-            const res = await fetch('/rename_current_project', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title: newTitle })
-            });
-
-            const data = await res.json();
-            if (data.ok) {
-                closeRenameTitle();
-                reloadWithScroll();
-            } else {
-                alert(data.error || 'Could not rename argument.');
-            }
+        // ── Collapsible sub-arguments ───────────────────────────
+        function toggleSubarg(btn) {
+            const wrapper = btn.closest('h2').nextElementSibling;
+            const isCollapsed = wrapper.classList.toggle('collapsed');
+            btn.textContent = isCollapsed ? '▼' : '▲';
+            btn.title = isCollapsed ? 'Expand' : 'Collapse';
         }
     </script>
 
