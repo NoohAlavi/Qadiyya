@@ -31,7 +31,7 @@ Named after the Arabic *manṭiqī* term for a proposition—a statement that ca
 
 **Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts, allowing them to see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
 
-<img src="static/demo.gif" alt="Screenshot of Qaḍiyya's homepage"/>
+<img src="static/screenshots/demo.gif" alt="Screenshot of Qaḍiyya's homepage"/>
 
 <small>*Pictured above: a demo of **Qaḍiyya***</small>
 
@@ -40,8 +40,8 @@ Qaḍiyya grew out of my own studies in the traditional Islamic sciences of Clas
 
 The chart format used in Qaḍiyya is not something I invented—**it is the exact structure taught to us by Shaykh Hamza in [his courses](https://whyislamistrue.com/kalam)**, reflecting the disciplined, hierarchical reasoning of classical *manṭiq* and *kalām*.
 
-<img src="static/screenshot_editor_1.png" alt="A demonstration of Qaḍiyya using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism, part 1" />
-<img src="static/screenshot_editor_2.png" alt="A demonstration of Qaḍiyya using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism, part 2" />
+<img src="static/screenshots/screenshot_editor_1.png" alt="A demonstration of Qaḍiyya using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism, part 1" />
+<img src="static/screenshots/screenshot_editor_2.png" alt="A demonstration of Qaḍiyya using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism, part 2" />
 
 <small>*Pictured above: a demonstration of **Qaḍiyya** using one of Athīr al-Dīn al-Abharī's positive arguments for Aristotelian hylomorphism*</small>
 
@@ -123,6 +123,8 @@ The codebase is structured for future enhancements that support deeper study, in
 
 - Convert arguments to modern symbolic notation
 
+- User accounts & an authorization system
+
 - Collaborative editing
 
 - A library of sample arguments
@@ -134,11 +136,13 @@ The codebase is structured for future enhancements that support deeper study, in
 **All expansions maintain the same principle: the tool *assists* thinking; it does <u>not</u> replace it!**
 
 ## 📦 Current Features
+- **Save/Load Argument Trees** — Each browser can store a collection of different argument charts, so that one can work on multiple projects at once.
 - **Dynamic Argument Construction** – Add premises or nested sub-premises with a single click, allowing for unlimited depth in logical proofs.
 - **Recursive Deletion Logic** – Deleting a parent premise automatically and cleanly removes all associated sub-arguments, maintaining the integrity of the logic tree.
 - **Intelligent Auto-Renumbering** – Real-time numbering updates (e.g., P1, P2, P3) ensure that the structural hierarchy remains clear even as the argument is reorganized.
 - **Premise Classification** – Integrated dropdowns to categorize statements by their epistemic type (e.g., inferential [*naẓarī*] vs. non-inferential [*ḍarūrī*]), a core requirement of classical Islamic logic [*manṭiq*].
 - **Hierarchical Visualization** – A clean, responsive UI specifically designed to display the "inner architecture" of an argument at a glance.
+- **Export Argument Charts** - Export argument charts as a `.PDF` file or `.PNG` image; or download the raw data as a `.JSON` for backup purposes!
 - **Modular Backend Architecture** – A Flask-based system designed for scalability, separating the logic of argument traversal from the front-end rendering.
 
 ## 🏗️ Tech Stack & Architecture
