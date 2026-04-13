@@ -1,0 +1,10 @@
+[phases.setup]
+nixPkgs = [
+  "poppler_utils",
+  "cairo",
+  "pango",
+  "gdk-pixbuf",
+  "libffi",
+  "shared-mime-info",
+  "glib",
+]

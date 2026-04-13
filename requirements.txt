@@ -1,0 +1,5 @@
+flask
+weasyprint
+pdf2image
+pillow
+gunicorn
