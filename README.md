@@ -8,12 +8,12 @@
 </p>
 
 <h1>
-  <img src="static/qadiyya_icon.png" width="40" style="vertical-align:middle" alt="Qaḍiyya Logo">&nbsp; Qaḍiyya | قضية
+  <img src="static/new_icon.png" width="60" style="vertical-align:middle" alt="Qaḍiyya Logo">&nbsp; Qaḍiyya | قضية
 </h1>
 
 > 🌐 **Try it live:** [qadiyya.up.railway.app](https://qadiyya.up.railway.app/)
 >
-> *Sessions are browser-based — your arguments persist across refreshes but are not tied to an account. Clearing your cookies or switching browsers will start a fresh workspace.*
+> ***Note:** Sessions are browser-based — your arguments persist across refreshes but are not tied to an account. Clearing your cookies or switching browsers will start a fresh workspace.*
 
 <details>
   <summary><b>📂 Click to expand Table of Contents</b></summary>
@@ -29,7 +29,9 @@
 
 Named after the Arabic *manṭiqī* term for a proposition—a statement that can be true or false—Qaḍiyya is designed to **make the structure of complex reasoning visible**.
 
-**Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. Qaḍiyya helps the student transform those implicit structures into clear, interactive charts, allowing them to see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
+**Classical *manṭiq* trains students to think in orderly, hierarchical steps, but texts rarely display these relationships in a visual way**. 
+
+Qaḍiyya helps the student transform those implicit structures into clear, interactive charts, allowing them to see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
 
 <img src="static/screenshots/demo.gif" alt="Screenshot of Qaḍiyya's homepage"/>
 
@@ -114,7 +116,7 @@ It is useful for:
 
 - Researchers organizing *kalām*, *falsafa*, or *uṣūl* proofs
 
-- Anyone who wants to strengthen clarity in reasoning
+- <u>Anyone</u> who wants to strengthen clarity in reasoning
 
 **It can be used to dissect arguments from classical texts or to construct new ones for teaching or research.**
 
@@ -139,11 +141,14 @@ The codebase is structured for future enhancements that support deeper study, in
 
 ### 🧩 Argument Construction
 - **Dynamic Premise Construction** – Add premises or nested sub-premises with a single click, with unlimited depth in logical proofs.
+
 - **Recursive Deletion** – Deleting a premise automatically removes all its nested sub-arguments, maintaining the integrity of the logic tree.
+
 - **Intelligent Auto-Renumbering** – Premise numbers (P1, P2, P3…) update automatically as the argument is reorganized.
-- **Premise Classification** – Integrated dropdowns to categorize each premise by epistemic type: inferential [*naẓarī*] or one of several non-inferential [*ḍarūrī*] categories (self-evident, observational, empirically observed, introspectively observed, tested, intuited, mass-testified, subconsciously inferred).
-- **Dual Barebones Form** – Each premise stores two symbolic shorthand forms: one from the perspective of its parent argument, and one from the perspective of its own sub-argument conclusion. This mirrors the exact structure of classical *manṭiq* charts.
-- **Inferential Sub-argument Generation** – When a premise is marked as inferential, a two-premise sub-argument table is automatically generated beneath it.
+
+- **Premise Classification** – Integrated dropdowns to categorize each premise by epistemic type: inferential [*naẓarī*] or one of several non-inferential [*ḍarūrī*] categories (self-evident, observational, empirically observed, introspectively observed, tested, intuited, mass-testified, subconsciously inferred). There is also an option to further annotate the premise, in order to either add more details or to critique it.
+
+- **Inferential Sub-Argument Generation** – When a premise is marked as inferential, a two-premise sub-argument table is automatically generated beneath it.
 
 ### 💾 Project Management
 - **Multi-Project Support** – Create, manage, and switch between multiple argument projects from a dedicated "My Arguments" page.
@@ -152,38 +157,60 @@ The codebase is structured for future enhancements that support deeper study, in
 
 <small>*Pictured above: a screenshot of **Qaḍiyya**'s "My Arguments" page, where all of the user's arguments are saved.*</small>
 
-- **Session-Based Isolation** – Each browser session has its own isolated workspace. Multiple users visiting the app simultaneously will not share or overwrite each other's data.
-- **JSON Persistence** – Each session's projects are serialized and saved to disk as JSON, persisting across page refreshes and server restarts.
-- **Rename & Delete** – Projects can be renamed or deleted directly from the arguments page.
+- **Session-Based Isolation** – Each browser session has its own isolated workspace. Thus, multiple users visiting the app simultaneously will not share or overwrite each other's data.
+
+- **JSON Persistence** – Each session's projects are serialized and saved to disk as `JSON`, persisting across page refreshes and server restarts.
+
+- **Rename, Delete, and Duplicate** – Projects can be renamed, deleted, or duplicated directly from the arguments page.
 
 ### 📤 Export
 - **Download JSON** – Export the current argument as a `.json` file for backup or future import.
-- **Export as PDF** – Export a properly paginated A4 PDF with the same aesthetic as the image export, suitable for sharing or printing. **This is the recommended method of exporting arguments**.
+
+- **Export as PDF** – Export a properly paginated A4 `.PDF` file with the same aesthetic as the image export, suitable for sharing or printing. **This is the recommended method of exporting arguments**.
+
 - **Export as Image (PNG)** – Export a clean, styled image of the argument with parchment background and full typography.
 
 ### 🎨 Design & UX
-- **Manuscript-inspired UI** – Parchment tones, deep ink, emerald green, and gold accents. Typography uses Cormorant SC (titles/labels), EB Garamond (body), and Amiri (Arabic text).
+- **Manuscript-Inspired UI** – Parchment tones, deep ink, emerald green, and gold accents. Typography uses Cormorant SC (titles/labels), EB Garamond (body), and Amiri (Arabic text).
+
 - **Smart Reloading** – Text edits save silently without a page reload. Only structural changes (adding premises, deleting, or marking inferential) trigger a reload, with scroll position preserved across all reloads.
+
 - **Floating Export Button** – A fixed bottom-right export button gives access to all three export formats from anywhere in the editor.
+
 - **Consistent Navigation** – A fixed navigation bar on the editor and arguments pages provides direct links between Editor, My Arguments, and Home.
+
 - **Modular Backend Architecture** – A Flask-based system designed for scalability, separating the logic of argument traversal from the front-end rendering.
 
 ## 🏗️ Tech Stack & Architecture
 
 ### Backend
 - **Python (Flask)** — Routing, session management, and all server-side logic.
+
 - **WeasyPrint** — HTML/CSS-to-PDF rendering for export, with full support for Arabic text and custom fonts.
+
 - **pdf2image + Pillow** — PDF-to-PNG conversion for image export, with page-margin cropping and vertical page stitching.
 
 ### Frontend
-- **Vanilla JS / HTML5 / CSS3** — No frontend frameworks. Fast, lightweight, and fully responsive.
 - **Jinja2** — Server-side templating for dynamic argument rendering.
+
+- **Vanilla JS / HTML5 / CSS3** — No frontend frameworks. Fast, lightweight, and fully responsive.
+
 - **Google Fonts** — Cormorant SC, Cormorant Garamond, EB Garamond, Amiri.
+
+### Deployment & Persistence
+- **Railway** — Cloud hosting platform utilized for automated CI/CD and production deployment.
+
+- **Persistent Volumes** — Data is stored in a dedicated Railway volume to ensure that session-based JSON records persist across deployments and server restarts.
+
+- **Gunicorn** — A production-grade WSGI HTTP Server used to handle concurrent requests in the cloud environment.
 
 ### Data Model
 - **Core Logic: Recursive Tree Traversal** — Custom recursive algorithms manage the hierarchical data structure, ensuring that premise relationships and numbering remain consistent across all levels of nesting. Each `Node` stores a `barebones` dict (`"parent"` and `"child"` symbolic forms), a `written_premise`, a `PremiseType`, and a list of child `Node`s. The root node acts as the argument's conclusion.
+
   - **Data Integrity**: Parent-Child Relationship Model — The system is structured to preserve the logical flow from non-inferential facts to their inferential conclusions.
+
 - **MantiqMap** — Manages the tree: breadth-first numbering, chart representation generation, node lookup, and JSON serialization/deserialization.
+
 - **Session-keyed JSON files** — One `.json` file per browser session in a `sessions/` directory, containing all of that user's projects and their active project ID.
 
 ### Installation
@@ -207,6 +234,15 @@ $ python app.py
 ```
 
 > **Note:** Add `sessions/` to your `.gitignore` to avoid committing user data.
+
+## 📜 Credits & Acknowledgements
+- **The Golden Chain:** This project is a digital tribute to the **intellectual giants of the Islamic scholarly tradition**, whose historical commitment to reason, logic, and foundational clarity continues to inspire seekers of truth today.
+
+- **Intellectual Inspiration:** As detailed in the [inspiration section](#-inspiration-behind-qaḍiyya), the specific charting format and the whole idea behind the project are a direct result of my studies with **[Shaykh Hamza Karamali](https://hamzakaramali.com/)**.
+
+- **Visual Identity:** The custom Qaḍiyya logo and favicon were designed by my friend **Talḥah ʿAbd al-ʿAzīz al-Dakkāwī**.
+
+- **Typography & Fonts:** This project utilizes the **Amiri**, **EB Garamond**, and **Cormorant** typefaces via [Google Fonts](https://fonts.google.com/).
 
 </br>
 
