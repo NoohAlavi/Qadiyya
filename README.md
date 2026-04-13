@@ -21,7 +21,12 @@
   1. [💡 Inspiration Behind Qaḍiyya](#-inspiration-behind-qaḍiyya)
   2. [🧠 Project Goals](#-project-goals)
   3. [📦 Current Features](#-current-features)
+     1. [🧩 Argument Construction](#-argument-construction)
+     2. [💾 Project Management](#-project-management)
+     3. [📤 Export](#-export)
+     4. [🎨 Design & UX](#-design--ux)
   4. [🏗️ Tech Stack & Architecture](#️-tech-stack--architecture)
+  5. [📜 Credits & Acknowledgements](#-credits--acknowledgements)
 </details>
 <br/>
 
@@ -33,7 +38,7 @@ Named after the Arabic *manṭiqī* term for a proposition—a statement that ca
 
 Qaḍiyya helps the student transform those implicit structures into clear, interactive charts, allowing them to see how premises connect, how sub-arguments branch, and how a conclusion necessarily emerges from its supporting statements.
 
-<img src="static/screenshots/demo.gif" alt="Screenshot of Qaḍiyya's homepage"/>
+<img src="static/screenshots/demo.gif" alt="A demo of Qaḍiyya"/>
 
 <small>*Pictured above: a demo of **Qaḍiyya***</small>
 
@@ -170,6 +175,10 @@ The codebase is structured for future enhancements that support deeper study, in
 
 - **Export as Image (PNG)** – Export a clean, styled image of the argument with parchment background and full typography.
 
+<img src="static/screenshots/screenshot_export_btn.png" alt="The 'Export' button from **Qaḍiyya**'s argument editor page"/>
+
+<small>*Pictured above: the "Export" button from **Qaḍiyya**'s argument editor page.*</small>
+
 ### 🎨 Design & UX
 - **Manuscript-Inspired UI** – Parchment tones, deep ink, emerald green, and gold accents. Typography uses Cormorant SC (titles/labels), EB Garamond (body), and Amiri (Arabic text).
 
@@ -212,6 +221,8 @@ The codebase is structured for future enhancements that support deeper study, in
 - **MantiqMap** — Manages the tree: breadth-first numbering, chart representation generation, node lookup, and JSON serialization/deserialization.
 
 - **Session-keyed JSON files** — One `.json` file per browser session in a `sessions/` directory, containing all of that user's projects and their active project ID.
+
+- **Backups & File Sharing** — The JSON-ified arguments can be downloaded via the "Export" button, and can then be uploaded back into the editor for further use. This is useful both for (1) locally backing up one's work, and for (2) sharing one's projects with others for the sake of collaboration (or critique!).
 
 ### Installation
 
