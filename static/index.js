@@ -38,14 +38,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             console.log(`Updating ${fieldType} for premise ${premiseNumber}: ${newText}`);
 
-            await fetch('/update_premise', {
+            const res = await fetch('/update_premise', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ number: premiseNumber, field: fieldType, value: newText })
             });
 
-            // update old value so next blur works correctly — no reload needed
+            // update old value so next blur works correctly
             e.target.dataset.oldValue = newText;
+
+            // reload if the premise is inferential (so the sub-argument conclusion row updates)
+            const data = await res.json();
+            if (data.reload) reloadWithScroll();
         });
     });
 

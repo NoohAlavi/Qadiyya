@@ -41,7 +41,8 @@ def update_premise():
         elif field == 'barebones_child':
             premise.barebones["child"] = new_value
 
-    return jsonify({"ok": True})
+    is_inferential = bool(premise and premise.premises)
+    return jsonify({"ok": True, "reload": is_inferential and field == 'written_premise'})
 
 @app.route("/update_proposition_type", methods=['POST'])
 def update_proposition_type():
