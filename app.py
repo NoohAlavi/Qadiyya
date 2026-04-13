@@ -12,7 +12,7 @@ mymap.set_root(root_node)
 @app.route("/add_premise", methods=["POST"])
 def add_premise():
     arg_num = request.form.get("arg_num")[1:] or 0
-    mymap.add_subpremise(arg_num, '', '', PremiseType.SELF_EVIDENT)
+    mymap.add_subpremise(arg_num, '. . .', '. . .', PremiseType.SELF_EVIDENT)
     return redirect(url_for("editor"))
 
 @app.route("/delete_premise", methods=["POST"])
@@ -55,8 +55,10 @@ def update_proposition_type():
     if premise:
         premise.premise_type = proposition_type
         
+        # If the proposition is inferential, then generate a sub-argument with two premises, and refresh the page
         if proposition_type == PremiseType.INFERENTIAL:
-            mymap.add_subpremise(premise_number[1:], "", "", PremiseType.SELF_EVIDENT)
+            mymap.add_subpremise(premise_number[1:], ". . .", ". . .", PremiseType.SELF_EVIDENT)
+            mymap.add_subpremise(premise_number[1:], ". . .", ". . .", PremiseType.SELF_EVIDENT)
             needs_reload = True
     
     return jsonify({"reload": needs_reload})
@@ -64,17 +66,55 @@ def update_proposition_type():
 @app.route("/create_new_argument", methods=['POST'])
 def create_new_arg():
     global mymap
+
+    data = request.get_json()
+    title = data.get("title", "Untitled Argument")
+
+    mymap = create_example_argument()
+    mymap.set_title(title)
+
+    return jsonify({"redirect": url_for("editor")})
+
+def create_example_argument():
     global root
     
-    root = Node()
+    root = Node(
+        barebones_form="Therefore, C is B",
+        written_premise="Therefore, [. . .]",
+        premise_type=PremiseType.INFERENTIAL
+    )
+    root.is_root = True
+
     mymap = MantiqMap(root)
-    mymap.set_title(request.get_json()['title'])
-    
-    return jsonify({"redirect": url_for("editor")})
+    mymap.set_title("Starter Argument")
+
+    # P1: All A is B
+    p1 = Node(
+        barebones_form="All A is B",
+        written_premise=". . .",
+        premise_type=PremiseType.SELF_EVIDENT
+    )
+
+    # P2: C is A
+    p2 = Node(
+        barebones_form="C is A",
+        written_premise=". . .",
+        premise_type=PremiseType.SELF_EVIDENT
+    )
+
+    # attach children to root
+    root.premises = [p1, p2]
+    mymap.assign_numbers()
+
+    return mymap
 
 @app.route("/editor")
 def editor():    
     return render_template("index.html", argument_chart=mymap.get_chart_representation(), premise_types=mymap.get_premise_types_list())
+
+@app.route("/arguments")
+def arguments():    
+    return render_template("arguments.html")
 
 @app.route("/")
 def home():
