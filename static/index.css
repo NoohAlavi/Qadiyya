@@ -379,3 +379,36 @@ footer {
   border-top: 1px solid var(--border);
   margin-top: 48px;
 }
+
+/* Empty conclusion cells — no border, blends into background */
+tr.conclusion-row td.empty {
+  border: none;
+  background: transparent !important;
+}
+
+/* ── Nav links ── */
+#nav-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-link {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--parchment);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.nav-link:hover   { opacity: 1; }
+.nav-link-active  { opacity: 1; border-bottom: 1px solid var(--gold-light); }
+
+.nav-sep {
+  color: var(--gold-light);
+  opacity: 0.5;
+  font-size: 12px;
+}

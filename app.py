@@ -45,14 +45,10 @@ def load_user_data() -> dict:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
     
-    # First visit — create a starter project
-    starter = create_example_argument()
-    project_id = str(uuid.uuid4())
+    # First visit — start with no projects
     data = {
-        "projects": {
-            project_id: starter.to_dict()
-        },
-        "current_project": project_id
+        "projects": {},
+        "current_project": None
     }
     save_user_data(data)
     return data
@@ -219,15 +215,11 @@ def delete_project():
     if project_id not in projects:
         return jsonify({"error": "Project not found"}), 404
 
-    # Don't allow deleting the last project
-    if len(projects) == 1:
-        return jsonify({"error": "Cannot delete the only project"}), 400
-
     del projects[project_id]
 
-    # If we deleted the active project, switch to the first remaining one
+    # If we deleted the active project, switch to first remaining or clear it
     if user_data["current_project"] == project_id:
-        user_data["current_project"] = next(iter(projects))
+        user_data["current_project"] = next(iter(projects)) if projects else None
 
     save_user_data(user_data)
     return jsonify({"ok": True})
@@ -239,6 +231,9 @@ def delete_project():
 
 @app.route("/editor")
 def editor():
+    user_data = load_user_data()
+    if not user_data.get("current_project") or not user_data["projects"]:
+        return redirect(url_for("arguments"))
     mymap = get_current_map()
     return render_template(
         "index.html",
@@ -251,13 +246,13 @@ def editor():
 def arguments():
     user_data = load_user_data()
     projects = user_data["projects"]
-    current_id = user_data["current_project"]
+    current_id = user_data.get("current_project")
 
     # Build a flat list for the template
     project_list = [
         {
             "id": pid,
-            "title": pdata.get("title", "Untitled"),
+            "title": pdata.get("title", ""),
             "is_current": pid == current_id
         }
         for pid, pdata in projects.items()

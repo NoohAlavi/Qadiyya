@@ -4,34 +4,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>qaḍiyya | قضية</title>
+    <title>qaḍiyya | My Arguments</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='qadiyya_favicon.ico') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-    <script src="{{ url_for('static', filename='home.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='arguments.css') }}">
 </head>
 
 <body>
 
-  <main class="home-wrapper">
+  <!-- Nav bar -->
+  <div id="top">
+    <a id="logo" href="/">Qaḍiyya</a>
+    <nav id="nav-links">
+      <a href="/arguments" class="nav-link nav-link-active">My Arguments</a>
+      <span class="nav-sep">·</span>
+      <a href="/" class="nav-link">Home</a>
+      <span id="logo-arabic">قضية</span>
+    </nav>
+  </div>
 
-    <!-- Fixed nav bar -->
-    <div id="top">
-        <a id="logo" href="/">Qaḍiyya</a>
-        <span id="logo-arabic">قضية</span>
-    </div>
+  <main class="arguments-page">
 
     <!-- Basmala -->
-    <div class="home-basmala">﷽</div>
+    <div class="args-basmala">﷽</div>
 
     <!-- Ornamental rule -->
     <div class="ornamental-rule"><span>✦</span></div>
 
-    <!-- Fill in here -->
+    <!-- Page heading -->
+    <div class="args-heading">
+      <h1>My Arguments</h1>
+      <p>your saved argument charts</p>
+    </div>
+
+    <!-- New argument button -->
+    <div class="args-new-btn">
+      <button onclick="newProject()"><span>+ New Argument</span></button>
+    </div>
+
+    <!-- Project list -->
+    <div class="args-list">
+      {% if projects %}
+        {% for project in projects %}
+        <div class="project-card {% if project.is_current %}is-current{% endif %}"
+             style="animation-delay: {{ loop.index0 * 0.07 }}s">
+
+          <div class="card-left">
+            <span class="card-index">{{ loop.index }}</span>
+            <span class="card-title">
+              {% if project.title %}
+                {{ project.title | title }}
+              {% else %}
+                <em>Untitled Argument</em>
+              {% endif %}
+            </span>
+            <span class="card-current-badge">current</span>
+          </div>
+
+          <div class="card-actions">
+            {% if project.is_current %}
+              <button class="card-btn card-btn-open"
+                      onclick="window.location.href='/editor'">
+                Open
+              </button>
+            {% else %}
+              <button class="card-btn card-btn-open"
+                      onclick="switchProject('{{ project.id }}')">
+                Open
+              </button>
+            {% endif %}
+
+            <button class="card-btn card-btn-delete"
+                    onclick="deleteProject('{{ project.id }}', '{{ project.title or 'Untitled Argument' }}')"
+                    title="Delete">
+              ✕
+            </button>
+          </div>
+
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="args-empty">No arguments yet — create your first one above.</div>
+      {% endif %}
+    </div>
 
   </main>
 
-  <!-- Footer credit -->
+  <!-- Footer -->
   <p class="home-credit">Nooh Alavi (نوح بن أحمد كاشف العلوي) &nbsp;·&nbsp; 2025</p>
+
+  <!-- New Argument Modal -->
+  <div class="form-popup" id="myForm">
+    <div class="form-container">
+      <h2>New Argument</h2>
+
+      <label for="title">Argument Title</label>
+      <input type="text" placeholder="What is the argument trying to prove?" id="title">
+
+      <button class="btn btn-create" onclick="createNewProject(event)">Create Argument</button>
+      <button class="btn btn-cancel" onclick="closeForm()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    // ── Modal ──────────────────────────────────────────────────
+    function newProject() {
+      document.getElementById("myForm").style.display = "flex";
+      setTimeout(() => document.getElementById("title").focus(), 50);
+    }
+
+    function closeForm() {
+      document.getElementById("myForm").style.display = "none";
+    }
+
+    // Close modal on backdrop click
+    document.getElementById("myForm").addEventListener("click", function(e) {
+      if (e.target === this) closeForm();
+    });
+
+    // Close modal on Escape
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") closeForm();
+    });
+
+    function createNewProject(event) {
+      event.preventDefault();
+      fetch('/create_new_argument', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: document.getElementById('title').value })
+      })
+      .then(res => res.json())
+      .then(data => { window.location.href = data.redirect; });
+    }
+
+    // ── Project actions ────────────────────────────────────────
+    function switchProject(projectId) {
+      fetch('/switch_project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project_id: projectId })
+      })
+      .then(res => res.json())
+      .then(data => { window.location.href = data.redirect; });
+    }
+
+    function deleteProject(projectId, title) {
+      if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+      fetch('/delete_project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ project_id: projectId })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) window.location.reload();
+        else alert(data.error || "Could not delete project.");
+      });
+    }
+  </script>
+
 </body>
 </html>

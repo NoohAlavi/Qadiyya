@@ -3,7 +3,7 @@ function newProject() {
 }
 
 function openProject() {
-    document.location = "/editor";
+    document.location = "/arguments";
 }
 
 function closeForm() {
@@ -24,6 +24,6 @@ function createNewProject(event) {
         })
     }).then(res => res.json())
         .then(data => {
-            window.location.href = data.redirect; // 🔥 Navigate to /editor
+            window.location.href = data.redirect; // Navigate to /editor
         });;
 }

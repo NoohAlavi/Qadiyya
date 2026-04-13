@@ -15,7 +15,12 @@
     <!-- Fixed nav bar -->
     <div id="top">
         <a id="logo" href="/">Qaḍiyya</a>
-        <span id="logo-arabic">قضية</span>
+        <nav id="nav-links">
+            <a href="/arguments" class="nav-link">My Arguments</a>
+            <span class="nav-sep">·</span>
+            <a href="/" class="nav-link">Home</a>
+            <span id="logo-arabic">قضية</span>
+        </nav>
     </div>
 
     <!-- Basmala -->
@@ -75,8 +80,8 @@
                 data-barebones-key="parent">{{ row.barebones }}</td>
             <td contenteditable="true"
                 class="written_premise">{{ row.written_premise }}</td>
-            <td></td>
-            <td></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
         </tr>
 
         {% else %}
@@ -87,8 +92,8 @@
                 class="barebones"
                 data-barebones-key="child">{{ row.barebones }}</td>
             <td>{{ row.written_premise }}</td>
-            <td></td>
-            <td></td>
+            <td class="empty"></td>
+            <td class="empty"></td>
         </tr>
         {% endif %}
 
