@@ -11,7 +11,7 @@
   <img src="static/new_icon.png" width="50" style="vertical-align:middle" alt="Qaḍiyya Logo">&nbsp; Qaḍiyya | قضية
 </h1>
 
-> 🌐 **Try it live:** [qadiyya.up.railway.app](https://qadiyya.up.railway.app/)
+> 🌐 **Try it live:** https://www.qadiyya.ca/
 >
 > ***Note:** Sessions are browser-based — your arguments persist across refreshes but are not tied to an account. Clearing your cookies or switching browsers will start a fresh workspace.*
 
