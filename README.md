@@ -1,10 +1,7 @@
 <p align="center"><strong>بسم الله الرحمن الرحيم</strong><p>
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Work--in--Progress-orange" alt="Status">
+  <img src="https://img.shields.io/badge/Status-Live-brightgreen" alt="Status">
   <img src="https://img.shields.io/badge/Built%20with-Flask-green" alt="Flask">
-  <a href="https://qadiyya.up.railway.app/">
-    <img src="https://img.shields.io/badge/Live%20Demo-Available-brightgreen" alt="Live Demo">
-  </a>
 </p>
 
 <h1>
@@ -30,7 +27,7 @@
 </details>
 <br/>
 
-**Qaḍiyya** is a work-in-progress interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format—**inspired by the traditional science of Islamic logic [*manṭiq*]**.
+**Qaḍiyya** is an interactive web application for constructing, visualizing, and analyzing logical arguments in a structured, hierarchical format—**inspired by the traditional science of Islamic logic [*manṭiq*]**.
 
 Named after the Arabic *manṭiqī* term for a proposition—a statement that can be true or false—Qaḍiyya is designed to **make the structure of complex reasoning visible**.
 
@@ -187,6 +184,10 @@ The codebase is structured for future enhancements that support deeper study, in
 - **Floating Export Button** – A fixed bottom-right export button gives access to all three export formats from anywhere in the editor.
 
 - **Consistent Navigation** – A fixed navigation bar on the editor and arguments pages provides direct links between Editor, My Arguments, and Home.
+
+- **Collapsible Sub-Arguments** – Sub-argument tables can be collapsed and expanded with a single click, keeping the editor readable when working with deep, multi-level argument trees.
+
+- **Jump to Sub-Argument** – Inferential premises display a "↓ view sub-argument" link that smoothly scrolls to the corresponding sub-argument table, automatically expanding it if collapsed.
 
 - **Modular Backend Architecture** – A Flask-based system designed for scalability, separating the logic of argument traversal from the front-end rendering.
 
