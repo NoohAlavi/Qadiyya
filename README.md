@@ -214,6 +214,9 @@ The codebase is structured for future enhancements that support deeper study, in
 - **Gunicorn** — A production-grade WSGI HTTP Server used to handle concurrent requests in the cloud environment.
 
 ### Data Model
+
+<img src="static/screenshots/data_structure.svg" alt="Data structure visualized">
+
 - **Core Logic: Recursive Tree Traversal** — Custom recursive algorithms manage the hierarchical data structure, ensuring that premise relationships and numbering remain consistent across all levels of nesting. Each `Node` stores a `barebones` dict (`"parent"` and `"child"` symbolic forms), a `written_premise`, a `PremiseType`, and a list of child `Node`s. The root node acts as the argument's conclusion.
 
   - **Data Integrity**: Parent-Child Relationship Model — The system is structured to preserve the logical flow from non-inferential facts to their inferential conclusions.
