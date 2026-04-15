@@ -84,13 +84,17 @@
             </button>
 
             <button class="card-btn card-btn-rename"
-                    onclick="openRename('{{ project.id }}', '{{ project.title or '' }}')"
+                    data-id="{{ project.id }}"
+                    data-title="{{ project.title or '' }}"
+                    onclick="openRename(this.dataset.id, this.dataset.title)"
                     title="Rename">
               ✎
             </button>
 
             <button class="card-btn card-btn-delete"
-                    onclick="deleteProject('{{ project.id }}', '{{ project.title or 'Untitled Argument' }}')"
+                    data-id="{{ project.id }}"
+                    data-title="{{ project.title or 'Untitled Argument' }}"
+                    onclick="deleteProject(this.dataset.id, this.dataset.title)"
                     title="Delete">
               ✕
             </button>
