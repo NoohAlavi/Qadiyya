@@ -1,0 +1,847 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+SC:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+
+:root {
+  --parchment:      #f5f0e8;
+  --parchment-mid:  #ede6d6;
+  --parchment-dark: #e0d5c0;
+  --ink:            #1a1410;
+  --ink-soft:       #3d3228;
+  --ink-muted:      #6b5d50;
+  --gold:           #b8860b;
+  --gold-light:     #d4a843;
+  --gold-faint:     #f7edcc;
+  --emerald:        #1a5c3a;
+  --emerald-mid:    #2a7a50;
+  --emerald-light:  #00AA55;
+  --emerald-faint:  #eaf5ef;
+  --border:         #c8b89a;
+  --border-dark:    #9a8060;
+  --conclusion-bg:  #f0ebe0;
+  --shadow-sm:      rgba(26, 20, 16, 0.08);
+  --shadow-md:      rgba(26, 20, 16, 0.15);
+  --font-size:      16px;
+  --sidebar-w:      220px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--parchment);
+  color: var(--ink);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: var(--font-size);
+  min-height: 100vh;
+}
+
+/* ── Subtle parchment texture overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 0%,   rgba(184,134,11,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 100% 100%, rgba(26,92,58,0.04)  0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════
+   TOP NAV BAR
+══════════════════════════════════════ */
+#top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+
+  background-color: var(--emerald);
+  border-bottom: 2px solid var(--gold);
+  box-shadow: 0 2px 16px rgba(26,92,58,0.3);
+}
+
+/* left: logo */
+#logo {
+  font-family: 'Cormorant SC', serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--parchment);
+  text-decoration: none;
+  opacity: 0.95;
+  transition: opacity 0.2s;
+}
+#logo:hover { opacity: 1; }
+
+/* right: logo arabic */
+#logo-arabic {
+  font-family: 'Amiri', serif;
+  font-size: 17px;
+  color: var(--gold-light);
+  opacity: 0.85;
+  letter-spacing: 0.04em;
+}
+
+/* ══════════════════════════════════════
+   MAIN CONTENT AREA
+══════════════════════════════════════ */
+body > h1#basmala,
+body > h2,
+body > table,
+body > div,
+body > br {
+  position: relative;
+  z-index: 1;
+}
+
+/* Push content below fixed navbar */
+body {
+  padding-top: 72px;
+  padding-bottom: 80px;
+}
+
+/* ══════════════════════════════════════
+   BASMALA
+══════════════════════════════════════ */
+#basmala {
+  text-align: center;
+  font-family: 'Amiri', serif;
+  font-size: 34px;
+  color: var(--emerald);
+  margin: 16px auto 40px;
+  letter-spacing: 0.02em;
+}
+
+/* ══════════════════════════════════════
+   ARGUMENT SECTION HEADERS
+══════════════════════════════════════ */
+h2.argument-title {
+  text-align: center;
+  font-family: 'Cormorant SC', serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 48px auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 80%;
+  max-width: 900px;
+}
+
+h2.argument-title::before,
+h2.argument-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border-dark));
+}
+h2.argument-title::after {
+  background: linear-gradient(to left, transparent, var(--border-dark));
+}
+
+/* level-1 (main) title gets gold treatment */
+h2.argument-title.level-1 {
+  color: var(--emerald);
+  font-size: 16px;
+}
+h2.argument-title.level-1::before,
+h2.argument-title.level-1::after {
+  background: linear-gradient(to right, transparent, var(--gold));
+}
+h2.argument-title.level-1::after {
+  background: linear-gradient(to left, transparent, var(--gold));
+}
+
+/* ══════════════════════════════════════
+   TABLES
+══════════════════════════════════════ */
+table {
+  border-collapse: collapse;
+  width: 80%;
+  max-width: 960px;
+  margin: 0 auto 12px;
+  box-shadow: 0 2px 16px var(--shadow-sm), 0 0 0 1px var(--border);
+  background: white;
+}
+
+/* Header row */
+thead tr, table > tr:first-child {
+  background: linear-gradient(to bottom, var(--emerald), #174f32);
+}
+
+th {
+  padding: 11px 12px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--parchment);
+  border: none;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  text-align: left;
+}
+th:first-child { text-align: center; width: 52px; }
+th:last-child  { border-right: none; }
+
+/* Body rows */
+td {
+  padding: 10px 14px;
+  font-size: var(--font-size);
+  font-family: 'EB Garamond', Georgia, serif;
+  border: 1px solid var(--border);
+  vertical-align: middle;
+  line-height: 1.5;
+  transition: background 0.15s;
+}
+
+tr:nth-child(even) td { background-color: rgba(237, 230, 214, 0.35); }
+tr:nth-child(odd)  td { background-color: white; }
+
+/* Conclusion row styling */
+tr.conclusion-row td {
+  background-color: var(--conclusion-bg) !important;
+  font-style: italic;
+  color: var(--ink-soft);
+  border-top: 2px solid var(--border-dark);
+}
+
+/* Hover on editable cells */
+td[contenteditable="true"]:hover {
+  background-color: var(--gold-faint) !important;
+  cursor: text;
+}
+td[contenteditable="true"]:focus {
+  background-color: var(--gold-faint) !important;
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+
+/* Premise number */
+td.num {
+  text-align: center;
+  width: 52px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--emerald);
+  letter-spacing: 0.05em;
+}
+
+tr.conclusion-row td.num {
+  color: var(--gold);
+}
+
+/* Barebones column */
+td.barebones {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--ink-soft);
+  width: 160px;
+  min-width: 100px;
+}
+
+/* Written premise column */
+td.written_premise {
+  color: var(--ink);
+}
+
+/* ── Dropdown ── */
+select {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 14px;
+  color: var(--ink-soft);
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  padding: 2px 0;
+}
+select:hover { color: var(--emerald); }
+select:focus { color: var(--emerald); }
+
+/* ── Premise type dropdown cell — never truncate ── */
+td:has(select) {
+  min-width: 175px;
+  white-space: nowrap;
+}
+
+/* ── Annotations field ── */
+div.annotations {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-muted);
+  margin-top: 6px;
+  padding: 4px 2px;
+  border-top: 1px dashed var(--border);
+  min-height: 18px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  outline: none;
+  transition: background 0.15s;
+}
+div.annotations:empty::before {
+  content: attr(placeholder);
+  color: var(--border-dark);
+  opacity: 0.6;
+  pointer-events: none;
+}
+div.annotations:hover {
+  background-color: var(--gold-faint);
+  cursor: text;
+}
+div.annotations:focus {
+  background-color: var(--gold-faint);
+  outline: 1px solid var(--gold);
+  outline-offset: 1px;
+}
+
+/* ── Collapsible sub-arguments ── */
+.subarg-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  opacity: 0.6;
+  padding: 0 6px;
+  transition: opacity 0.2s, color 0.2s;
+  vertical-align: middle;
+}
+.subarg-toggle:hover {
+  opacity: 1;
+  color: var(--emerald);
+}
+
+.subarg-wrapper {
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  max-height: 2000px;
+  opacity: 1;
+}
+.subarg-wrapper.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+.subarg-wrapper.collapsed + .add-premise-wrapper {
+  display: none;
+}
+
+/* ── Scroll to sub-argument button ── */
+.scroll-to-subarg {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--emerald);
+  opacity: 0.7;
+  padding: 0;
+  margin-top: 6px;
+  display: block;
+  text-align: left;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.scroll-to-subarg:hover {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* ── Delete button ── */
+td.delete {
+  width: 40px;
+  text-align: center;
+  border-left: 1px solid var(--border);
+  padding: 4px;
+}
+
+button.delete {
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.2s, transform 0.15s;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+button.delete:hover {
+  opacity: 1;
+  transform: scale(1.15);
+  background: rgba(139,58,58,0.08);
+}
+
+/* ══════════════════════════════════════
+   ADD PREMISE BUTTON
+══════════════════════════════════════ */
+.add-premise-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 10px auto 0;
+  width: 80%;
+  max-width: 960px;
+}
+
+button.addPremise {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--emerald);
+  background: transparent;
+  border: 1.5px solid var(--emerald);
+  border-radius: 0;
+  padding: 9px 28px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+button.addPremise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--emerald);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+  z-index: 0;
+}
+button.addPremise span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s ease;
+}
+button.addPremise:hover::before { transform: scaleX(1); }
+button.addPremise:hover span    { color: var(--parchment); }
+
+/* ══════════════════════════════════════
+   SECTION SPACER
+══════════════════════════════════════ */
+.section-spacer {
+  width: 80%;
+  max-width: 960px;
+  margin: 32px auto;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+}
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 24px;
+  font-family: 'Amiri', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-muted);
+  opacity: 0.6;
+  letter-spacing: 0.03em;
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+}
+
+/* Empty conclusion cells — no border, blends into background */
+tr.conclusion-row td.empty {
+  border: none;
+  background: transparent !important;
+}
+
+/* ── Nav links ── */
+#nav-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-link {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--parchment);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.nav-link:hover   { opacity: 1; }
+.nav-link-active  { opacity: 1; border-bottom: 1px solid var(--gold-light); }
+
+.nav-sep {
+  color: var(--gold-light);
+  opacity: 0.5;
+  font-size: 12px;
+}
+
+/* ══════════════════════════════════════
+   FLOATING EXPORT BUTTON (FAB)
+══════════════════════════════════════ */
+#export-fab-wrapper {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+#export-fab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  background: var(--emerald);
+  color: var(--parchment);
+  border: 2px solid var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(26,92,58,0.35);
+  transition: all 0.2s ease;
+}
+#export-fab:hover {
+  background: var(--emerald-mid);
+  box-shadow: 0 6px 28px rgba(26,92,58,0.45);
+  transform: translateY(-2px);
+}
+
+.fab-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+#export-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--parchment);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  box-shadow: 0 8px 32px var(--shadow-md);
+  min-width: 200px;
+  order: -1; /* appears above the FAB button */
+}
+#export-menu.open {
+  display: flex;
+}
+#export-menu a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 12px 18px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+#export-menu a:last-child { border-bottom: none; }
+#export-menu a:hover {
+  background: var(--gold-faint);
+  color: var(--gold);
+}
+
+
+/* ══════════════════════════════════════
+   EXPORT LOADING OVERLAY
+══════════════════════════════════════ */
+#export-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 20, 16, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 500;
+  justify-content: center;
+  align-items: center;
+}
+#export-overlay.visible {
+  display: flex;
+}
+
+#export-overlay-box {
+  background: var(--parchment);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  box-shadow: 0 24px 64px rgba(26,20,16,0.35);
+  padding: 40px 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 260px;
+}
+
+.export-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#export-overlay-label {
+  font-family: 'Cormorant SC', serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+}
+
+#export-overlay-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink-muted);
+  opacity: 0.75;
+}
+
+
+/* ══════════════════════════════════════
+   MOBILE RESPONSIVENESS (≤ 768px)
+══════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── Navbar ── */
+  #top {
+    padding: 0 16px;
+    height: 48px;
+  }
+
+  #logo {
+    font-size: 15px;
+  }
+
+  /* Hide nav links on mobile — logo click goes home */
+  #nav-links .nav-link,
+  #nav-links .nav-sep {
+    display: none;
+  }
+
+  /* Keep arabic visible */
+  #logo-arabic {
+    font-size: 15px;
+  }
+
+  /* ── Body ── */
+  body {
+    padding-top: 64px;
+    font-size: 14px;
+  }
+
+  /* ── Basmala ── */
+  #basmala {
+    font-size: 26px;
+    margin: 12px auto 24px;
+  }
+
+  /* ── Argument titles ── */
+  h2.argument-title {
+    font-size: 12px;
+    width: 95%;
+    margin: 32px auto 12px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Tables — allow horizontal scroll ── */
+  table {
+    width: 95%;
+    font-size: 13px;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  td {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  td.barebones {
+    width: 100px;
+    min-width: 80px;
+  }
+
+  td:has(select) {
+    min-width: 130px;
+  }
+
+  /* ── Add premise button ── */
+  .add-premise-wrapper {
+    width: 95%;
+  }
+
+  button.addPremise {
+    font-size: 12px;
+    padding: 8px 20px;
+  }
+
+  /* ── Section spacer ── */
+  .section-spacer {
+    width: 95%;
+  }
+
+  /* ── Floating export button ── */
+  #export-fab {
+    padding: 9px 16px;
+    font-size: 12px;
+  }
+
+  /* ── Export overlay ── */
+  #export-overlay-box {
+    padding: 28px 24px;
+    min-width: 200px;
+  }
+}
+/* ── Title rename button ── */
+.title-rename-btn {
+  font-size: 14px;
+  color: var(--gold);
+  opacity: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0 4px;
+  margin-left: 8px;
+  transition: opacity 0.2s, transform 0.15s;
+  vertical-align: middle;
+}
+h2.argument-title.level-1:hover .title-rename-btn { opacity: 0.7; }
+.title-rename-btn:hover { opacity: 1 !important; transform: scale(1.15); }
+
+/* ── Rename modal ── */
+.rename-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 20, 16, 0.55);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.rename-overlay.visible { display: flex; }
+
+.rename-container {
+  width: 460px;
+  max-width: 92vw;
+  background: var(--parchment);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 64px rgba(26,20,16,0.35), 0 0 0 1px rgba(184,134,11,0.15);
+  padding: 40px 40px 32px;
+  position: relative;
+  animation: modalIn 0.3s ease;
+}
+.rename-container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
+}
+.rename-container h2 {
+  font-family: 'Cormorant SC', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+.rename-container label {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.rename-container input[type=text] {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  background: var(--parchment-mid);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 28px;
+}
+.rename-container input[type=text]:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(184,134,11,0.12);
+}
+.rename-container input[type=text]::placeholder {
+  color: var(--border-dark);
+  font-style: italic;
+}
+.rename-container .btn {
+  width: 100%;
+  padding: 13px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 10px;
+}
+.rename-container .btn-save {
+  background-color: var(--emerald);
+  color: var(--parchment);
+}
+.rename-container .btn-save:hover { background-color: var(--emerald-mid); }
+.rename-container .btn-cancel {
+  background-color: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--border);
+}
+.rename-container .btn-cancel:hover {
+  background-color: var(--parchment-mid);
+  border-color: var(--border-dark);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
