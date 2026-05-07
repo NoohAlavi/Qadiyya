@@ -10,7 +10,7 @@
 
 > 🌐 **Try it live:** https://www.qadiyya.ca/
 >
-> ***Note:** Sessions are browser-based — your arguments persist across refreshes but are not tied to an account. Clearing your cookies or switching browsers will start a fresh workspace.*
+> ***Note:** Sessions are browser-based — your arguments persist across refreshes but are not tied to an account. Clearing your cookies or switching browsers will start a fresh workspace. Browsers sometimes refresh cookies automatically, so it is recommended to make backups of everything by exporting to JSON, in order to avoid losing work down the line.*
 
 <details>
   <summary><b>📂 Click to expand Table of Contents</b></summary>
