@@ -102,6 +102,11 @@
                         <button type="button" role="radio" data-key="tree_conclusion" data-value="top">Top</button>
                     </div>
                 </div>
+                <label class="sp-switch sp-switch-spaced">
+                    <input type="checkbox" data-key="tree_notes">
+                    <span class="sp-track"></span>
+                    <span class="sp-text">Show notes under the tree</span>
+                </label>
             </section>
 
             <section class="sp-group">

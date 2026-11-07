@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             e.target.dataset.oldValue = newText;
+            loadTree();                     // the note's footnote under the tree follows
         });
     });
 
@@ -229,6 +230,9 @@ function applySettingChange(detail) {
             if (body && body.hasAttribute('data-follow-default')) setTreeCollapsed(!values.tree_open);
             break;
         }
+        case 'tree_notes':
+            renderTree();
+            break;
         case 'subargs_open':
             document.querySelectorAll('.subarg-wrapper[data-follow-default]')
                 .forEach(wrapper => setWrapperCollapsed(wrapper, !values.subargs_open));
@@ -430,6 +434,86 @@ function renderTree() {
         });
         addPath(`M${px} ${bus}V${pEdge + toKids * 3}`, true);
     });
+
+    renderTreeNotes(nodes, rows);
+}
+
+// ── Notes: a marker on each box that has an annotation, and the notes listed under the tree ──
+function treeNotesEnabled() {
+    const s = window.QadiyyaSettings;
+    return !s || s.values.tree_notes !== false;
+}
+
+// The annotated boxes in reading order (top row to bottom row, left to right).
+// Returns [{n, node, text, snippet}] — empty when notes are switched off.
+function collectTreeNotes(nodes, rows) {
+    if (!treeNotesEnabled()) return [];
+    const order = new Map();
+    rows.forEach((row, r) => Array.from(row.children).forEach(card => order.set(card, r)));
+    const annotated = nodes.filter(n => ((n.data.metadata && n.data.metadata.annotations) || '').trim());
+    annotated.sort((a, b) => (order.get(a.card) - order.get(b.card)) || (a.x - b.x));
+    return annotated.map((node, i) => {
+        const premise = (node.data.written_premise || '').trim();
+        return {
+            n: i + 1, node,
+            text: node.data.metadata.annotations.trim(),
+            snippet: premise.length > 70 ? premise.slice(0, 70).trimEnd() + '…' : premise,
+        };
+    });
+}
+
+function flashElement(el) {
+    el.classList.remove('tree-flash');
+    void el.offsetWidth;                     // restart the animation
+    el.classList.add('tree-flash');
+    setTimeout(() => el.classList.remove('tree-flash'), 1700);
+}
+
+function renderTreeNotes(nodes, rows) {
+    const box = document.getElementById('tree-notes');
+    const list = document.getElementById('tree-notes-list');
+    if (!box || !list) return;
+    list.innerHTML = '';
+    const notes = collectTreeNotes(nodes, rows);
+    box.hidden = notes.length === 0;
+    notes.forEach(note => {
+        const badge = document.createElement('span');
+        badge.className = 'tree-fn';
+        badge.textContent = note.n;                       // numbers only
+        badge.title = 'Show note ' + note.n;
+        badge.tabIndex = 0;
+        badge.setAttribute('role', 'button');
+        note.node.card.appendChild(badge);
+
+        const li = document.createElement('li');
+        li.id = 'tree-note-' + note.n;
+        const num = document.createElement('span');
+        num.className = 'tree-fn-num';
+        num.textContent = note.n;
+        const prem = document.createElement('span');
+        prem.className = 'tree-fn-premise';
+        prem.textContent = '\u201c' + (note.snippet || '(empty)') + '\u201d';
+        const body = document.createElement('span');
+        body.className = 'tree-fn-text';
+        body.textContent = note.text;                     // textContent: notes are user input
+        li.append(num, prem, body);
+        li.title = 'Highlight this premise in the tree';
+        li.addEventListener('click', () => {
+            note.node.card.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            flashElement(note.node.card);
+        });
+        list.appendChild(li);
+
+        const goToNote = e => {
+            e.stopPropagation();                          // don't also jump to the table row
+            li.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            flashElement(li);
+        };
+        badge.addEventListener('click', goToNote);
+        badge.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToNote(e); }
+        });
+    });
 }
 
 // Scroll the table to a premise's row (expanding its sub-argument if collapsed) and flash it.
@@ -535,7 +619,10 @@ async function exportTree() {
                     current.text += node.data[i];
                 }
             }
+            const badgeEl = card.querySelector('.tree-fn');
+            const br = badgeEl ? badgeEl.getBoundingClientRect() : null;
             return {
+                badge: br ? { n: badgeEl.textContent, x: br.left - origin.left, y: br.top - origin.top, w: br.width, h: br.height } : null,
                 x: r.left - origin.left, y: r.top - origin.top, w: r.width, h: r.height,
                 lines: lines.map(l => ({ text: l.text.trim(), mid: (l.top + l.bottom) / 2 - origin.top })),
                 font: `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`,
@@ -566,13 +653,18 @@ async function exportTree() {
         const maxX = Math.max(...cards.map(c => c.x + c.w));
         const maxY = Math.max(...cards.map(c => c.y + c.h));
         const treeW = maxX - minX;
-        const W = Math.ceil(treeW + PAD * 2);
+        // The notes under the tree (empty when the setting is off or nothing is annotated).
+        const notes = Array.from(document.querySelectorAll('#tree-notes-list li')).map(li => ({
+            n: li.children[0].textContent, prem: li.children[1].textContent, text: li.children[2].textContent,
+        }));
+        const contentW = Math.max(treeW, notes.length ? 560 : 0);
+        const W = Math.ceil(contentW + PAD * 2);
         // Wrap the title to the tree's width so a long title doesn't stretch the picture.
         const titleLines = [];
         let cur = '';
         title.split(/\s+/).filter(Boolean).forEach(word => {
             const trial = cur ? cur + ' ' + word : word;
-            if (cur && probe.measureText(trial).width > treeW) { titleLines.push(cur); cur = word; } else { cur = trial; }
+            if (cur && probe.measureText(trial).width > contentW) { titleLines.push(cur); cur = word; } else { cur = trial; }
         });
         if (cur) titleLines.push(cur);
         const TITLE_LH = 30;
@@ -581,7 +673,32 @@ async function exportTree() {
         const basH = bas ? 50 : 0;
         const titleH = (titleLines.length ? titleLines.length * TITLE_LH + 22 : 0) + basH;
         const FOOT = 118;                                          // room for the watermark footer
-        const H = Math.ceil(maxY + PAD * 2 + titleH + FOOT);
+
+        // Wrap each note to the content width (numbers hang in a 30px column).
+        const noteFont = "15px 'EB Garamond', Georgia, serif";
+        const premFont = "italic 14px 'EB Garamond', Georgia, serif";
+        const NOTE_LH = 21, NOTE_COL = 30;
+        const wrap = (text, font, width) => {
+            probe.font = font;
+            const out = [];
+            text.split('\n').forEach(para => {
+                let line = '';
+                para.split(/\s+/).filter(Boolean).forEach(word => {
+                    const trial = line ? line + ' ' + word : word;
+                    if (line && probe.measureText(trial).width > width) { out.push(line); line = word; } else { line = trial; }
+                });
+                out.push(line);
+            });
+            return out;
+        };
+        notes.forEach(n => {
+            n.premLine = wrap(n.prem, premFont, contentW - NOTE_COL)[0];
+            n.lines = wrap(n.text, noteFont, contentW - NOTE_COL);
+            n.h = NOTE_LH * (1 + n.lines.length) + 12;
+        });
+        const notesH = notes.length ? 54 + notes.reduce((a, n) => a + n.h, 0) : 0;
+
+        const H = Math.ceil(maxY + PAD * 2 + titleH + notesH + FOOT);
         const dx = PAD + (W - PAD * 2 - treeW) / 2 - minX;
         const dy = PAD + titleH;
 
@@ -641,6 +758,47 @@ async function exportTree() {
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             c.lines.forEach(l => ctx.fillText(l.text, c.x + dx + c.w / 2, l.mid + dy));
         });
+
+        // Note markers on the boxes.
+        const gold0 = '#b8860b';
+        cards.forEach(c => {
+            if (!c.badge) return;
+            const b = c.badge, bx = b.x + dx, by = b.y + dy;
+            ctx.fillStyle = gold0;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(bx, by, b.w, b.h, b.h / 2); else ctx.rect(bx, by, b.w, b.h);
+            ctx.fill();
+            ctx.fillStyle = color('--parchment') || '#f5f0e8';
+            ctx.font = "600 11px 'EB Garamond', Georgia, serif";
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(b.n, bx + b.w / 2, by + b.h / 2 + 0.5);
+        });
+
+        // The notes, listed under the tree.
+        if (notes.length) {
+            const nx = PAD, nw = W - PAD * 2;
+            let ny = maxY + dy + 34;
+            ctx.strokeStyle = '#c8b89a'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(nx, ny); ctx.lineTo(nx + nw, ny); ctx.stroke();
+            ny += 20;
+            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+            ctx.font = "600 13px 'Cormorant SC', 'EB Garamond', serif";
+            ctx.fillStyle = color('--ink-muted') || '#6b5d50';
+            if ('letterSpacing' in ctx) ctx.letterSpacing = '2px';
+            ctx.fillText('NOTES', nx, ny);
+            if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+            ny += 22;
+            notes.forEach(n => {
+                ctx.textAlign = 'right'; ctx.fillStyle = gold0; ctx.font = "600 15px 'EB Garamond', Georgia, serif";
+                ctx.fillText(n.n, nx + NOTE_COL - 8, ny);
+                ctx.textAlign = 'left';
+                ctx.font = premFont; ctx.fillStyle = color('--ink-muted') || '#6b5d50';
+                ctx.fillText(n.premLine, nx + NOTE_COL, ny);
+                ctx.font = noteFont; ctx.fillStyle = color('--ink') || '#1a1410';
+                n.lines.forEach((ln, i) => ctx.fillText(ln, nx + NOTE_COL, ny + NOTE_LH * (i + 1)));
+                ny += n.h;
+            });
+        }
 
         // Footer, as in the PDF export: a rule, a small ornament, then the watermark.
         const fy = H - FOOT + 14;

@@ -85,6 +85,7 @@ DEFAULT_SETTINGS = {
     "tree_open": True,             # the "Argument Tree" section starts open
     "tree_conclusion": "bottom",   # where the tree draws the conclusion: "bottom" or "top"
     "subargs_open": True,          # sub-argument tables start expanded
+    "tree_notes": True,            # show annotations as footnotes under the tree
     "text_size": "medium",         # editor table text: "small", "medium" or "large"
 }
 
@@ -93,6 +94,7 @@ SETTING_CHOICES = {
     "tree_open": bool,
     "tree_conclusion": ("bottom", "top"),
     "subargs_open": bool,
+    "tree_notes": bool,
     "text_size": ("small", "medium", "large"),
 }
 

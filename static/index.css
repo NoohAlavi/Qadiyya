@@ -920,7 +920,7 @@ h2.argument-title.level-1:hover .title-rename-btn { opacity: 0.7; }
   width: 90%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 4px 4px 18px;
+  padding: 14px 4px 18px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -1020,3 +1020,79 @@ body[data-text-size] .tree-card         { font-size: calc(var(--font-size) * 0.8
   /* the phone layout uses compact table text; keep it proportional to the setting */
   body[data-text-size] td { font-size: calc(var(--font-size) * 0.8125); }
 }
+
+
+/* ── Notes (annotations) shown as footnotes under the tree ── */
+.tree-fn {
+  position: absolute;
+  top: -9px;
+  right: 8px;
+  z-index: 2;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  border-radius: 9px;
+  background: var(--gold);
+  color: var(--parchment);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+  font-style: normal;
+  cursor: pointer;
+}
+.tree-fn:hover, .tree-fn:focus-visible { background: var(--emerald); outline: none; }
+
+.tree-notes {
+  width: 90%;
+  max-width: 1000px;
+  margin: 22px auto 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.tree-notes[hidden] { display: none; }
+.tree-notes-title {
+  margin: 0 0 10px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+#tree-notes-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#tree-notes-list li {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 2px 8px;
+  padding: 8px 6px;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: 2px;
+}
+#tree-notes-list li:hover { background: rgba(184, 134, 11, 0.07); }
+.tree-fn-num {
+  grid-row: 1 / span 2;
+  justify-self: end;
+  color: var(--gold);
+  font-weight: 600;
+}
+.tree-fn-premise { color: var(--ink-muted); font-style: italic; font-size: 14px; }
+.tree-fn-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.tree-flash { animation: tree-flash 1.6s ease; }
+@keyframes tree-flash {
+  0%, 35% { box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.55); background-color: rgba(184, 134, 11, 0.14); }
+  100%    { box-shadow: 0 0 0 3px rgba(184, 134, 11, 0); }
+}
+body[data-text-size] .tree-fn { font-size: calc(var(--font-size) * 0.6875); }
+body[data-text-size] #tree-notes-list li { font-size: calc(var(--font-size) * 0.9375); }
+body[data-text-size] .tree-fn-premise { font-size: calc(var(--font-size) * 0.875); }
