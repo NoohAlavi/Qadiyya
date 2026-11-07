@@ -12,6 +12,16 @@ function reloadWithScroll() {
     window.location.reload();
 }
 
+// Remember on the server whether the "Argument Tree" section is closed (saved with the argument).
+function saveTreeCollapsed(collapsed) {
+    fetch('/set_tree_collapsed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ collapsed }),
+        keepalive: true
+    }).catch(() => { /* view state only: ignore network errors */ });
+}
+
 // Remember on the server whether a sub-argument table is collapsed (the flag is stored on the
 // premise itself). `keepalive` lets the request finish even if the page reloads straight after.
 function saveCollapsed(wrapper, collapsed) {
@@ -366,6 +376,7 @@ function toggleTree(btn) {
     const collapsed = body.classList.toggle('collapsed');
     btn.textContent = collapsed ? '▼' : '▲';
     btn.title = collapsed ? 'Expand' : 'Collapse';
+    saveTreeCollapsed(collapsed);
     if (!collapsed) renderTree();
 }
 

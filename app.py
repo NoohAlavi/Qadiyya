@@ -468,8 +468,27 @@ def editor():
     return render_template(
         "index.html",
         argument_chart=mymap.get_chart_representation(),
-        premise_types=mymap.get_premise_types_list()
+        premise_types=mymap.get_premise_types_list(),
+        tree_collapsed=mymap.tree_collapsed
     )
+
+
+@app.route("/set_tree_collapsed", methods=["POST"])
+def set_tree_collapsed():
+    """Remember whether the 'Argument Tree' section is closed for the current argument."""
+    data = request.get_json(silent=True) or {}
+    collapsed = data.get("collapsed")
+    if not isinstance(collapsed, bool):
+        return jsonify({"error": "'collapsed' must be true or false"}), 400
+
+    user_data = load_user_data()
+    if not user_data.get("current_project") or not user_data["projects"]:
+        return jsonify({"error": "No active project"}), 404
+
+    mymap = get_current_map()
+    mymap.tree_collapsed = collapsed
+    save_current_map(mymap)
+    return jsonify({"ok": True})
 
 
 @app.route("/tree_data")

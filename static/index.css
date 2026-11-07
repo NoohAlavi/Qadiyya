@@ -889,25 +889,29 @@ h2.argument-title.level-1:hover .title-rename-btn { opacity: 0.7; }
 .tree-toolbar {
   display: flex;
   justify-content: center;
-  margin: -6px 0 18px;
+  margin: -12px 0 12px;   /* tucked just under the legend, above the tree */
 }
+/* Deliberately quiet: small, muted, and only turns emerald on hover/focus */
 .tree-flip-btn {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--emerald);
+  color: var(--ink-muted);
   background: transparent;
-  border: 1.5px solid var(--emerald);
-  padding: 7px 20px;
+  border: 1px solid var(--border);
+  padding: 3px 11px;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  opacity: 0.85;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
 }
 .tree-flip-btn:hover,
 .tree-flip-btn:focus-visible {
-  background: var(--emerald);
-  color: var(--parchment);
+  color: var(--emerald);
+  border-color: var(--emerald);
+  background: rgba(26, 92, 58, 0.05);
+  opacity: 1;
   outline: none;
 }
 

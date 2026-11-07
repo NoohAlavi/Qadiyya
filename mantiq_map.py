@@ -6,6 +6,7 @@ class MantiqMap:
     def __init__(self, root=None):
         self.title = ""
         self.root = None
+        self.tree_collapsed = False   # view state: the "Argument Tree" section is closed in the editor
         if root:
             self.set_root(root)
 
@@ -120,13 +121,15 @@ class MantiqMap:
     def to_dict(self) -> dict:
         return {
             "title": self.title,
-            "root": self.root.to_dict() if self.root else None
+            "root": self.root.to_dict() if self.root else None,
+            "tree_collapsed": self.tree_collapsed
         }
 
     @classmethod
     def from_dict(cls, d: dict) -> "MantiqMap":
         m = cls()
         m.title = d.get("title", "")
+        m.tree_collapsed = bool(d.get("tree_collapsed", False))   # older saves: tree stays open
         root_data = d.get("root")
         if root_data:
             root = Node.from_dict(root_data)
