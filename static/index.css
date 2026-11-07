@@ -941,7 +941,9 @@ h2.argument-title.level-1:hover .title-rename-btn { opacity: 0.7; }
   top: 0;
   z-index: 1;
   display: flex;
-  align-items: center;
+  align-items: center;       /* vertically centred */
+  justify-content: center;   /* horizontally centred */
+  text-align: center;        /* and each wrapped line centred within the box */
   padding: 9px 12px;
   border: 1px solid;
   font-family: 'EB Garamond', Georgia, serif;
