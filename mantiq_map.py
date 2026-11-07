@@ -1,4 +1,19 @@
+import re
+
 from node import *
+
+
+def title_case(text: str) -> str:
+    """Capitalise each word, like str.title(), but without capitalising the letter after an
+    apostrophe ("Abhari's", not "Abhari'S"). Hyphens, brackets and spaces still start a new word."""
+    def fix(m):
+        word = m.group(0)
+        for i, ch in enumerate(word):
+            if ch.upper() != ch.lower():          # first cased letter (skips marks like ʿ)
+                return word[:i] + ch.upper() + word[i + 1:].lower()
+        return word
+    return re.sub(r"[^\W_]+(?:['\u2019][^\W_]+)*", fix, text)
+
 
 class MantiqMap:
     
@@ -81,7 +96,7 @@ class MantiqMap:
         })
 
         charts.append({
-            "title": "High-Level Argument" + (f" For {self.title.title()}" if self.title else ""),
+            "title": "High-Level Argument" + (f" For {title_case(self.title)}" if self.title else ""),
             "rows": high_level_rows,
             "level": 1
         })

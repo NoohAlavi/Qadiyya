@@ -580,7 +580,8 @@ async function exportTree() {
         const basFont = bas ? (() => { const b = getComputedStyle(bas); return `${b.fontStyle} ${b.fontWeight} 26px ${b.fontFamily}`; })() : '';
         const basH = bas ? 50 : 0;
         const titleH = (titleLines.length ? titleLines.length * TITLE_LH + 22 : 0) + basH;
-        const H = Math.ceil(maxY + PAD * 2 + titleH);
+        const FOOT = 118;                                          // room for the watermark footer
+        const H = Math.ceil(maxY + PAD * 2 + titleH + FOOT);
         const dx = PAD + (W - PAD * 2 - treeW) / 2 - minX;
         const dy = PAD + titleH;
 
@@ -640,6 +641,31 @@ async function exportTree() {
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             c.lines.forEach(l => ctx.fillText(l.text, c.x + dx + c.w / 2, l.mid + dy));
         });
+
+        // Footer, as in the PDF export: a rule, a small ornament, then the watermark.
+        const fy = H - FOOT + 14;
+        const gold = '#b8860b';
+        ctx.strokeStyle = '#c8b89a'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(PAD, fy); ctx.lineTo(W - PAD, fy); ctx.stroke();
+        const orn = Math.min(W * 0.5, 420), ox = (W - orn) / 2, oy = fy + 24;
+        [[ox, ox + orn / 2 - 16, false], [ox + orn / 2 + 16, ox + orn, true]].forEach(([x1, x2, fadeOut]) => {
+            const g = ctx.createLinearGradient(x1, 0, x2, 0);
+            g.addColorStop(0, fadeOut ? gold : 'rgba(184,134,11,0)');
+            g.addColorStop(0.5, gold);
+            g.addColorStop(1, fadeOut ? 'rgba(184,134,11,0)' : gold);
+            ctx.strokeStyle = g;
+            ctx.beginPath(); ctx.moveTo(x1, oy); ctx.lineTo(x2, oy); ctx.stroke();
+        });
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = gold;
+        ctx.globalAlpha = 0.7; ctx.font = "13px 'Amiri', serif"; ctx.fillText('❧', W / 2, oy);
+        ctx.globalAlpha = 0.85; ctx.font = "italic 15px 'Amiri', serif";
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '0.9px';
+        ctx.fillText('Made with Qaḍiyya', W / 2, oy + 26);
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+        ctx.globalAlpha = 0.65; ctx.font = "18px 'Amiri', serif";
+        ctx.fillText('قضية', W / 2, oy + 50);
+        ctx.globalAlpha = 1;
 
         const blob = await new Promise(res => cv.toBlob(res, 'image/png'));
         const url = URL.createObjectURL(blob);
