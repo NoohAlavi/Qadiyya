@@ -449,6 +449,15 @@ def editor():
     )
 
 
+@app.route("/tree_data")
+def tree_data():
+    """Nested JSON of the current argument — feeds the read-only tree view in the editor."""
+    user_data = load_user_data()
+    if not user_data.get("current_project") or not user_data["projects"]:
+        return jsonify({"error": "No active project"}), 404
+    return jsonify(get_current_map().root.to_dict())
+
+
 @app.route("/arguments")
 def arguments():
     user_data = load_user_data()

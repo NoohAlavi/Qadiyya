@@ -845,3 +845,156 @@ h2.argument-title.level-1:hover .title-rename-btn { opacity: 0.7; }
   from { opacity: 0; transform: translateY(-16px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
+
+/* ══════════════════════════════════════
+   ARGUMENT TREE VIEW
+══════════════════════════════════════ */
+#tree-section {
+  position: relative;
+  z-index: 1;
+  margin: 8px auto 0;
+}
+
+#tree-body.collapsed { display: none; }
+
+.tree-note {
+  text-align: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-muted);
+  margin: 0 auto 14px;
+}
+
+.tree-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-bottom: 22px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.tree-swatch {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  margin-right: 7px;
+  vertical-align: -1px;
+  border: 1px solid;
+}
+
+/* ── Flip toggle (conclusion at bottom / top) ── */
+.tree-toolbar {
+  display: flex;
+  justify-content: center;
+  margin: -6px 0 18px;
+}
+.tree-flip-btn {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--emerald);
+  background: transparent;
+  border: 1.5px solid var(--emerald);
+  padding: 7px 20px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.tree-flip-btn:hover,
+.tree-flip-btn:focus-visible {
+  background: var(--emerald);
+  color: var(--parchment);
+  outline: none;
+}
+
+/* Wide trees scroll sideways instead of squeezing the boxes */
+#tree-scroll {
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4px 4px 18px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#tree-canvas {
+  position: relative;
+  margin: 0 auto;
+}
+
+.tree-row {
+  position: relative;
+  margin-bottom: 44px;           /* keep in step with TREE.gapY in index.js */
+}
+.tree-row:last-child { margin-bottom: 0; }
+
+/* ── Boxes ── */
+.tree-card {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  padding: 9px 12px;
+  border: 1px solid;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.tree-card:hover,
+.tree-card:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px var(--shadow-md);
+}
+.tree-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.tree-leaf  { background: var(--emerald-faint); border-color: var(--emerald); }
+.tree-inf   { background: var(--gold-faint);    border-color: var(--gold); }
+.tree-concl {
+  background: var(--conclusion-bg);
+  border: 1.5px solid var(--border-dark);
+  font-style: italic;
+  font-weight: 500;
+}
+.tree-empty { color: var(--ink-muted); font-style: italic; }
+
+/* The legend swatches reuse the box colours */
+.tree-swatch.tree-leaf  { background: var(--emerald-faint); border-color: var(--emerald); }
+.tree-swatch.tree-inf   { background: var(--gold-faint);    border-color: var(--gold); }
+.tree-swatch.tree-concl { background: var(--conclusion-bg); border-color: var(--border-dark); }
+
+/* ── Connectors ── */
+#tree-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+#tree-lines path {
+  fill: none;
+  stroke: var(--border-dark);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* ── Flash the table row you jumped to ── */
+@keyframes row-flash {
+  0%, 30% { box-shadow: inset 0 0 0 999px rgba(184, 134, 11, 0.32); }
+  100%    { box-shadow: inset 0 0 0 999px rgba(184, 134, 11, 0); }
+}
+tr.row-flash td { animation: row-flash 1.7s ease-out; }
+
+@media (max-width: 768px) {
+  #tree-scroll { width: 95%; }
+  .tree-note { font-size: 14px; padding: 0 12px; }
+}

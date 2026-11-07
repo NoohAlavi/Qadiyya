@@ -56,7 +56,7 @@
 
         {% if row.premise_type %}
         <!-- ── Regular premise row ── -->
-        <tr>
+        <tr id="row-{{ row.number }}">
             <td class="num">{{ row.number }}</td>
             <td contenteditable="true"
                 class="barebones"
@@ -89,7 +89,7 @@
 
         {% elif argument.level == 1 %}
         <!-- ── Conclusion row of the high-level argument ── -->
-        <tr class="conclusion-row">
+        <tr class="conclusion-row" id="row-C">
             <td class="num">{{ row.number }}</td>
             <td contenteditable="true"
                 class="barebones"
@@ -129,6 +129,30 @@
     <div class="section-spacer"></div>
 
     {% endfor %}
+
+    <!-- ── Argument Tree (read-only overview of how the premises feed the conclusion) ── -->
+    <section id="tree-section">
+        <h2 class="argument-title">
+            Argument Tree
+            <button class="subarg-toggle" onclick="toggleTree(this)" title="Collapse">▲</button>
+        </h2>
+
+        <div id="tree-body">
+            <p class="tree-note" id="tree-note">Premises flow downward into the conclusion. Click any box to jump to its row in the table.</p>
+            <div class="tree-legend">
+                <span><i class="tree-swatch tree-leaf"></i>Non-inferential (bedrock)</span>
+                <span><i class="tree-swatch tree-inf"></i>Inferential (has a sub-argument)</span>
+                <span><i class="tree-swatch tree-concl"></i>Conclusion</span>
+            </div>
+            <div class="tree-toolbar">
+                <button type="button" id="tree-flip" class="tree-flip-btn" onclick="flipTree()"
+                        aria-pressed="false" title="Move the conclusion to the top">⇅ Conclusion at bottom</button>
+            </div>
+            <div id="tree-scroll">
+                <div id="tree-canvas"></div>
+            </div>
+        </div>
+    </section>
 
     <!-- ── Floating Export Button ── -->
     <div id="export-fab-wrapper">
