@@ -6,7 +6,9 @@ class MantiqMap:
     def __init__(self, root=None):
         self.title = ""
         self.root = None
-        self.tree_collapsed = False   # view state: the "Argument Tree" section is closed in the editor
+        # View state of the "Argument Tree" section in the editor:
+        # None (follow the "tree opens by default" setting), "collapsed" or "expanded".
+        self.tree_state = None
         if root:
             self.set_root(root)
 
@@ -53,7 +55,10 @@ class MantiqMap:
     def display(self):
         self.root.recursive_display()
     
-    def get_chart_representation(self) -> list:
+    def get_chart_representation(self, subargs_collapsed_by_default: bool = False) -> list:
+        """Flatten the tree into tables for rendering.
+        Each sub-argument table carries `collapsed` (what to show now) and `follows_default`
+        (True while the user hasn't opened or closed it themselves)."""
         charts = []
 
         # =============== 1. HIGH-LEVEL ARGUMENT TABLE ===============
@@ -107,7 +112,9 @@ class MantiqMap:
                         "title": f"Sub-Argument for {premise.number}",
                         "rows": subt_rows,
                         "level": depth,
-                        "collapsed": premise.collapsed
+                        "collapsed": (premise.view_state == "collapsed"
+                                      or (premise.view_state is None and subargs_collapsed_by_default)),
+                        "follows_default": premise.view_state is None
                     })
                     add_subtables(premise, depth + 1)
 
@@ -122,14 +129,19 @@ class MantiqMap:
         return {
             "title": self.title,
             "root": self.root.to_dict() if self.root else None,
-            "tree_collapsed": self.tree_collapsed
+            "tree_state": self.tree_state
         }
 
     @classmethod
     def from_dict(cls, d: dict) -> "MantiqMap":
         m = cls()
         m.title = d.get("title", "")
-        m.tree_collapsed = bool(d.get("tree_collapsed", False))   # older saves: tree stays open
+        if "tree_state" in d:
+            m.tree_state = d["tree_state"] if d["tree_state"] in ("collapsed", "expanded") else None
+        else:
+            # Earlier format: a plain `tree_collapsed` true/false. Only a stored `true` was a
+            # deliberate choice; `false` was the untouched default, so it now follows the setting.
+            m.tree_state = "collapsed" if d.get("tree_collapsed") is True else None
         root_data = d.get("root")
         if root_data:
             root = Node.from_dict(root_data)

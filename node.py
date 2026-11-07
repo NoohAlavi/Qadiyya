@@ -40,9 +40,12 @@ class Node:
         self.premises = []
         self.number: int = None
 
-        # View state: True when this premise's sub-argument table is folded away in the editor.
+        # View state of this premise's sub-argument table in the editor:
+        #   None        -> follow the user's "sub-arguments open by default" setting
+        #   "collapsed" -> the user folded it away
+        #   "expanded"  -> the user opened it on purpose
         # It lives on the node, so it follows the premise when numbering shifts.
-        self.collapsed = False
+        self.view_state = None
 
     def add_premise(
             self, 
@@ -73,9 +76,19 @@ class Node:
                 "annotations": self.metadata["annotations"]
             },
             "number": self.number,
-            "collapsed": self.collapsed,
+            "view_state": self.view_state,
             "premises": [p.to_dict() for p in self.premises]
         }
+
+    @staticmethod
+    def _read_view_state(d: dict):
+        """Read the open/closed state of a sub-argument from a saved dict.
+        The earlier format stored a plain `collapsed` true/false. A stored `true` was always a
+        deliberate fold, but `false` was also the untouched default, so it now means "follow
+        the default" instead of pinning the section open."""
+        if "view_state" in d:
+            return d["view_state"] if d["view_state"] in ("collapsed", "expanded") else None
+        return "collapsed" if d.get("collapsed") is True else None
 
     @classmethod
     def from_dict(cls, d: dict) -> "Node":
@@ -97,6 +110,6 @@ class Node:
         node.written_premise = d.get("written_premise", "")
         node.metadata["annotations"] = annotations
         node.number = d.get("number", None)
-        node.collapsed = bool(d.get("collapsed", False))   # older saves have no flag: stay expanded
+        node.view_state = cls._read_view_state(d)
         node.premises = [cls.from_dict(p) for p in d.get("premises", [])]
         return node

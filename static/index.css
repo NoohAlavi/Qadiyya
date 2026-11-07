@@ -1004,3 +1004,19 @@ tr.row-flash td { animation: row-flash 1.7s ease-out; }
   #tree-scroll { width: 95%; }
   .tree-note { font-size: 14px; padding: 0 12px; }
 }
+
+/* ══════════════════════════════════════
+   TEXT SIZE SETTING  (set from the settings panel; "medium" matches the original look)
+══════════════════════════════════════ */
+body[data-text-size="small"] { --font-size: 14px; }
+body[data-text-size="large"] { --font-size: 19px; }
+
+body[data-text-size] select             { font-size: calc(var(--font-size) * 0.875); }
+body[data-text-size] div.annotations    { font-size: calc(var(--font-size) * 0.75); }
+body[data-text-size] td.num             { font-size: calc(var(--font-size) * 0.8125); }
+body[data-text-size] .tree-card         { font-size: calc(var(--font-size) * 0.8125); }
+
+@media (max-width: 768px) {
+  /* the phone layout uses compact table text; keep it proportional to the setting */
+  body[data-text-size] td { font-size: calc(var(--font-size) * 0.8125); }
+}

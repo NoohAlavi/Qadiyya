@@ -7,10 +7,11 @@
     <title>Qaḍiyya | Editor</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='new_favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='settings.css') }}">
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 </head>
 
-<body>
+<body data-text-size="{{ settings.text_size }}">
 
     <!-- Fixed nav bar -->
     <div id="top">
@@ -41,7 +42,7 @@
         {% endif %}
     </h2>
 
-    {% if argument.level > 1 %}<div class="subarg-wrapper{% if argument.collapsed %} collapsed{% endif %}" id="subarg-{{ argument['rows'][-1]['number'] }}">{% endif %}
+    {% if argument.level > 1 %}<div class="subarg-wrapper{% if argument.collapsed %} collapsed{% endif %}" id="subarg-{{ argument['rows'][-1]['number'] }}"{% if argument.follows_default %} data-follow-default{% endif %}>{% endif %}
 
     <!-- Argument chart -->
     <table>
@@ -139,7 +140,7 @@
                     title="{{ 'Expand' if tree_collapsed else 'Collapse' }}">{{ '▼' if tree_collapsed else '▲' }}</button>
         </h2>
 
-        <div id="tree-body"{% if tree_collapsed %} class="collapsed"{% endif %}>
+        <div id="tree-body"{% if tree_collapsed %} class="collapsed"{% endif %}{% if tree_follows_default %} data-follow-default{% endif %}>
             <p class="tree-note" id="tree-note">Premises flow downward into the conclusion. Click any box to jump to its row in the table.</p>
             <div class="tree-legend">
                 <span><i class="tree-swatch tree-leaf"></i>Non-inferential [<i>ḍarūrī</i>]</span>
@@ -293,6 +294,10 @@
             else alert(data.error || 'Could not rename argument.');
         }
     </script>
+
+    <!-- Settings panel (gear in the nav bar): the current values, then the shared script -->
+    <script id="qadiyya-settings" type="application/json">{{ settings|tojson }}</script>
+    <script src="{{ url_for('static', filename='settings.js') }}"></script>
 
 </body>
 

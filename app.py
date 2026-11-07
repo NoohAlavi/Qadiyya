@@ -1,6 +1,7 @@
 import os
 import json
 import uuid
+from datetime import datetime, timezone
 from flask import Flask, render_template, redirect, url_for, request, jsonify, session, Response
 from node import *
 from mantiq_map import *
@@ -74,6 +75,52 @@ def save_current_map(mymap: MantiqMap):
     project_id = data["current_project"]
     data["projects"][project_id] = mymap.to_dict()
     save_user_data(data)
+
+
+# ══════════════════════════════════════════════════════════════════
+#  USER SETTINGS  (saved in the session file, next to the arguments)
+# ══════════════════════════════════════════════════════════════════
+
+DEFAULT_SETTINGS = {
+    "tree_open": True,             # the "Argument Tree" section starts open
+    "tree_conclusion": "bottom",   # where the tree draws the conclusion: "bottom" or "top"
+    "subargs_open": True,          # sub-argument tables start expanded
+    "text_size": "medium",         # editor table text: "small", "medium" or "large"
+}
+
+# What each setting accepts: `bool` means true/false, a tuple lists the allowed strings.
+SETTING_CHOICES = {
+    "tree_open": bool,
+    "tree_conclusion": ("bottom", "top"),
+    "subargs_open": bool,
+    "text_size": ("small", "medium", "large"),
+}
+
+
+def validate_settings(raw: dict):
+    """Return (clean, errors): only known settings with allowed values make it into `clean`."""
+    clean, errors = {}, []
+    for key, value in raw.items():
+        if key not in DEFAULT_SETTINGS:
+            errors.append(f"Unknown setting '{key}'")
+            continue
+        allowed = SETTING_CHOICES[key]
+        valid = isinstance(value, bool) if allowed is bool else (isinstance(value, str) and value in allowed)
+        if valid:
+            clean[key] = value
+        else:
+            errors.append(f"Invalid value for '{key}'")
+    return clean, errors
+
+
+def get_settings(user_data: dict) -> dict:
+    """The user's settings with anything missing or invalid replaced by the default."""
+    merged = dict(DEFAULT_SETTINGS)
+    stored = user_data.get("settings")
+    if isinstance(stored, dict):
+        clean, _ = validate_settings(stored)
+        merged.update(clean)
+    return merged
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -162,7 +209,7 @@ def update_proposition_type():
     if premise:
         premise.metadata["premise_type"] = proposition_type
         if proposition_type == PremiseType.INFERENTIAL:
-            premise.collapsed = False   # new sub-premises are being added, so show them
+            premise.view_state = "expanded"   # new sub-premises are being added, so show them
             mymap.add_subpremise(premise_number[1:], ". . .", ". . .", PremiseType.SELF_EVIDENT)
             mymap.add_subpremise(premise_number[1:], ". . .", ". . .", PremiseType.SELF_EVIDENT)
             needs_reload = True
@@ -188,7 +235,8 @@ def set_collapsed():
     if premise is None or premise.is_root:
         return jsonify({"error": "Premise not found"}), 404
 
-    premise.collapsed = bool(data.get("collapsed"))
+    # An explicit choice: from now on this sub-argument no longer follows the default setting.
+    premise.view_state = "collapsed" if data.get("collapsed") else "expanded"
     save_current_map(mymap)
     return jsonify({"ok": True})
 
@@ -322,11 +370,62 @@ def export_json():
     )
 
 
+@app.route("/export_all")
+def export_all():
+    """Download every argument in this session as one backup file."""
+    user_data = load_user_data()
+    projects = list(user_data["projects"].values())
+    if not projects:
+        return jsonify({"error": "There are no arguments to back up yet."}), 404
+
+    backup = {
+        "format": "qadiyya-backup",
+        "version": 1,
+        "exported": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "projects": projects,
+    }
+    filename = f"qadiyya_backup_{datetime.now(timezone.utc).strftime('%Y-%m-%d')}.json"
+    return Response(
+        json.dumps(backup, ensure_ascii=False, indent=2),
+        mimetype="application/json",
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
+
+def _import_backup(data: dict):
+    """Add every valid argument from a backup file as a new project."""
+    items = data.get("projects")
+    if not isinstance(items, list) or not items or len(items) > 500:
+        return jsonify({"error": "That backup file doesn't contain any arguments."}), 400
+
+    maps = []
+    for item in items:
+        try:
+            mymap = MantiqMap.from_dict(item)
+            if mymap.root:
+                maps.append(mymap)
+        except Exception:
+            continue   # skip anything malformed rather than failing the whole backup
+    if not maps:
+        return jsonify({"error": "No valid arguments were found in that backup."}), 400
+
+    user_data = load_user_data()
+    for mymap in maps:
+        user_data["projects"][str(uuid.uuid4())] = mymap.to_dict()
+    if not user_data.get("current_project"):
+        user_data["current_project"] = next(iter(user_data["projects"]))
+    save_user_data(user_data)
+    return jsonify({"redirect": url_for("arguments"), "imported": len(maps)})
+
+
 @app.route("/import_json", methods=["POST"])
 def import_json():
-    data = request.get_json()
+    data = request.get_json(silent=True)
 
-    if not data or "root" not in data:
+    if isinstance(data, dict) and data.get("format") == "qadiyya-backup":
+        return _import_backup(data)
+
+    if not isinstance(data, dict) or "root" not in data:
         return jsonify({"error": "Invalid file — please upload a Qaḍiyya JSON export."}), 400
 
     try:
@@ -456,6 +555,49 @@ def export_pdf():
 
 
 # ══════════════════════════════════════════════════════════════════
+#  ROUTES — SETTINGS
+# ══════════════════════════════════════════════════════════════════
+
+@app.route("/settings", methods=["POST"])
+def update_settings():
+    """Save one or more settings, e.g. {"text_size": "large"}."""
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or not data:
+        return jsonify({"error": "Send a JSON object of settings to change."}), 400
+
+    clean, errors = validate_settings(data)
+    if errors:
+        return jsonify({"error": "; ".join(errors)}), 400
+
+    user_data = load_user_data()
+    settings = get_settings(user_data)
+    settings.update(clean)
+    user_data["settings"] = settings
+    save_user_data(user_data)
+    return jsonify({"ok": True, "settings": settings})
+
+
+@app.route("/reset_view_states", methods=["POST"])
+def reset_view_states():
+    """Make every argument and sub-argument follow the default settings again
+    (forget the individual open/closed choices)."""
+    def clear(node: dict):
+        node.pop("view_state", None)
+        node.pop("collapsed", None)          # earlier format
+        for child in node.get("premises", []):
+            clear(child)
+
+    user_data = load_user_data()
+    for project in user_data["projects"].values():
+        project.pop("tree_state", None)
+        project.pop("tree_collapsed", None)  # earlier format
+        if isinstance(project.get("root"), dict):
+            clear(project["root"])
+    save_user_data(user_data)
+    return jsonify({"ok": True})
+
+
+# ══════════════════════════════════════════════════════════════════
 #  ROUTES — PAGES
 # ══════════════════════════════════════════════════════════════════
 
@@ -465,11 +607,17 @@ def editor():
     if not user_data.get("current_project") or not user_data["projects"]:
         return redirect(url_for("arguments"))
     mymap = get_current_map()
+    settings = get_settings(user_data)
     return render_template(
         "index.html",
-        argument_chart=mymap.get_chart_representation(),
+        argument_chart=mymap.get_chart_representation(
+            subargs_collapsed_by_default=not settings["subargs_open"]
+        ),
         premise_types=mymap.get_premise_types_list(),
-        tree_collapsed=mymap.tree_collapsed
+        settings=settings,
+        tree_collapsed=(mymap.tree_state == "collapsed"
+                        or (mymap.tree_state is None and not settings["tree_open"])),
+        tree_follows_default=mymap.tree_state is None
     )
 
 
@@ -486,7 +634,8 @@ def set_tree_collapsed():
         return jsonify({"error": "No active project"}), 404
 
     mymap = get_current_map()
-    mymap.tree_collapsed = collapsed
+    # An explicit choice: this argument's tree no longer follows the default setting.
+    mymap.tree_state = "collapsed" if collapsed else "expanded"
     save_current_map(mymap)
     return jsonify({"ok": True})
 
@@ -515,7 +664,8 @@ def arguments():
         for pid, pdata in projects.items()
     ]
 
-    return render_template("arguments.html", projects=project_list, current_id=current_id)
+    return render_template("arguments.html", projects=project_list, current_id=current_id,
+                           settings=get_settings(user_data))
 
 
 @app.route("/")

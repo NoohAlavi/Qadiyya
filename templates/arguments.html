@@ -7,6 +7,7 @@
     <title>Qaḍiyya | My Arguments</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='new_favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='arguments.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='settings.css') }}">
 </head>
 
 <body>
@@ -282,6 +283,10 @@
       if (e.key === "Escape") { closeForm(); closeRenameForm(); }
     });
   </script>
+
+  <!-- Settings panel (gear in the nav bar): the current values, then the shared script -->
+  <script id="qadiyya-settings" type="application/json">{{ settings|tojson }}</script>
+  <script src="{{ url_for('static', filename='settings.js') }}"></script>
 
 </body>
 </html>

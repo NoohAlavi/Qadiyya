@@ -14,6 +14,9 @@ function reloadWithScroll() {
 
 // Remember on the server whether the "Argument Tree" section is closed (saved with the argument).
 function saveTreeCollapsed(collapsed) {
+    // An explicit choice: this tree no longer follows the "open by default" setting.
+    const body = document.getElementById('tree-body');
+    if (body) body.removeAttribute('data-follow-default');
     fetch('/set_tree_collapsed', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -25,6 +28,8 @@ function saveTreeCollapsed(collapsed) {
 // Remember on the server whether a sub-argument table is collapsed (the flag is stored on the
 // premise itself). `keepalive` lets the request finish even if the page reloads straight after.
 function saveCollapsed(wrapper, collapsed) {
+    // An explicit choice: this sub-argument no longer follows the "open by default" setting.
+    wrapper.removeAttribute('data-follow-default');
     const number = wrapper.id.replace('subarg-', '');
     fetch('/set_collapsed', {
         method: 'POST',
@@ -150,15 +155,7 @@ const TREE = {
 let treeData = null;       // last nested tree fetched from /tree_data
 let treeLastWidth = 0;     // used to re-render only when the available width changes
 let treeFlipped = false;   // false: conclusion at the bottom (default); true: conclusion on top
-
-// The choice is remembered per browser. Storage can be unavailable (private mode, blocked
-// cookies), so it must never be allowed to break the page.
-function readTreeFlip() {
-    try { return localStorage.getItem('qadiyyaTreeFlipped') === '1'; } catch (err) { return false; }
-}
-function saveTreeFlip(flipped) {
-    try { localStorage.setItem('qadiyyaTreeFlipped', flipped ? '1' : '0'); } catch (err) { /* ignore */ }
-}
+                           // (set from the saved "conclusion position" setting when the page loads)
 
 // Keep the button label and the one-line description in step with the current orientation.
 function syncTreeFlipUI() {
@@ -175,13 +172,102 @@ function syncTreeFlipUI() {
     }
 }
 
-// Switch the conclusion between the bottom and the top of the tree.
+// Switch the conclusion between the bottom and the top of the tree. The position is a saved
+// setting (the same one the settings panel changes); changing it makes applySettingChange()
+// below redraw the tree.
 function flipTree() {
-    treeFlipped = !treeFlipped;
-    saveTreeFlip(treeFlipped);
-    syncTreeFlipUI();
-    renderTree();
+    const settings = window.QadiyyaSettings;
+    if (settings) {
+        settings.set('tree_conclusion', treeFlipped ? 'bottom' : 'top');
+    } else {
+        treeFlipped = !treeFlipped;   // settings script missing: still flip for this page view
+        syncTreeFlipUI();
+        renderTree();
+    }
 }
+
+// Show or hide the whole "Argument Tree" section (no saving: callers decide whether to save).
+function setTreeCollapsed(collapsed) {
+    const body = document.getElementById('tree-body');
+    const btn = document.querySelector('#tree-section h2 .subarg-toggle');
+    if (!body) return;
+    body.classList.toggle('collapsed', collapsed);
+    if (btn) {
+        btn.textContent = collapsed ? '▼' : '▲';
+        btn.title = collapsed ? 'Expand' : 'Collapse';
+    }
+    if (!collapsed) renderTree();
+}
+
+// Fold or unfold one sub-argument table (no saving: callers decide whether to save).
+function setWrapperCollapsed(wrapper, collapsed) {
+    wrapper.classList.toggle('collapsed', collapsed);
+    const btn = wrapper.previousElementSibling && wrapper.previousElementSibling.querySelector('.subarg-toggle');
+    if (btn) {
+        btn.textContent = collapsed ? '▼' : '▲';
+        btn.title = collapsed ? 'Expand' : 'Collapse';
+    }
+}
+
+// React to a change made in the settings panel (see settings.js).
+// Sections the user has opened or closed themselves keep their own state; only the ones
+// still following the default (marked data-follow-default) change.
+function applySettingChange(detail) {
+    const values = detail.values;
+    switch (detail.key) {
+        case 'tree_conclusion':
+            treeFlipped = values.tree_conclusion === 'top';
+            syncTreeFlipUI();
+            renderTree();
+            break;
+        case 'text_size':
+            document.body.dataset.textSize = values.text_size;
+            renderTree();                       // the boxes change height with the text
+            break;
+        case 'tree_open': {
+            const body = document.getElementById('tree-body');
+            if (body && body.hasAttribute('data-follow-default')) setTreeCollapsed(!values.tree_open);
+            break;
+        }
+        case 'subargs_open':
+            document.querySelectorAll('.subarg-wrapper[data-follow-default]')
+                .forEach(wrapper => setWrapperCollapsed(wrapper, !values.subargs_open));
+            break;
+    }
+}
+
+// Deleting a premise also deletes everything nested under it, so ask first when there is any.
+function findNodeByNumber(node, number) {
+    if (node.number === number) return node;
+    for (const child of node.premises || []) {
+        const found = findNodeByNumber(child, number);
+        if (found) return found;
+    }
+    return null;
+}
+function countDescendants(node) {
+    return (node.premises || []).reduce((total, child) => total + 1 + countDescendants(child), 0);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('form[action$="/delete_premise"]').forEach(form => {
+        // Capture phase, so a cancelled delete also skips the scroll-position save below.
+        form.addEventListener('submit', e => {
+            const number = form.querySelector('input[name="premise_num"]').value;
+            const node = treeData ? findNodeByNumber(treeData, number) : null;
+            const nested = node ? countDescendants(node) : (document.getElementById('subarg-' + number) ? 1 : 0);
+            if (nested === 0) return;
+
+            const what = node
+                ? `the ${nested} premise${nested === 1 ? '' : 's'} nested under it`
+                : 'everything in its sub-argument';
+            if (!confirm(`Delete ${number} and ${what}? This can't be undone.`)) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        }, true);
+    });
+});
 
 // Fetch the current argument and (re)draw the tree.
 async function loadTree() {
@@ -373,20 +459,22 @@ function jumpToRow(num) {
 // Collapse / expand the whole tree section.
 function toggleTree(btn) {
     const body = document.getElementById('tree-body');
-    const collapsed = body.classList.toggle('collapsed');
-    btn.textContent = collapsed ? '▼' : '▲';
-    btn.title = collapsed ? 'Expand' : 'Collapse';
-    saveTreeCollapsed(collapsed);
-    if (!collapsed) renderTree();
+    const collapsed = !body.classList.contains('collapsed');
+    setTreeCollapsed(collapsed);
+    saveTreeCollapsed(collapsed);      // remembered with the argument
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const scroller = document.getElementById('tree-scroll');
     if (!scroller) return;
 
-    treeFlipped = readTreeFlip();
+    const settings = window.QadiyyaSettings;
+    treeFlipped = !!settings && settings.values.tree_conclusion === 'top';
     syncTreeFlipUI();
     loadTree();
+
+    // Apply changes made in the settings panel straight away.
+    document.addEventListener('qadiyya:settings', e => applySettingChange(e.detail));
 
     // Web fonts change box heights, so redraw once they have loaded.
     if (document.fonts && document.fonts.ready) {

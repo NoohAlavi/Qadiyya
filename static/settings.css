@@ -1,0 +1,226 @@
+/* ══════════════════════════════════════════════════════════════════
+   SETTINGS PANEL  (shared by the editor and My Arguments pages)
+   Uses the colour variables each page already defines, with fallbacks.
+══════════════════════════════════════════════════════════════════ */
+
+/* ── Gear in the nav bar ── */
+.nav-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--parchment, #f5f0e8);
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.2s, color 0.2s;
+}
+.nav-icon-btn svg { width: 18px; height: 18px; }
+.nav-icon-btn:hover,
+.nav-icon-btn:focus-visible,
+.nav-icon-btn[aria-expanded="true"] { opacity: 1; }
+.nav-icon-btn[aria-expanded="true"] { color: var(--gold-light, #d4a843); }
+.nav-icon-btn:focus-visible { outline: 1px solid var(--gold-light, #d4a843); outline-offset: 2px; }
+
+/* ── The panel ── */
+#settings-panel {
+  --sp-bg: var(--parchment, #f5f0e8);
+  --sp-mid: var(--parchment-mid, #ede6d6);
+  --sp-ink: var(--ink, #1a1410);
+  --sp-soft: var(--ink-soft, #3d3228);
+  --sp-muted: var(--ink-muted, #6b5d50);
+  --sp-gold: var(--gold, #b8860b);
+  --sp-gold-light: var(--gold-light, #d4a843);
+  --sp-emerald: var(--emerald, #1a5c3a);
+  --sp-emerald-mid: var(--emerald-mid, #2a7a50);
+  --sp-border: var(--border, #c8b89a);
+  --sp-border-dark: var(--border-dark, #9a8060);
+
+  display: none;
+  position: fixed;
+  top: 62px;
+  right: 16px;
+  z-index: 300;
+  width: 340px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  background: var(--sp-bg);
+  border: 1px solid var(--sp-border);
+  box-shadow: 0 18px 48px rgba(26, 20, 16, 0.28), 0 0 0 1px rgba(184, 134, 11, 0.12);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--sp-ink);
+}
+#settings-panel.is-open { display: block; animation: sp-in 0.18s ease; }
+#settings-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--sp-gold), var(--sp-gold-light), var(--sp-gold));
+}
+@keyframes sp-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 6px;
+}
+#settings-panel h2 {
+  margin: 0;
+  font-family: 'Cormorant SC', serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--sp-ink);
+}
+.sp-close {
+  background: none;
+  border: 0;
+  padding: 4px 6px;
+  font-size: 13px;
+  color: var(--sp-muted);
+  cursor: pointer;
+  opacity: 0.7;
+}
+.sp-close:hover, .sp-close:focus-visible { opacity: 1; color: var(--sp-ink); outline: none; }
+
+.sp-body { padding: 4px 20px 16px; }
+
+.sp-group {
+  padding: 12px 0;
+  border-top: 1px solid var(--sp-border);
+}
+.sp-group:first-child { border-top: 0; }
+#settings-panel h3 {
+  margin: 0 0 10px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sp-muted);
+}
+
+.sp-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+.sp-text { font-size: 16px; line-height: 1.3; }
+
+/* ── Switch ── */
+.sp-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.sp-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.sp-track {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 18px;
+  background: var(--sp-border);
+  transition: background 0.2s;
+}
+.sp-track::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: var(--sp-bg);
+  transition: transform 0.2s;
+}
+.sp-switch input:checked + .sp-track { background: var(--sp-emerald); }
+.sp-switch input:checked + .sp-track::after { transform: translateX(16px); }
+.sp-switch input:focus-visible + .sp-track { outline: 2px solid var(--sp-gold); outline-offset: 2px; }
+
+/* ── Segmented choice ── */
+.sp-seg {
+  display: inline-flex;
+  border: 1px solid var(--sp-border-dark);
+}
+.sp-seg button {
+  padding: 4px 12px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--sp-soft);
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--sp-border);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.sp-seg button:first-child { border-left: 0; }
+.sp-seg button:hover { background: rgba(26, 92, 58, 0.07); }
+.sp-seg button.is-active { background: var(--sp-emerald); color: var(--sp-bg); }
+.sp-seg button:focus-visible { outline: 2px solid var(--sp-gold); outline-offset: -2px; }
+
+/* ── Text and buttons ── */
+.sp-hint {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--sp-muted);
+}
+.sp-hint-small { font-size: 13px; margin-top: 8px; }
+.sp-link {
+  display: inline;
+  padding: 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-style: normal;
+  color: var(--sp-emerald);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.sp-link:hover, .sp-link:focus-visible { color: var(--sp-emerald-mid); outline: none; }
+
+.sp-btn {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sp-emerald);
+  background: transparent;
+  border: 1.5px solid var(--sp-emerald);
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.sp-btn:hover, .sp-btn:focus-visible { background: var(--sp-emerald); color: var(--sp-bg); outline: none; }
+
+.sp-status {
+  min-height: 18px;
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--sp-emerald);
+}
+.sp-status.is-error { color: #8b3a3a; }
+
+@media (max-width: 768px) {
+  #settings-panel { top: 56px; right: 12px; }
+}
