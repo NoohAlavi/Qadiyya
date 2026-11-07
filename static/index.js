@@ -12,6 +12,18 @@ function reloadWithScroll() {
     window.location.reload();
 }
 
+// Remember on the server whether a sub-argument table is collapsed (the flag is stored on the
+// premise itself). `keepalive` lets the request finish even if the page reloads straight after.
+function saveCollapsed(wrapper, collapsed) {
+    const number = wrapper.id.replace('subarg-', '');
+    fetch('/set_collapsed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ number, collapsed }),
+        keepalive: true
+    }).catch(() => { /* view state only: ignore network errors */ });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // Editable text cells
@@ -335,6 +347,7 @@ function jumpToRow(num) {
         wrapper.classList.remove('collapsed');
         const toggle = wrapper.previousElementSibling && wrapper.previousElementSibling.querySelector('.subarg-toggle');
         if (toggle) { toggle.textContent = '▲'; toggle.title = 'Collapse'; }
+        saveCollapsed(wrapper, false);
         delay = 320;   // wait for the expand transition so the scroll target is in the right place
     }
 

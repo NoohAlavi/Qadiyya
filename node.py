@@ -40,6 +40,10 @@ class Node:
         self.premises = []
         self.number: int = None
 
+        # View state: True when this premise's sub-argument table is folded away in the editor.
+        # It lives on the node, so it follows the premise when numbering shifts.
+        self.collapsed = False
+
     def add_premise(
             self, 
             barebones_form="", 
@@ -69,6 +73,7 @@ class Node:
                 "annotations": self.metadata["annotations"]
             },
             "number": self.number,
+            "collapsed": self.collapsed,
             "premises": [p.to_dict() for p in self.premises]
         }
 
@@ -92,5 +97,6 @@ class Node:
         node.written_premise = d.get("written_premise", "")
         node.metadata["annotations"] = annotations
         node.number = d.get("number", None)
+        node.collapsed = bool(d.get("collapsed", False))   # older saves have no flag: stay expanded
         node.premises = [cls.from_dict(p) for p in d.get("premises", [])]
         return node

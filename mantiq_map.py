@@ -105,7 +105,8 @@ class MantiqMap:
                     charts.append({
                         "title": f"Sub-Argument for {premise.number}",
                         "rows": subt_rows,
-                        "level": depth
+                        "level": depth,
+                        "collapsed": premise.collapsed
                     })
                     add_subtables(premise, depth + 1)
 

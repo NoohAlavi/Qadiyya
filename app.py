@@ -162,12 +162,35 @@ def update_proposition_type():
     if premise:
         premise.metadata["premise_type"] = proposition_type
         if proposition_type == PremiseType.INFERENTIAL:
+            premise.collapsed = False   # new sub-premises are being added, so show them
             mymap.add_subpremise(premise_number[1:], ". . .", ". . .", PremiseType.SELF_EVIDENT)
             mymap.add_subpremise(premise_number[1:], ". . .", ". . .", PremiseType.SELF_EVIDENT)
             needs_reload = True
 
     save_current_map(mymap)
     return jsonify({"reload": needs_reload})
+
+
+@app.route("/set_collapsed", methods=["POST"])
+def set_collapsed():
+    """Remember whether a premise's sub-argument table is collapsed in the editor."""
+    data = request.get_json(silent=True) or {}
+    number = data.get("number")
+    if not isinstance(number, str) or not number:
+        return jsonify({"error": "Missing premise number"}), 400
+
+    user_data = load_user_data()
+    if not user_data.get("current_project") or not user_data["projects"]:
+        return jsonify({"error": "No active project"}), 404
+
+    mymap = get_current_map()
+    premise = mymap.find_node_by_number(mymap.root, number)
+    if premise is None or premise.is_root:
+        return jsonify({"error": "Premise not found"}), 404
+
+    premise.collapsed = bool(data.get("collapsed"))
+    save_current_map(mymap)
+    return jsonify({"ok": True})
 
 
 # ══════════════════════════════════════════════════════════════════

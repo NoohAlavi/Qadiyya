@@ -36,11 +36,12 @@
         {% if argument.level == 1 %}
         <button class="title-rename-btn" onclick="openRenameTitle()" title="Rename argument">✎</button>
         {% elif argument.level > 1 %}
-        <button class="subarg-toggle" onclick="toggleSubarg(this)" title="Collapse">▲</button>
+        <button class="subarg-toggle" onclick="toggleSubarg(this)"
+                title="{{ 'Expand' if argument.collapsed else 'Collapse' }}">{{ '▼' if argument.collapsed else '▲' }}</button>
         {% endif %}
     </h2>
 
-    {% if argument.level > 1 %}<div class="subarg-wrapper" id="subarg-{{ argument['rows'][-1]['number'] }}">{% endif %}
+    {% if argument.level > 1 %}<div class="subarg-wrapper{% if argument.collapsed %} collapsed{% endif %}" id="subarg-{{ argument['rows'][-1]['number'] }}">{% endif %}
 
     <!-- Argument chart -->
     <table>
@@ -228,6 +229,7 @@
             const isCollapsed = wrapper.classList.toggle('collapsed');
             btn.textContent = isCollapsed ? '▼' : '▲';
             btn.title = isCollapsed ? 'Expand' : 'Collapse';
+            saveCollapsed(wrapper, isCollapsed);   // remembered on the premise, so reloads keep it
         }
 
         // ── Scroll to sub-argument ──────────────────────────────
@@ -239,6 +241,7 @@
                 target.classList.remove('collapsed');
                 const toggle = target.previousElementSibling.querySelector('.subarg-toggle');
                 if (toggle) { toggle.textContent = '▲'; toggle.title = 'Collapse'; }
+                saveCollapsed(target, false);
             }
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
