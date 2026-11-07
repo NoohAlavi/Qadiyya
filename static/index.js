@@ -488,3 +488,167 @@ document.addEventListener('DOMContentLoaded', () => {
         }).observe(scroller);
     }
 });
+
+// ══════════════════════════════════════════════════════════════════════
+//  EXPORT THE TREE AS A PNG
+//  Draws the tree on a canvas straight from what is on screen: box positions, the lines each
+//  box wraps onto, and the connectors. The canvas uses the page's already-loaded fonts, so the
+//  picture matches the screen. It always shows the current orientation (conclusion top/bottom).
+// ══════════════════════════════════════════════════════════════════════
+async function exportTree() {
+    const menu = document.getElementById('export-menu');
+    if (menu) menu.classList.remove('open');
+
+    const body = document.getElementById('tree-body');
+    const canvasEl = document.getElementById('tree-canvas');
+    if (!body || !canvasEl) return;
+
+    if (!treeData) await loadTree();
+    if (!treeData) { alert('The tree could not be loaded.'); return; }
+
+    // The tree can't be measured while folded away: open it for a moment, then put it back.
+    const wasCollapsed = body.classList.contains('collapsed');
+    if (wasCollapsed) body.classList.remove('collapsed');
+    try {
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+        renderTree();
+
+        const origin = canvasEl.getBoundingClientRect();
+        const cards = Array.from(canvasEl.querySelectorAll('.tree-card')).map(card => {
+            const r = card.getBoundingClientRect();
+            const cs = getComputedStyle(card);
+
+            // Which words sit on which line: group characters by their on-screen height.
+            const lines = [];
+            const node = card.firstChild;
+            if (node && node.nodeType === Node.TEXT_NODE) {
+                const range = document.createRange();
+                let current = null;
+                for (let i = 0; i < node.length; i++) {
+                    range.setStart(node, i); range.setEnd(node, i + 1);
+                    const cr = range.getClientRects()[0];
+                    if (!cr) continue;                                  // collapsed whitespace
+                    if (!current || Math.abs(cr.top - current.top) > 3) {
+                        current = { top: cr.top, bottom: cr.bottom, text: '' };
+                        lines.push(current);
+                    }
+                    current.text += node.data[i];
+                }
+            }
+            return {
+                x: r.left - origin.left, y: r.top - origin.top, w: r.width, h: r.height,
+                lines: lines.map(l => ({ text: l.text.trim(), mid: (l.top + l.bottom) / 2 - origin.top })),
+                font: `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`,
+                fill: cs.backgroundColor, stroke: cs.borderTopColor,
+                strokeW: parseFloat(cs.borderTopWidth) || 1, ink: cs.color,
+            };
+        });
+
+        const paths = Array.from(canvasEl.querySelectorAll('#tree-lines path'))
+            .filter(p => p.getAttribute('d'))
+            .map(p => ({ d: p.getAttribute('d'), arrow: p.hasAttribute('marker-end') }));
+        const lineStyle = getComputedStyle(document.querySelector('#tree-lines path'));
+
+        // Crop to the tree itself, plus a margin, and a title line above it.
+        const PAD = 28;
+        const titleEl = document.querySelector('.argument-title');
+        const rawTitle = titleEl
+            ? Array.from(titleEl.childNodes).filter(n => n.nodeType === Node.TEXT_NODE).map(n => n.textContent).join('').trim()
+            : '';
+        const title = rawTitle.replace(/^High-Level\s+/i, '');   // "Argument For …", not "High-Level Argument For …"
+        const rootStyle = getComputedStyle(document.documentElement);
+        const color = name => rootStyle.getPropertyValue(name).trim();
+        const titleFont = `600 24px 'EB Garamond', Georgia, serif`;
+
+        const probe = document.createElement('canvas').getContext('2d');
+        probe.font = titleFont;
+        const minX = Math.min(...cards.map(c => c.x));
+        const maxX = Math.max(...cards.map(c => c.x + c.w));
+        const maxY = Math.max(...cards.map(c => c.y + c.h));
+        const treeW = maxX - minX;
+        const W = Math.ceil(treeW + PAD * 2);
+        // Wrap the title to the tree's width so a long title doesn't stretch the picture.
+        const titleLines = [];
+        let cur = '';
+        title.split(/\s+/).filter(Boolean).forEach(word => {
+            const trial = cur ? cur + ' ' + word : word;
+            if (cur && probe.measureText(trial).width > treeW) { titleLines.push(cur); cur = word; } else { cur = trial; }
+        });
+        if (cur) titleLines.push(cur);
+        const TITLE_LH = 30;
+        const bas = document.getElementById('basmala');
+        const basFont = bas ? (() => { const b = getComputedStyle(bas); return `${b.fontStyle} ${b.fontWeight} 26px ${b.fontFamily}`; })() : '';
+        const basH = bas ? 50 : 0;
+        const titleH = (titleLines.length ? titleLines.length * TITLE_LH + 22 : 0) + basH;
+        const H = Math.ceil(maxY + PAD * 2 + titleH);
+        const dx = PAD + (W - PAD * 2 - treeW) / 2 - minX;
+        const dy = PAD + titleH;
+
+        const SCALE = 2;
+        const cv = document.createElement('canvas');
+        cv.width = W * SCALE; cv.height = H * SCALE;
+        const ctx = cv.getContext('2d');
+        ctx.scale(SCALE, SCALE);
+        ctx.fillStyle = color('--parchment') || '#f5f0e8';
+        ctx.fillRect(0, 0, W, H);
+
+        if (bas) {
+            ctx.font = basFont;
+            ctx.fillStyle = color('--emerald') || '#1a5c3a';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(bas.textContent.trim(), W / 2, PAD + 16);
+        }
+        if (titleLines.length) {
+            ctx.font = titleFont;
+            ctx.fillStyle = color('--emerald') || '#1a5c3a';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            titleLines.forEach((ln, i) => ctx.fillText(ln, W / 2, PAD + basH + 12 + i * TITLE_LH));
+        }
+
+        // Connectors (their paths only use M, H and V).
+        ctx.strokeStyle = lineStyle.stroke;
+        ctx.lineWidth = parseFloat(lineStyle.strokeWidth) || 1.5;
+        ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+        paths.forEach(p => {
+            const tokens = p.d.match(/[MHV]|-?\d*\.?\d+/g) || [];
+            let x = 0, y = 0, px = 0, py = 0;
+            ctx.beginPath();
+            for (let i = 0; i < tokens.length;) {
+                const cmd = tokens[i++];
+                if (cmd === 'M') { x = +tokens[i++]; y = +tokens[i++]; ctx.moveTo(x + dx, y + dy); }
+                else if (cmd === 'H') { px = x; x = +tokens[i++]; ctx.lineTo(x + dx, y + dy); }
+                else if (cmd === 'V') { py = y; y = +tokens[i++]; ctx.lineTo(x + dx, y + dy); }
+            }
+            ctx.stroke();
+            if (p.arrow) {                                    // a small open arrowhead at the end
+                const dir = y >= py ? 1 : -1;
+                ctx.beginPath();
+                ctx.moveTo(x + dx - 4, y + dy - dir * 6);
+                ctx.lineTo(x + dx, y + dy);
+                ctx.lineTo(x + dx + 4, y + dy - dir * 6);
+                ctx.stroke();
+            }
+        });
+
+        // Boxes and their text.
+        cards.forEach(c => {
+            ctx.fillStyle = c.fill;
+            ctx.fillRect(c.x + dx, c.y + dy, c.w, c.h);
+            ctx.strokeStyle = c.stroke; ctx.lineWidth = c.strokeW;
+            ctx.strokeRect(c.x + dx + c.strokeW / 2, c.y + dy + c.strokeW / 2, c.w - c.strokeW, c.h - c.strokeW);
+            ctx.font = c.font; ctx.fillStyle = c.ink;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            c.lines.forEach(l => ctx.fillText(l.text, c.x + dx + c.w / 2, l.mid + dy));
+        });
+
+        const blob = await new Promise(res => cv.toBlob(res, 'image/png'));
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const base = (title || 'argument').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '_').replace(/^_+|_+$/g, '').slice(0, 60) || 'argument';
+        a.href = url; a.download = base + '_tree.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } finally {
+        if (wasCollapsed) body.classList.add('collapsed');
+    }
+}
