@@ -10,20 +10,32 @@
 
 > 🌐 **Try it live:** https://www.qadiyya.ca/
 >
-> ***Note:** Sessions are browser-based — your arguments persist across refreshes but are not tied to an account. Clearing your cookies or switching browsers will start a fresh workspace. Browsers sometimes refresh cookies automatically, so it is recommended to make backups of everything by exporting to JSON, in order to avoid losing work down the line.*
+> ***Note:** Sessions are browser-based — your arguments persist across refreshes but are not tied to an account. Clearing your cookies or switching browsers will start a fresh workspace. Browsers sometimes refresh cookies automatically, so it is recommended to make backups of everything (the settings panel has a one-click **Download all arguments** button), in order to avoid losing work down the line.*
 
 <details>
   <summary><b>📂 Click to expand Table of Contents</b></summary>
   
-  1. [💡 Inspiration Behind Qaḍiyya](#-inspiration-behind-qaḍiyya)
-  2. [🧠 Project Goals](#-project-goals)
-  3. [📦 Current Features](#-current-features)
-     1. [🧩 Argument Construction](#-argument-construction)
-     2. [💾 Project Management](#-project-management)
-     3. [📤 Export](#-export)
-     4. [🎨 Design & UX](#-design--ux)
-  4. [🏗️ Tech Stack & Architecture](#️-tech-stack--architecture)
-  5. [📜 Credits & Acknowledgements](#-credits--acknowledgements)
+- [💡 Inspiration behind Qaḍiyya](#-inspiration-behind-qaḍiyya)
+- [🧠 Project Goals](#-project-goals)
+  - [1. Make argument structure visible — without replacing real thinking](#1-make-argument-structure-visible--without-replacing-real-thinking)
+  - [2. Bring *manṭiq*-style discipline to modern argument mapping](#2-bring-manṭiq-style-discipline-to-modern-argument-mapping)
+  - [3. Provide a clean, intuitive interface that streamlines, not shortcuts](#3-provide-a-clean-intuitive-interface-that-streamlines-not-shortcuts)
+  - [4. Serve as an educational assistant for real logical study](#4-serve-as-an-educational-assistant-for-real-logical-study)
+  - [5. Be extensible for future sophistication](#5-be-extensible-for-future-sophistication)
+- [📦 Current Features](#-current-features)
+  - [🧩 Argument Construction](#-argument-construction)
+  - [💾 Project Management](#-project-management)
+  - [🌳 Argument Tree](#-argument-tree)
+  - [📤 Export](#-export)
+  - [⚙️ Settings](#️-settings)
+  - [🎨 Design \& UX](#-design--ux)
+- [🏗️ Tech Stack \& Architecture](#️-tech-stack--architecture)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+  - [Deployment \& Persistence](#deployment--persistence)
+  - [Data Model](#data-model)
+  - [Installation](#installation)
+- [📜 Credits \& Acknowledgements](#-credits--acknowledgements)
 </details>
 <br/>
 
@@ -144,7 +156,7 @@ The codebase is structured for future enhancements that support deeper study, in
 ### 🧩 Argument Construction
 - **Dynamic Premise Construction** – Add premises or nested sub-premises with a single click, with unlimited depth in logical proofs.
 
-- **Recursive Deletion** – Deleting a premise automatically removes all its nested sub-arguments, maintaining the integrity of the logic tree.
+- **Recursive Deletion** – Deleting a premise automatically removes all its nested sub-arguments, maintaining the integrity of the logic tree. If a premise has sub-premises under it, you are asked to confirm first, with a count of everything that would go with it.
 
 - **Intelligent Auto-Renumbering** – Premise numbers (P1, P2, P3…) update automatically as the argument is reorganized.
 
@@ -163,7 +175,18 @@ The codebase is structured for future enhancements that support deeper study, in
 
 - **JSON Persistence** – Each session's projects are serialized and saved to disk as `JSON`, persisting across page refreshes and server restarts.
 
-- **Rename, Delete, and Duplicate** – Projects can be renamed, deleted, or duplicated directly from the arguments page.
+- **Rename, Delete, and Duplicate** – Projects can be renamed, deleted, or duplicated directly from the arguments page, and renamed from the editor itself with the ✎ next to the title.
+
+- **Import JSON** – Upload a previously exported argument (or a full backup) from the arguments page; it always becomes a new project, so nothing you already have is overwritten.
+
+### 🌳 Argument Tree
+- **Read-only Argument Tree** – Underneath the tables, the whole argument is drawn as a tree: the premises sit above, with arrows running into the conclusion below. Each box shows the premise's full text, coloured by type (non-inferential, inferential, conclusion), and it redraws live as you edit.
+
+- **Click to Jump** – Clicking any box scrolls the table to that premise's row and flashes it, expanding its sub-argument first if it was collapsed.
+
+- **Flip the Tree** – Put the conclusion at the top instead of the bottom, with the arrows reversed.
+
+- **Remembered State** – Whether the tree is open or closed is saved per argument, and the same goes for which sub-arguments are collapsed. These follow the premise itself, so they survive renumbering.
 
 ### 📤 Export
 - **Download JSON** – Export the current argument as a `.json` file for backup or future import.
@@ -172,16 +195,29 @@ The codebase is structured for future enhancements that support deeper study, in
 
 - **Export as Image (PNG)** – Export a clean, styled image of the argument with parchment background and full typography.
 
+- **Export Tree (PNG)** – Export just the argument tree as an image, in whichever orientation (conclusion top or bottom) is currently showing.
+
 <img src="static/screenshots/screenshot_export_btn.png" alt="The 'Export' button from **Qaḍiyya**'s argument editor page"/>
 
 <small>*Pictured above: the "Export" button from **Qaḍiyya**'s argument editor page.*</small>
+
+### ⚙️ Settings
+A gear in the navigation bar opens a settings panel, on both the editor and the arguments pages. Changes apply instantly and are saved with your session.
+
+- **Argument tree** – Open it by default (or not), and choose whether the conclusion sits at the bottom or the top.
+
+- **Sub-arguments** – Open them by default (or not). A default only applies to arguments and sections you haven't opened or closed yourself; "Make every argument follow them" clears those individual choices.
+
+- **Text size** – Small, medium, or large for the table and tree text.
+
+- **Backup** – **Download all arguments** saves every argument in the session as a single file; import it from the arguments page to restore.
 
 ### 🎨 Design & UX
 - **Manuscript-Inspired UI** – Parchment tones, deep ink, emerald green, and gold accents. Typography uses Cormorant SC (titles/labels), EB Garamond (body), and Amiri (Arabic text).
 
 - **Smart Reloading** – Text edits save silently without a page reload. Only structural changes (adding premises, deleting, or marking inferential) trigger a reload, with scroll position preserved across all reloads.
 
-- **Floating Export Button** – A fixed bottom-right export button gives access to all three export formats from anywhere in the editor.
+- **Floating Export Button** – A fixed bottom-right export button gives access to every export format from anywhere in the editor.
 
 - **Consistent Navigation** – A fixed navigation bar on the editor and arguments pages provides direct links between Editor, My Arguments, and Home.
 
@@ -218,15 +254,17 @@ The codebase is structured for future enhancements that support deeper study, in
 
 <img src="static/screenshots/data_structure.svg" alt="Data structure visualized">
 
-- **Core Logic: Recursive Tree Traversal** — Custom recursive algorithms manage the hierarchical data structure, ensuring that premise relationships and numbering remain consistent across all levels of nesting. Each `Node` stores a `barebones` dict (`"parent"` and `"child"` symbolic forms), a `written_premise`, a `PremiseType`, and a list of child `Node`s. The root node acts as the argument's conclusion.
+- **Core Logic: Recursive Tree Traversal** — Custom recursive algorithms manage the hierarchical data structure, ensuring that premise relationships and numbering remain consistent across all levels of nesting. Each `Node` stores a `barebones` dict (`"parent"` and `"child"` symbolic forms), a `written_premise`, a `metadata` dict (`premise_type` and `annotations`), a saved view state (collapsed, expanded, or following the default), and a list of child `Node`s. The root node acts as the argument's conclusion.
 
   - **Data Integrity**: Parent-Child Relationship Model — The system is structured to preserve the logical flow from non-inferential facts to their inferential conclusions.
 
 - **MantiqMap** — Manages the tree: breadth-first numbering, chart representation generation, node lookup, and JSON serialization/deserialization.
 
-- **Session-keyed JSON files** — One `.json` file per browser session in a `sessions/` directory, containing all of that user's projects and their active project ID.
+- **Tree rendering** — The argument tree is laid out in vanilla JS: rows by depth, leaves packed left to right, each parent centred over its premises, with SVG connectors drawn once the boxes are measured. The tree PNG is drawn from that same layout onto a canvas.
 
-- **Backups & File Sharing** — The JSON-ified arguments can be downloaded via the "Export" button, and can then be uploaded back into the editor for further use. This is useful both for (1) locally backing up one's work, and for (2) sharing one's projects with others for the sake of collaboration (or critique!).
+- **Session-keyed JSON files** — One `.json` file per browser session in a `sessions/` directory, containing all of that user's projects, their active project ID, and their settings.
+
+- **Backups & File Sharing** — The JSON-ified arguments can be downloaded via the "Export" button (or all at once from the settings panel), and can then be uploaded back into the editor for further use. This is useful both for (1) locally backing up one's work, and for (2) sharing one's projects with others for the sake of collaboration (or critique!).
 
 ### Installation
 
@@ -253,9 +291,9 @@ $ python app.py
 ## 📜 Credits & Acknowledgements
 - **The Golden Chain:** This project is a digital tribute to the **intellectual giants of the Islamic scholarly tradition**, whose historical commitment to reason, logic, and foundational clarity continues to inspire seekers of truth today.
 
-- **Intellectual Inspiration:** As detailed in the [inspiration section](#-inspiration-behind-qaḍiyya), the specific charting format and the whole idea behind the project are a direct result of my studies with **[Shaykh Hamza Karamali](https://hamzakaramali.com/)**.
+- **Intellectual Inspiration:** As detailed in the [inspiration section](#-inspiration-behind-qaḍiyya), the specific charting format and the whole idea behind the project are a direct result of my studies with my dear respected teacher, **[Shaykh Hamza Karamali](https://hamzakaramali.com/)**.
 
-- **Visual Identity:** The custom Qaḍiyya logo and favicon were designed by my friend **Talḥah ʿAbd al-ʿAzīz al-Dakkāwī**.
+- **Visual Identity:** The custom Qaḍiyya logo and favicon were designed by my friend **Ṭalḥah ʿAbd al-ʿAzīz al-Dakkāwī**.
 
 - **Typography & Fonts:** This project utilizes the **Amiri**, **EB Garamond**, and **Cormorant** typefaces via [Google Fonts](https://fonts.google.com/).
 
