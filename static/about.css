@@ -1,0 +1,46 @@
+/* ══════════════════════════════════════════════════════════════════
+   ABOUT page — builds on arguments.css and howto.css
+══════════════════════════════════════════════════════════════════ */
+
+.about-lead p:first-child { font-size: 20px; text-align: center; margin-bottom: 22px; }
+
+.about-shot {
+  margin: 20px 0 22px;
+}
+.about-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border-dark);
+  box-shadow: 0 8px 28px var(--shadow);
+}
+.about-shot figcaption {
+  margin-top: 8px;
+  font-size: 15px;
+  font-style: italic;
+  text-align: center;
+  color: var(--ink-muted);
+}
+
+.about-page .howto-sub { font-size: 17px; margin-top: 26px; }
+.about-page .howto-sub i { font-style: italic; }
+
+.about-built {
+  margin-top: 18px;
+  font-family: 'Amiri', serif;
+  font-style: italic;
+  font-size: 17px !important;
+  color: var(--ink-soft);
+}
+
+.about-tawfiq {
+  margin: 44px 0 0;
+  text-align: center;
+  font-size: 18px;
+  color: var(--ink-soft);
+}
+.about-tawfiq [lang="ar"] { font-family: 'Amiri', serif; color: var(--gold); font-size: 20px; }
+
+@media (max-width: 768px) {
+  .about-lead p:first-child { font-size: 18px; }
+}

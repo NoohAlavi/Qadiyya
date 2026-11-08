@@ -115,6 +115,20 @@ def validate_settings(raw: dict):
     return clean, errors
 
 
+def peek_settings() -> dict:
+    """The visitor's saved settings, read without creating a session or a session file
+    (used by the info pages, which only need them for the settings panel)."""
+    sid = session.get("sid")
+    path = os.path.join(SESSIONS_DIR, f"{sid}.json") if sid else None
+    if path and os.path.exists(path):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return get_settings(json.load(f))
+        except (OSError, ValueError):
+            pass
+    return dict(DEFAULT_SETTINGS)
+
+
 def get_settings(user_data: dict) -> dict:
     """The user's settings with anything missing or invalid replaced by the default."""
     merged = dict(DEFAULT_SETTINGS)
@@ -680,7 +694,12 @@ def home():
 
 @app.route("/how-to-use")
 def how_to_use():
-    return render_template("how_to_use.html")
+    return render_template("how_to_use.html", settings=peek_settings())
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html", settings=peek_settings())
 
 
 if __name__ == "__main__":

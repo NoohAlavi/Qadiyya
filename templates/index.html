@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='new_favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='settings.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 </head>
 
@@ -21,7 +22,13 @@
             <span class="nav-sep">·</span>
             <a href="/arguments" class="nav-link">My Arguments</a>
             <span class="nav-sep">·</span>
-            <a href="/" class="nav-link">Home</a>
+            <div class="nav-menu">
+              <button type="button" class="nav-menu-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-help-list">Help <span class="nav-caret" aria-hidden="true">▾</span></button>
+              <div class="nav-menu-list" id="nav-help-list" hidden>
+                <a href="/how-to-use">How to Use</a>
+                <a href="/about">About</a>
+              </div>
+            </div>
             <span id="logo-arabic">قضية</span>
         </nav>
     </div>
@@ -303,6 +310,7 @@
     <!-- Settings panel (gear in the nav bar): the current values, then the shared script -->
     <script id="qadiyya-settings" type="application/json">{{ settings|tojson }}</script>
     <script src="{{ url_for('static', filename='settings.js') }}"></script>
+    <script src="{{ url_for('static', filename='nav.js') }}"></script>
 
 </body>
 

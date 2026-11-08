@@ -1,0 +1,78 @@
+/* ══════════════════════════════════════════════════════════════════
+   NAV BAR — the "Help" dropdown (shared by the editor, My Arguments,
+   How to Use and About). Link/separator styles live in each page's CSS.
+══════════════════════════════════════════════════════════════════ */
+
+.nav-menu { position: relative; }
+
+/* the button looks like the other nav links */
+.nav-menu-btn {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--parchment, #f5f0e8);
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.nav-menu-btn:hover,
+.nav-menu-btn:focus-visible,
+.nav-menu-btn[aria-expanded="true"] { opacity: 1; }
+.nav-menu-btn:focus-visible { outline: 1px solid var(--gold-light, #d4a843); outline-offset: 3px; }
+.nav-menu-btn.nav-link-active { opacity: 1; border-bottom-color: var(--gold-light, #d4a843); }
+.nav-caret { display: inline-block; margin-left: 3px; font-size: 10px; transition: transform 0.2s; }
+.nav-menu-btn[aria-expanded="true"] .nav-caret { transform: rotate(180deg); }
+
+/* the dropdown */
+.nav-menu-list {
+  position: absolute;
+  top: calc(100% + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 250;
+  min-width: 170px;
+  padding: 6px 0;
+  background: var(--parchment, #f5f0e8);
+  border: 1px solid var(--border, #c8b89a);
+  border-top: 2px solid var(--gold, #b8860b);
+  box-shadow: 0 12px 32px rgba(26, 20, 16, 0.25);
+  animation: nav-menu-in 0.15s ease;
+}
+.nav-menu-list[hidden] { display: none; }
+@keyframes nav-menu-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.nav-menu-list a {
+  display: block;
+  padding: 9px 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--ink-soft, #3d3228);
+  transition: background 0.15s, color 0.15s;
+}
+.nav-menu-list a:hover,
+.nav-menu-list a:focus-visible {
+  background: rgba(26, 92, 58, 0.08);
+  color: var(--emerald, #1a5c3a);
+  outline: none;
+}
+.nav-menu-list a[aria-current="page"] { color: var(--gold, #b8860b); }
+
+/* phones: the nav links (and so the menu) are hidden on every page, as before */
+@media (max-width: 768px) {
+  .nav-menu { display: none; }
+}

@@ -223,7 +223,7 @@ A gear in the navigation bar opens a settings panel, on both the editor and the 
 
 - **Consistent Navigation** – A fixed navigation bar on the editor and arguments pages provides direct links between Editor, My Arguments, and Home.
 
-- **How to Use Guide** – A built-in guide, linked from the homepage, that walks through building a chart and explains each kind of premise (self-evident, observational, tested, and so on) with examples.
+- **How to Use & About Pages** – A built-in guide, linked from the homepage, that walks through building a chart and explains each kind of premise (self-evident, observational, tested, and so on) with examples, plus an About page covering what Qaḍiyya is, where it comes from, and its goals.
 
 - **Collapsible Sub-Arguments** – Sub-argument tables can be collapsed and expanded with a single click, keeping the editor readable when working with deep, multi-level argument trees.
 

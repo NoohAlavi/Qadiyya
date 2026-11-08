@@ -7,6 +7,8 @@
     <title>Qaḍiyya | How to Use</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='new_favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='arguments.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='settings.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='nav.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='howto.css') }}">
 </head>
 
@@ -20,9 +22,13 @@
       <span class="nav-sep">·</span>
       <a href="/arguments" class="nav-link">My Arguments</a>
       <span class="nav-sep">·</span>
-      <a href="/how-to-use" class="nav-link nav-link-active">How to Use</a>
-      <span class="nav-sep">·</span>
-      <a href="/" class="nav-link">Home</a>
+      <div class="nav-menu">
+        <button type="button" class="nav-menu-btn nav-link-active" aria-haspopup="true" aria-expanded="false" aria-controls="nav-help-list">Help <span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu-list" id="nav-help-list" hidden>
+          <a href="/how-to-use" aria-current="page">How to Use</a>
+          <a href="/about">About</a>
+        </div>
+      </div>
       <span id="logo-arabic">قضية</span>
     </nav>
   </div>
@@ -118,14 +124,14 @@
 
         <dt>Mass-testified <span class="ar">mutawātirāt</span> <span class="ar-script" lang="ar">المتواترات</span></dt>
         <dd>Known because it is reported by so many eyewitnesses that, given how people behave, they could not all have conspired to lie.
-          <span class="howto-eg">Example: Makka exists, even if you have never seen it.</span></dd>
+          <span class="howto-eg">Example: Makkah exists, even if you have never seen it.</span></dd>
 
         <dt>Subconsciously inferred <span class="ar">qaḍāyā qiyāsātuhā maʿahā</span> <span class="ar-script" lang="ar">قضايا قياساتها معها</span></dt>
         <dd>Known by way of a middle premise that comes to mind automatically whenever the terms are thought of, so the conclusion feels immediate.
           <span class="howto-eg">Example: four is an even number, because it can be divided into two equal parts.</span></dd>
       </dl>
 
-      <p class="howto-aside">These definitions follow the classification in the <i>Isāghūjī</i>, as translated and explained by Shaykh Hamza Karamali in his <i>Īsāghūjī - An Introduction to Critical Thinking, Logic, Epistemology, and Scientific Reasoning For Students of the Classical Islamic Sciences</i>, put here in simplified wording.</p>
+      <p class="howto-aside">These definitions follow the classification in the <i>Isāghūjī</i> as taught by Shaykh Hamza Karamali in his <a href="https://whyislamistrue.com/kalam" target="_blank" rel="noopener">Kalām course</a>, put here in simplified wording.</p>
     </section>
 
     <section id="sub" class="howto-section">
@@ -195,6 +201,10 @@
     </div>
 
   </main>
+
+  <script id="qadiyya-settings" type="application/json">{{ settings|tojson }}</script>
+  <script src="{{ url_for('static', filename='settings.js') }}"></script>
+  <script src="{{ url_for('static', filename='nav.js') }}"></script>
 
 </body>
 </html>
