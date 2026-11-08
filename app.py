@@ -83,7 +83,7 @@ def save_current_map(mymap: MantiqMap):
 
 DEFAULT_SETTINGS = {
     "tree_open": False,            # the "Argument Tree" section starts closed (keeps the editor simple)
-    "tree_conclusion": "bottom",   # where the tree draws the conclusion: "bottom" or "top"
+    "tree_conclusion": "top",      # where the tree draws the conclusion: "bottom" or "top"
     "subargs_open": True,          # sub-argument tables start expanded
     "tree_notes": True,            # show annotations as footnotes under the tree
     "text_size": "medium",         # editor table text: "small", "medium" or "large"

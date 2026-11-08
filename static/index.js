@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ══════════════════════════════════════════════════════════════════
 //  ARGUMENT TREE VIEW  (read-only, sits under the last table)
 //  Premises feed into the conclusion: by default the conclusion is at the
-//  bottom; the toggle above the tree moves it to the top (and flips the arrows).
+//  top; the toggle above the tree moves it to the bottom (and flips the arrows).
 // ══════════════════════════════════════════════════════════════════
 const TREE = {
     cardW: 210,     // width of every box
@@ -155,7 +155,7 @@ const TREE = {
 
 let treeData = null;       // last nested tree fetched from /tree_data
 let treeLastWidth = 0;     // used to re-render only when the available width changes
-let treeFlipped = false;   // false: conclusion at the bottom (default); true: conclusion on top
+let treeFlipped = true;    // true: conclusion on top (default); false: conclusion at the bottom
                            // (set from the saved "conclusion position" setting when the page loads)
 
 // Keep the button label and the one-line description in step with the current orientation.
@@ -360,7 +360,7 @@ function renderTree() {
         '<path d="M2 1L8 5L2 9"/></marker></defs>';
     canvas.appendChild(svg);
 
-    // One div per row. Default: deepest premises first (top) and the conclusion last (bottom).
+    // One div per row: the conclusion is on the top row by default (flipped: deepest premises first).
     // Flipped: the conclusion row comes first and the deepest premises last.
     const rows = [];
     for (let r = 0; r <= maxDepth; r++) {
