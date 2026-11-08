@@ -82,7 +82,7 @@ def save_current_map(mymap: MantiqMap):
 # ══════════════════════════════════════════════════════════════════
 
 DEFAULT_SETTINGS = {
-    "tree_open": True,             # the "Argument Tree" section starts open
+    "tree_open": False,            # the "Argument Tree" section starts closed (keeps the editor simple)
     "tree_conclusion": "bottom",   # where the tree draws the conclusion: "bottom" or "top"
     "subargs_open": True,          # sub-argument tables start expanded
     "tree_notes": True,            # show annotations as footnotes under the tree
@@ -571,12 +571,15 @@ def update_settings():
     if errors:
         return jsonify({"error": "; ".join(errors)}), 400
 
+    # Store only what the user has actually chosen. Anything they haven't touched keeps
+    # following the defaults, so changing a default later reaches them too.
     user_data = load_user_data()
-    settings = get_settings(user_data)
-    settings.update(clean)
-    user_data["settings"] = settings
+    stored = user_data.get("settings")
+    chosen, _ = validate_settings(stored if isinstance(stored, dict) else {})
+    chosen.update(clean)
+    user_data["settings"] = chosen
     save_user_data(user_data)
-    return jsonify({"ok": True, "settings": settings})
+    return jsonify({"ok": True, "settings": get_settings(user_data)})
 
 
 @app.route("/reset_view_states", methods=["POST"])
@@ -673,6 +676,11 @@ def arguments():
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
+@app.route("/how-to-use")
+def how_to_use():
+    return render_template("how_to_use.html")
 
 
 if __name__ == "__main__":

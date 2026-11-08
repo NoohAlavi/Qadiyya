@@ -1,0 +1,204 @@
+/* ══════════════════════════════════════════════════════════════════
+   HOW TO USE page — builds on arguments.css (colours, nav bar, basmala,
+   ornamental rule and page heading all come from there).
+══════════════════════════════════════════════════════════════════ */
+
+.howto-page {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 100px 24px 120px;
+}
+
+/* ── Contents strip ── */
+.howto-toc {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 18px;
+  margin: -12px 0 52px;
+  padding: 14px 8px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.howto-toc a {
+  font-family: 'Cormorant SC', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  opacity: 0.8;
+  transition: color 0.2s, opacity 0.2s;
+}
+.howto-toc a:hover,
+.howto-toc a:focus-visible { color: var(--gold); opacity: 1; outline: none; }
+
+/* ── Sections ── */
+.howto-section {
+  margin-bottom: 46px;
+  scroll-margin-top: 80px;      /* keep the heading clear of the fixed nav bar */
+}
+.howto-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--emerald);
+}
+.howto-num {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  line-height: 26px;
+  text-align: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  color: var(--gold);
+}
+
+.howto-section p,
+.howto-section li,
+.howto-section dd {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.howto-section p { margin-bottom: 12px; }
+.howto-section a { color: var(--emerald); text-underline-offset: 2px; }
+.howto-section a:hover { color: var(--emerald-mid); }
+.howto-section b { font-weight: 700; }
+
+.howto-steps,
+.howto-list {
+  margin: 4px 0 14px 4px;
+  padding-left: 22px;
+}
+.howto-steps li,
+.howto-list li { margin-bottom: 7px; padding-left: 4px; }
+.howto-list li::marker { color: var(--gold); }
+.howto-steps li::marker { color: var(--gold); font-weight: 700; }
+
+.howto-aside {
+  padding: 12px 16px;
+  background: var(--gold-faint);
+  border-left: 3px solid var(--gold);
+  font-size: 17px !important;
+}
+
+/* ── Premise-type definitions ── */
+.howto-defs { margin: 6px 0 4px; }
+.howto-defs dt {
+  margin-top: 14px;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ink);
+}
+.howto-defs .ar {
+  margin-left: 6px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-muted);
+}
+.howto-defs dd { margin: 2px 0 0 0; padding-left: 14px; border-left: 1px solid var(--border); }
+
+/* ── Example chart ── */
+.howto-example {
+  width: 100%;
+  margin: 6px 0 18px;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid var(--border-dark);
+  font-size: 16px;
+}
+.howto-example th {
+  padding: 6px 10px;
+  text-align: left;
+  font-family: 'Cormorant SC', serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  background: var(--parchment-mid);
+  border-bottom: 1px solid var(--border);
+}
+.howto-example td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.howto-example tr:last-child td { border-bottom: 0; }
+.howto-example .n { width: 44px; font-weight: 700; color: var(--emerald); }
+.howto-example .concl td { background: var(--parchment-mid); border-top: 1.5px solid var(--border-dark); }
+.howto-example .concl .n { color: var(--gold); }
+
+.howto-gear { color: var(--gold); }
+
+/* ── Closing buttons ── */
+.howto-cta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.howto-btn {
+  padding: 14px 34px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  border: 1.5px solid var(--border-dark);
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.howto-btn:hover { background: var(--parchment-mid); border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+.howto-btn-primary { background: var(--emerald); border-color: var(--emerald); color: var(--parchment); }
+.howto-btn-primary:hover { background: var(--emerald-mid); border-color: var(--emerald-mid); color: var(--parchment); }
+
+/* ── Phones ── */
+@media (max-width: 768px) {
+  .howto-page { padding: 88px 18px 80px; }
+  .howto-section h2 { font-size: 19px; }
+  .howto-section p, .howto-section li, .howto-section dd { font-size: 17px; }
+  .howto-example { font-size: 14px; }
+  .howto-example th:nth-child(2), .howto-example td:nth-child(2) { display: none; }   /* drop the skeleton column */
+  .howto-toc { gap: 4px 14px; }
+}
+
+/* ── Premise-type explanations ── */
+.howto-sub {
+  margin: 22px 0 6px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+.howto-sub .ar { text-transform: none; letter-spacing: 0; }
+.howto-defs dt.sub { margin-left: 22px; font-size: 17px; }
+.howto-defs dd.sub { margin-left: 22px; }
+.ar-script {
+  margin-left: 6px;
+  font-family: 'Amiri', serif;
+  font-size: 19px;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--gold);
+}
+.howto-eg {
+  display: block;
+  margin-top: 3px;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--ink-muted);
+}
+@media (max-width: 768px) {
+  .howto-defs dt.sub, .howto-defs dd.sub { margin-left: 12px; }
+}

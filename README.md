@@ -186,7 +186,9 @@ The codebase is structured for future enhancements that support deeper study, in
 
 - **Flip the Tree** – Put the conclusion at the top instead of the bottom, with the arrows reversed.
 
-- **Remembered State** – Whether the tree is open or closed is saved per argument, and the same goes for which sub-arguments are collapsed. These follow the premise itself, so they survive renumbering.
+- **Notes as Footnotes** – Premises with annotations get a numbered marker in the tree, and the notes are listed beneath it. Clicking a marker jumps to its note, and clicking a note highlights its box.
+
+- **Remembered State** – The tree starts closed to keep the editor simple. Whether it is open or closed is saved per argument, and the same goes for which sub-arguments are collapsed. These follow the premise itself, so they survive renumbering.
 
 ### 📤 Export
 - **Download JSON** – Export the current argument as a `.json` file for backup or future import.
@@ -195,7 +197,7 @@ The codebase is structured for future enhancements that support deeper study, in
 
 - **Export as Image (PNG)** – Export a clean, styled image of the argument with parchment background and full typography.
 
-- **Export Tree (PNG)** – Export just the argument tree as an image, in whichever orientation (conclusion top or bottom) is currently showing.
+- **Export Tree (PNG)** – Export just the argument tree as an image, in whichever orientation (conclusion top or bottom) is currently showing, with its footnotes.
 
 <img src="static/screenshots/screenshot_export_btn.png" alt="The 'Export' button from **Qaḍiyya**'s argument editor page"/>
 
@@ -204,7 +206,7 @@ The codebase is structured for future enhancements that support deeper study, in
 ### ⚙️ Settings
 A gear in the navigation bar opens a settings panel, on both the editor and the arguments pages. Changes apply instantly and are saved with your session.
 
-- **Argument tree** – Open it by default (or not), and choose whether the conclusion sits at the bottom or the top.
+- **Argument tree** – Choose whether it opens by default (it starts closed), whether the conclusion sits at the bottom or the top, and whether notes are shown beneath it.
 
 - **Sub-arguments** – Open them by default (or not). A default only applies to arguments and sections you haven't opened or closed yourself; "Make every argument follow them" clears those individual choices.
 
@@ -220,6 +222,8 @@ A gear in the navigation bar opens a settings panel, on both the editor and the 
 - **Floating Export Button** – A fixed bottom-right export button gives access to every export format from anywhere in the editor.
 
 - **Consistent Navigation** – A fixed navigation bar on the editor and arguments pages provides direct links between Editor, My Arguments, and Home.
+
+- **How to Use Guide** – A built-in guide, linked from the homepage, that walks through building a chart and explains each kind of premise (self-evident, observational, tested, and so on) with examples.
 
 - **Collapsible Sub-Arguments** – Sub-argument tables can be collapsed and expanded with a single click, keeping the editor readable when working with deep, multi-level argument trees.
 
@@ -291,9 +295,9 @@ $ python app.py
 ## 📜 Credits & Acknowledgements
 - **The Golden Chain:** This project is a digital tribute to the **intellectual giants of the Islamic scholarly tradition**, whose historical commitment to reason, logic, and foundational clarity continues to inspire seekers of truth today.
 
-- **Intellectual Inspiration:** As detailed in the [inspiration section](#-inspiration-behind-qaḍiyya), the specific charting format and the whole idea behind the project are a direct result of my studies with my dear respected teacher, **[Shaykh Hamza Karamali](https://hamzakaramali.com/)**.
+- **Intellectual Inspiration:** As detailed in the [inspiration section](#-inspiration-behind-qaḍiyya), the specific charting format and the whole idea behind the project are a direct result of my studies with **[Shaykh Hamza Karamali](https://hamzakaramali.com/)**.
 
-- **Visual Identity:** The custom Qaḍiyya logo and favicon were designed by my friend **Ṭalḥah ʿAbd al-ʿAzīz al-Dakkāwī**.
+- **Visual Identity:** The custom Qaḍiyya logo and favicon were designed by my friend **Talḥah ʿAbd al-ʿAzīz al-Dakkāwī**.
 
 - **Typography & Fonts:** This project utilizes the **Amiri**, **EB Garamond**, and **Cormorant** typefaces via [Google Fonts](https://fonts.google.com/).
 

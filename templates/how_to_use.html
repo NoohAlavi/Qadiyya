@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qaḍiyya | How to Use</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='new_favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='arguments.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='howto.css') }}">
+</head>
+
+<body>
+
+  <!-- Nav bar -->
+  <div id="top">
+    <a id="logo" href="/">Qaḍiyya</a>
+    <nav id="nav-links">
+      <a href="/editor" class="nav-link">Editor</a>
+      <span class="nav-sep">·</span>
+      <a href="/arguments" class="nav-link">My Arguments</a>
+      <span class="nav-sep">·</span>
+      <a href="/how-to-use" class="nav-link nav-link-active">How to Use</a>
+      <span class="nav-sep">·</span>
+      <a href="/" class="nav-link">Home</a>
+      <span id="logo-arabic">قضية</span>
+    </nav>
+  </div>
+
+  <main class="howto-page">
+
+    <div class="args-basmala">﷽</div>
+    <div class="ornamental-rule"><span>✦</span></div>
+
+    <div class="args-heading">
+      <h1>How to Use Qaḍiyya</h1>
+      <p>from a blank page to a finished argument chart</p>
+    </div>
+
+    <nav class="howto-toc" aria-label="On this page">
+      <a href="#start">Getting started</a>
+      <a href="#premises">Building the chart</a>
+      <a href="#types">Premise types</a>
+      <a href="#sub">Sub-arguments</a>
+      <a href="#tree">The tree</a>
+      <a href="#notes">Notes</a>
+      <a href="#arguments">Your arguments</a>
+      <a href="#export">Export &amp; backup</a>
+      <a href="#settings">Settings</a>
+    </nav>
+
+    <section id="start" class="howto-section">
+      <h2><span class="howto-num">1</span> Getting started</h2>
+      <p>Qaḍiyya turns an argument into a chart: a conclusion, supported by numbered premises, each of which is either accepted as basic or proved by an argument of its own. It follows the chart format of classical <i>manṭiq</i> and <i>kalām</i>.</p>
+      <ol class="howto-steps">
+        <li>On the home page, press <b>New Argument</b> and type what the argument is trying to prove. That becomes the title.</li>
+        <li>You land in the <b>editor</b>, with a small starting chart already in place for you to overwrite.</li>
+        <li>Your work saves as you go. There is no Save button.</li>
+      </ol>
+      <p class="howto-aside">No account is needed. Your arguments are tied to this browser, so see <a href="#export">Export &amp; backup</a> to keep a copy.</p>
+    </section>
+
+    <section id="premises" class="howto-section">
+      <h2><span class="howto-num">2</span> Building the chart</h2>
+      <p>Each row of the table is one statement. The last row is the conclusion, marked <b>C</b>; the rows above it are its premises, <b>P1</b>, <b>P2</b>, and so on.</p>
+
+      <table class="howto-example" aria-label="Example chart">
+        <tr><th>#</th><th>Skeleton</th><th>Premise</th><th>Type</th></tr>
+        <tr><td class="n">P1</td><td><i>All A is B</i></td><td>Every physical body occupies space.</td><td>Self evident</td></tr>
+        <tr><td class="n">P2</td><td><i>C is A</i></td><td>A stone is a physical body.</td><td>Observational</td></tr>
+        <tr class="concl"><td class="n">C</td><td><i>Therefore, C is B</i></td><td><i>Therefore, a stone occupies space.</i></td><td></td></tr>
+      </table>
+
+      <ul class="howto-list">
+        <li><b>Skeleton</b> (the second column): the statement reduced to letters, such as <i>All A is B</i>. It shows the logical shape of the premise.</li>
+        <li><b>Premise</b> (the third column): the statement written out in words. Click any cell and type.</li>
+        <li><b>Add Premise</b> (the button under the table) adds another premise to the argument.</li>
+        <li><b>✕</b> deletes a premise. If it has sub-premises under it, you are asked to confirm first, because they are deleted with it.</li>
+        <li>Numbers (P1, P2…) are assigned automatically and update themselves whenever you add or delete.</li>
+      </ul>
+    </section>
+
+    <section id="types" class="howto-section">
+      <h2><span class="howto-num">3</span> Premise types</h2>
+      <p>The dropdown on each premise says <b>how you know it</b>. This is what lets you trace an argument back to the premises where it can, and cannot, be questioned.</p>
+
+      <dl class="howto-defs">
+        <dt>Inferential <span class="ar">naẓarī</span> <span class="ar-script" lang="ar">نظري</span></dt>
+        <dd>The premise is not accepted on its own: it needs an argument to establish it. Choosing this opens a sub-argument for it (see the next section).</dd>
+      </dl>
+
+      <h3 class="howto-sub">Non-inferential premises <span class="ar">ḍarūrī</span> <span class="ar-script" lang="ar">ضروري</span></h3>
+      <p>These need no further argument: the mind accepts them directly, in one of six ways. The tool shows eight options, because observational premises are split by which senses are used.</p>
+
+      <dl class="howto-defs">
+        <dt>Self-evident <span class="ar">awwaliyyāt</span> <span class="ar-script" lang="ar">الأوليات</span></dt>
+        <dd>The mind sees it is true as soon as it understands the terms, with no senses or evidence needed.
+          <span class="howto-eg">Example: a whole is greater than its part.</span></dd>
+
+        <dt>Observational <span class="ar">mushāhadāt</span> <span class="ar-script" lang="ar">المشاهدات</span></dt>
+        <dd>The mind accepts it on the testimony of the senses. This comes in two kinds:</dd>
+
+        <dt class="sub">Empirically observed <span class="ar">ḥissiyyāt</span> <span class="ar-script" lang="ar">الحسيات</span></dt>
+        <dd class="sub">Observed through the outer senses: sight, hearing, touch, taste and smell.
+          <span class="howto-eg">Example: this stone is rough.</span></dd>
+
+        <dt class="sub">Introspectively observed <span class="ar">wijdāniyyāt</span> <span class="ar-script" lang="ar">الوجدانيات</span></dt>
+        <dd class="sub">Observed through the inner senses: what you perceive within yourself, such as pain, hunger or fear.
+          <span class="howto-eg">Example: I feel thirsty.</span></dd>
+
+        <dt>Tested <span class="ar">tajribiyyāt</span> <span class="ar-script" lang="ar">التجريبيات</span></dt>
+        <dd>Known through repeated observation: after seeing the same thing again and again, the mind becomes certain of the pattern.
+          <span class="howto-eg">Example: paracetamol brings down a fever.</span></dd>
+
+        <dt>Intuited <span class="ar">ḥadsiyyāt</span> <span class="ar-script" lang="ar">الحدسيات</span></dt>
+        <dd>Known by a sudden realization: many separate pieces of knowledge point one way, and the mind sees that they must have a particular cause.
+          <span class="howto-eg">Example: the moon's light comes from the sun.</span></dd>
+
+        <dt>Mass-testified <span class="ar">mutawātirāt</span> <span class="ar-script" lang="ar">المتواترات</span></dt>
+        <dd>Known because it is reported by so many eyewitnesses that, given how people behave, they could not all have conspired to lie.
+          <span class="howto-eg">Example: Makka exists, even if you have never seen it.</span></dd>
+
+        <dt>Subconsciously inferred <span class="ar">qaḍāyā qiyāsātuhā maʿahā</span> <span class="ar-script" lang="ar">قضايا قياساتها معها</span></dt>
+        <dd>Known by way of a middle premise that comes to mind automatically whenever the terms are thought of, so the conclusion feels immediate.
+          <span class="howto-eg">Example: four is an even number, because it can be divided into two equal parts.</span></dd>
+      </dl>
+
+      <p class="howto-aside">These definitions follow the classification in the <i>Isāghūjī</i>, as translated and explained by Shaykh Hamza Karamali in his <i>Īsāghūjī - An Introduction to Critical Thinking, Logic, Epistemology, and Scientific Reasoning For Students of the Classical Islamic Sciences</i>, put here in simplified wording.</p>
+    </section>
+
+    <section id="sub" class="howto-section">
+      <h2><span class="howto-num">4</span> Sub-arguments</h2>
+      <p>When you mark a premise <b>Inferential</b>, a new table appears beneath the main one with that premise as its conclusion. Fill in its premises the same way. Sub-arguments can go as deep as you need.</p>
+      <ul class="howto-list">
+        <li><b>↓ view sub-argument</b>, shown beside an inferential premise, scrolls straight to its table.</li>
+        <li>The <b>▲</b> beside a sub-argument's title folds it away or opens it again. Qaḍiyya remembers which ones you folded.</li>
+      </ul>
+    </section>
+
+    <section id="tree" class="howto-section">
+      <h2><span class="howto-num">5</span> The argument tree</h2>
+      <p>At the bottom of the page, the <b>Argument Tree</b> draws the whole argument as one picture: premises feed into the conclusions they support, all the way to the main conclusion. It is read-only, and it redraws as you edit.</p>
+      <ul class="howto-list">
+        <li>Boxes are coloured by type: <b>green</b> for non-inferential premises, <b>gold</b> for inferential ones, and a neutral box for the conclusion.</li>
+        <li><b>Click a box</b> to jump to that premise's row in the table.</li>
+        <li><b>⇅ Conclusion at bottom / top</b> flips the tree so the conclusion sits at the other end.</li>
+        <li>The tree starts <b>closed</b> to keep the editor uncluttered. Press the <b>▼</b> beside its heading to open it, and <b>▲</b> to close it again. Qaḍiyya remembers this for each argument.</li>
+      </ul>
+    </section>
+
+    <section id="notes" class="howto-section">
+      <h2><span class="howto-num">6</span> Notes</h2>
+      <p>Under each premise's type is a small <i>annotations…</i> field. Use it to add detail, record a source, or write a critique.</p>
+      <p>Notes also appear in the tree as <b>footnotes</b>: a numbered gold badge on the box, and the full text in a <b>Notes</b> list beneath the tree. Click a badge to jump to its note, or a note to highlight its box. You can turn this off in the settings.</p>
+    </section>
+
+    <section id="arguments" class="howto-section">
+      <h2><span class="howto-num">7</span> Your arguments</h2>
+      <p>The <a href="/arguments">My Arguments</a> page lists everything you have made. From there you can:</p>
+      <ul class="howto-list">
+        <li><b>Open</b> an argument to work on it, or start a <b>New Argument</b>.</li>
+        <li><b>Rename</b> it, <b>duplicate</b> it (a good way to try a different line of reasoning), or <b>delete</b> it.</li>
+        <li><b>Import JSON</b> to bring in an argument you exported earlier, or one someone sent you. It is always added as a new argument, so nothing you have is overwritten.</li>
+      </ul>
+      <p>You can also rename the current argument from inside the editor with the ✎ beside its title.</p>
+    </section>
+
+    <section id="export" class="howto-section">
+      <h2><span class="howto-num">8</span> Export &amp; backup</h2>
+      <p>The <b>Export</b> button at the bottom right of the editor offers:</p>
+      <ul class="howto-list">
+        <li><b>PDF</b> (recommended): a paginated A4 document, good for sharing or printing.</li>
+        <li><b>Image (PNG)</b>: the argument tables as a single picture.</li>
+        <li><b>Tree (PNG)</b>: just the tree, with its footnotes.</li>
+        <li><b>JSON</b>: the argument itself, which you can import again later or send to someone else.</li>
+      </ul>
+      <p class="howto-aside"><b>Keep a backup.</b> Arguments live in your browser's session, not in an account. Clearing cookies, switching browsers or devices, or sometimes a browser's own cleanup can start you with an empty workspace. The <b>Download all arguments</b> button in the settings saves everything in one file; restore it with Import JSON.</p>
+    </section>
+
+    <section id="settings" class="howto-section">
+      <h2><span class="howto-num">9</span> Settings</h2>
+      <p>The gear <span class="howto-gear" aria-hidden="true">⚙</span> in the navigation bar opens the settings. Changes apply immediately.</p>
+      <ul class="howto-list">
+        <li>Whether the <b>tree</b> opens by default, and whether its conclusion sits at the <b>bottom or top</b>.</li>
+        <li>Whether <b>notes</b> appear under the tree.</li>
+        <li>Whether <b>sub-arguments</b> open by default.</li>
+        <li><b>Text size</b> for the tables and tree: small, medium or large.</li>
+      </ul>
+      <p>A default only applies to sections you haven't opened or closed yourself. <i>Make every argument follow them</i> clears those individual choices.</p>
+    </section>
+
+    <div class="howto-cta">
+      <a class="howto-btn howto-btn-primary" href="/editor">Open the Editor</a>
+      <a class="howto-btn" href="/arguments">My Arguments</a>
+    </div>
+
+  </main>
+
+</body>
+</html>
