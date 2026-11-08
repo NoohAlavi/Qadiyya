@@ -231,6 +231,7 @@ function applySettingChange(detail) {
             break;
         }
         case 'tree_notes':
+        case 'tree_numbers':
             renderTree();
             break;
         case 'subargs_open':
@@ -386,6 +387,13 @@ function renderTree() {
         card.title = 'Jump to this row in the table';
 
         const num = isRoot ? 'C' : node.data.number;
+        const sNow = window.QadiyyaSettings;
+        if (sNow && sNow.values.tree_numbers && num) {      // optional premise-number tag on the box's corner
+            const tag = document.createElement('span');
+            tag.className = 'tree-num';
+            tag.textContent = num;
+            card.appendChild(tag);
+        }
         card.addEventListener('click', () => jumpToRow(num));
         card.addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jumpToRow(num); }
@@ -621,7 +629,11 @@ async function exportTree() {
             }
             const badgeEl = card.querySelector('.tree-fn');
             const br = badgeEl ? badgeEl.getBoundingClientRect() : null;
+            const numEl = card.querySelector('.tree-num');
+            const nr = numEl ? numEl.getBoundingClientRect() : null;
+            const ncs = numEl ? getComputedStyle(numEl) : null;
             return {
+                numTag: nr ? { n: numEl.textContent, x: nr.left - origin.left, y: nr.top - origin.top, w: nr.width, h: nr.height, bg: ncs.backgroundColor, ink: ncs.color } : null,
                 badge: br ? { n: badgeEl.textContent, x: br.left - origin.left, y: br.top - origin.top, w: br.width, h: br.height } : null,
                 x: r.left - origin.left, y: r.top - origin.top, w: r.width, h: r.height,
                 lines: lines.map(l => ({ text: l.text.trim(), mid: (l.top + l.bottom) / 2 - origin.top })),
@@ -657,7 +669,24 @@ async function exportTree() {
         const notes = Array.from(document.querySelectorAll('#tree-notes-list li')).map(li => ({
             n: li.children[0].textContent, prem: li.children[1].textContent, text: li.children[2].textContent,
         }));
-        const contentW = Math.max(treeW, notes.length ? 560 : 0);
+        // The colour key, read from the page's own legend so the picture always matches the screen.
+        const legendFont = "16px 'Cormorant Garamond', 'EB Garamond', Georgia, serif";
+        const legendItalic = "italic 16px 'Cormorant Garamond', 'EB Garamond', Georgia, serif";
+        const SW = 12, SW_GAP = 7, ITEM_GAP = 26;
+        const legend = Array.from(document.querySelectorAll('.tree-legend > span')).map(span => {
+            const sw = span.querySelector('.tree-swatch');
+            const sc = getComputedStyle(sw);
+            const parts = Array.from(span.childNodes).filter(n => n !== sw).map(n => ({
+                text: n.textContent, font: n.nodeType === Node.ELEMENT_NODE ? legendItalic : legendFont,
+            }));
+            let w = 0;
+            parts.forEach(pt => { probe.font = pt.font; pt.w = probe.measureText(pt.text).width; w += pt.w; });
+            return { parts, w: SW + SW_GAP + w, fill: sc.backgroundColor, stroke: sc.borderTopColor };
+        });
+        const legendW = legend.length ? legend.reduce((a, l) => a + l.w, 0) + ITEM_GAP * (legend.length - 1) : 0;
+        const legendH = legend.length ? 56 : 0;
+        probe.font = titleFont;
+        const contentW = Math.max(treeW, notes.length ? 560 : 0, legendW);
         const W = Math.ceil(contentW + PAD * 2);
         // Wrap the title to the tree's width so a long title doesn't stretch the picture.
         const titleLines = [];
@@ -671,7 +700,7 @@ async function exportTree() {
         const bas = document.getElementById('basmala');
         const basFont = bas ? (() => { const b = getComputedStyle(bas); return `${b.fontStyle} ${b.fontWeight} 26px ${b.fontFamily}`; })() : '';
         const basH = bas ? 50 : 0;
-        const titleH = (titleLines.length ? titleLines.length * TITLE_LH + 22 : 0) + basH;
+        const titleH = (titleLines.length ? titleLines.length * TITLE_LH + 22 : 0) + basH + legendH;
         const FOOT = 118;                                          // room for the watermark footer
 
         // Wrap each note to the content width (numbers hang in a 30px column).
@@ -723,6 +752,20 @@ async function exportTree() {
             titleLines.forEach((ln, i) => ctx.fillText(ln, W / 2, PAD + basH + 12 + i * TITLE_LH));
         }
 
+        if (legend.length) {                                   // colour key, centred between the title and the tree
+            const ly = PAD + titleH - legendH + 14;
+            let lx = (W - legendW) / 2;
+            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+            legend.forEach(l => {
+                ctx.fillStyle = l.fill; ctx.fillRect(lx, ly - SW / 2, SW, SW);
+                ctx.strokeStyle = l.stroke; ctx.lineWidth = 1; ctx.strokeRect(lx + 0.5, ly - SW / 2 + 0.5, SW - 1, SW - 1);
+                let x = lx + SW + SW_GAP;
+                ctx.fillStyle = color('--ink-soft') || '#4a3f35';
+                l.parts.forEach(pt => { ctx.font = pt.font; ctx.fillText(pt.text, x, ly); x += pt.w; });
+                lx += l.w + ITEM_GAP;
+            });
+        }
+
         // Connectors (their paths only use M, H and V).
         ctx.strokeStyle = lineStyle.stroke;
         ctx.lineWidth = parseFloat(lineStyle.strokeWidth) || 1.5;
@@ -772,6 +815,20 @@ async function exportTree() {
             ctx.font = "600 11px 'EB Garamond', Georgia, serif";
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.fillText(b.n, bx + b.w / 2, by + b.h / 2 + 0.5);
+        });
+
+        // Premise-number tags on the boxes (when that setting is on).
+        cards.forEach(c => {
+            if (!c.numTag) return;
+            const t = c.numTag, tx = t.x + dx, ty = t.y + dy;
+            ctx.fillStyle = t.bg;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(tx, ty, t.w, t.h, t.h / 2); else ctx.rect(tx, ty, t.w, t.h);
+            ctx.fill();
+            ctx.fillStyle = t.ink;
+            ctx.font = "600 11px 'EB Garamond', Georgia, serif";
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(t.n, tx + t.w / 2, ty + t.h / 2 + 0.5);
         });
 
         // The notes, listed under the tree.

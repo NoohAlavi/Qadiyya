@@ -107,6 +107,11 @@
                     <span class="sp-track"></span>
                     <span class="sp-text">Show notes under the tree</span>
                 </label>
+                <label class="sp-switch sp-switch-spaced">
+                    <input type="checkbox" data-key="tree_numbers">
+                    <span class="sp-track"></span>
+                    <span class="sp-text">Show premise numbers in the tree</span>
+                </label>
             </section>
 
             <section class="sp-group">

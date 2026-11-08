@@ -86,6 +86,7 @@ DEFAULT_SETTINGS = {
     "tree_conclusion": "top",      # where the tree draws the conclusion: "bottom" or "top"
     "subargs_open": True,          # sub-argument tables start expanded
     "tree_notes": True,            # show annotations as footnotes under the tree
+    "tree_numbers": False,         # label each box in the tree with its premise number (P1, P2 … C)
     "text_size": "medium",         # editor table text: "small", "medium" or "large"
 }
 
@@ -95,6 +96,7 @@ SETTING_CHOICES = {
     "tree_conclusion": ("bottom", "top"),
     "subargs_open": bool,
     "tree_notes": bool,
+    "tree_numbers": bool,
     "text_size": ("small", "medium", "large"),
 }
 

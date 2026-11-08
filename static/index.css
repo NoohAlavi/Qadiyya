@@ -1045,6 +1045,28 @@ body[data-text-size] .tree-card         { font-size: calc(var(--font-size) * 0.8
 }
 .tree-fn:hover, .tree-fn:focus-visible { background: var(--emerald); outline: none; }
 
+/* premise-number tag on a box's top-left corner (setting: "Show premise numbers in the tree") */
+.tree-num {
+  position: absolute;
+  top: -9px;
+  left: 8px;
+  z-index: 2;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  border-radius: 9px;
+  background: var(--ink-muted);
+  color: var(--parchment);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+  font-style: normal;
+  pointer-events: none;
+}
+
 .tree-notes {
   width: 90%;
   max-width: 1000px;
@@ -1093,6 +1115,6 @@ body[data-text-size] .tree-card         { font-size: calc(var(--font-size) * 0.8
   0%, 35% { box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.55); background-color: rgba(184, 134, 11, 0.14); }
   100%    { box-shadow: 0 0 0 3px rgba(184, 134, 11, 0); }
 }
-body[data-text-size] .tree-fn { font-size: calc(var(--font-size) * 0.6875); }
+body[data-text-size] .tree-fn, body[data-text-size] .tree-num { font-size: calc(var(--font-size) * 0.6875); }
 body[data-text-size] #tree-notes-list li { font-size: calc(var(--font-size) * 0.9375); }
 body[data-text-size] .tree-fn-premise { font-size: calc(var(--font-size) * 0.875); }
